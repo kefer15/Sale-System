@@ -16,6 +16,7 @@ public class CTransacts
 {
     public CTransacts(JTable t,JList l)
     {
+        /*
         DefaultTableModel model = (DefaultTableModel) t.getModel();
         ArrayList<Financial_Transactions> financial_transactions = new Financial_Transactions().getLista();
         model.setRowCount(0);
@@ -44,6 +45,7 @@ public class CTransacts
             modelList.addElement(name);
             l.setModel(modelList);
         }
+        */
     }
     
     public void agregarTransacts()

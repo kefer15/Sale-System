@@ -7,7 +7,7 @@ import javax.swing.JSpinner;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import salesystem.negocio.Customers;
-import salesystem.presentacion.CMain;
+import Controlador.CMain;
 
 public class CCustomers_Add_Update implements ICustomers_Add_Update
 {

@@ -3,7 +3,7 @@ package salesystem.presentacion.products;
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 import salesystem.negocio.Measures;
-import salesystem.presentacion.CMain;
+import Controlador.CMain;
 
 public class CMeasure_Add_Update implements IMeasure_Add_Update
 {

@@ -1,4 +1,4 @@
-package salesystem.negocio;
+package Modelo;
 
 import com.mysql.jdbc.Connection;
 import com.mysql.jdbc.Statement;

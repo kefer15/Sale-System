@@ -1,4 +1,4 @@
-package salesystem.presentacion;
+package Controlador;
 
 public class CHelp
 {

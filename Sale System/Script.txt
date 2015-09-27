@@ -1,0 +1,101 @@
+
+-- Create data base -------------------------------------------------
+
+DROP DATABASE IF EXISTS  BD_SALE_SYSTEM ;
+
+CREATE DATABASE BD_SALE_SYSTEM;
+USE BD_SALE_SYSTEM;
+
+-- Create tables section -------------------------------------------------
+
+-- Table Cargo
+
+CREATE TABLE Cargo
+(
+  CarCod Int(3) ZEROFILL NOT NULL AUTO_INCREMENT,
+  CarNom Varchar(50) NOT NULL,
+  PRIMARY KEY (CarCod)
+);
+
+ALTER TABLE Cargo ADD UNIQUE CarCod (CarCod);
+
+ALTER TABLE Cargo ADD UNIQUE CarNom (CarNom);
+
+-- Table Genero
+
+CREATE TABLE Genero
+(
+  GenCod Int(1) ZEROFILL NOT NULL AUTO_INCREMENT,
+  GenNom Varchar(20) NOT NULL,
+  PRIMARY KEY (GenCod)
+);
+
+ALTER TABLE Genero ADD UNIQUE GenCod (GenCod);
+
+ALTER TABLE Genero ADD UNIQUE GenNom (GenNom);
+
+-- Table Estado
+
+CREATE TABLE Estado
+(
+  EstCod Int(2) NOT NULL,
+  EstNom Varchar(20) NOT NULL,
+  PRIMARY KEY (EstCod)
+);
+
+ALTER TABLE Estado ADD UNIQUE EstCod (EstCod);
+
+ALTER TABLE Estado ADD UNIQUE EstNom (EstNom);
+
+-- Table Usuario
+
+CREATE TABLE Usuario
+(
+  UsuCod Int(3) ZEROFILL NOT NULL AUTO_INCREMENT,
+  UsuIde Int(10) NOT NULL,
+  UsuCon Varchar(20) NOT NULL,
+  UsuNom Varchar(40) NOT NULL,
+  UsuApePat Varchar(20) NOT NULL,
+  UsuApeMat Varchar(20) NOT NULL,
+  UsuDni Varchar(8) NOT NULL,
+  GenCod Int(1),
+  UsuDir Varchar(100),
+  CarCod Int(3),
+  UsuCel Varchar(9) NOT NULL,
+  UsuCorEle Varchar(60) NOT NULL,
+  UsuNumEme Varchar(9) NOT NULL,
+  UsuOtr Varchar(100),
+  EstCod Int(2),
+  PRIMARY KEY (UsuCod)
+);
+
+ALTER TABLE Usuario ADD UNIQUE UseId (UsuIde);
+
+ALTER TABLE Usuario ADD UNIQUE UsuCod (UsuCod);
+
+CREATE INDEX IX_Relationship2 ON Usuario (CarCod);
+
+CREATE INDEX IX_Relationship3 ON Usuario (GenCod);
+
+CREATE INDEX IX_Relationship9 ON Usuario (EstCod);
+
+ALTER TABLE Usuario ADD CONSTRAINT Relationship2 FOREIGN KEY (CarCod) REFERENCES Cargo (CarCod) ON DELETE NO ACTION ON UPDATE NO ACTION;
+
+ALTER TABLE Usuario ADD CONSTRAINT Relationship3 FOREIGN KEY (GenCod) REFERENCES Genero (GenCod) ON DELETE NO ACTION ON UPDATE NO ACTION;
+
+ALTER TABLE Usuario ADD CONSTRAINT Relationship9 FOREIGN KEY (EstCod) REFERENCES Estado (EstCod) ON DELETE NO ACTION ON UPDATE NO ACTION;
+
+INSERT INTO Cargo VALUES (NULL,"ADMINISTRADOR");
+INSERT INTO Cargo VALUES (NULL,"EMPLEADO");
+
+INSERT INTO Genero VALUES (NULL,"FEMENINO");
+INSERT INTO Genero VALUES (NULL,"MASCULINO");
+
+INSERT INTO Estado VALUES (NULL,"ACTIVO");
+INSERT INTO Estado VALUES (NULL,"ELIMINADO");
+
+INSERT INTO Usuario VALUES (NULL,"SVTA","s1v2t4a8","SVTA","SVTA","SVTA","SVTA",1,"SVTA",1,"SVTA","SVTA","SVTA","SVTA",1);
+
+
+
+;

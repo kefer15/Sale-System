@@ -17,7 +17,8 @@ public class CInvoices
 {
     
     public CInvoices(JTable registros, JTable orders , JTable order_details, JList customers)
-    {        
+    {    
+        /*
         DefaultTableModel model = (DefaultTableModel) registros.getModel();
         ArrayList<Invoices> invoice = new Invoices().getList();
         model.setRowCount(0);
@@ -43,6 +44,7 @@ public class CInvoices
             modelList.addElement(name);
             customers.setModel(modelList);
         }
+                */
     }
     
     public void addInvoices()

@@ -1,4 +1,4 @@
-package salesystem.negocio;
+package Modelo;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -8,17 +8,17 @@ import java.util.logging.Logger;
 
 public class Products
 {
-    String product_id;
-    String parent_product_id;
-    String product_type_code;
-    String product_name;
-    String product_price;
-    String product_color;
-    String product_size;
-    String measure_id;
-    String product_description;
-    String other_product_details;
-    String register_state;
+    private String product_id;
+    private String parent_product_id;
+    private String product_type_code;
+    private String product_name;
+    private String product_price;
+    private String product_color;
+    private String product_size;
+    private String measure_id;
+    private String product_description;
+    private String other_product_details;
+    private String register_state;
     
     public Products() {
         this("-1",  "-1",  "-1",  "NULL",  "0.0", "NULL" , "0.0" , "-1" , "NULL" , "NULL", "A");

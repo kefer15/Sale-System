@@ -16,7 +16,7 @@ import salesystem.negocio.Accounts;
 import salesystem.negocio.Financial_Transactions;
 import salesystem.negocio.Invoices;
 import salesystem.negocio.Transaction_Types;
-import salesystem.presentacion.CMain;
+import Controlador.CMain;
 import salesystem.presentacion.transacts.UITransactions_Add_Update;
 
 public class CTransacts_Add_Update implements ITransactions_Add_Update

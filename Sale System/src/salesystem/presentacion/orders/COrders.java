@@ -15,6 +15,7 @@ public class COrders
 {
     public COrders(JTable orders, JTable tblOrderDetails, JList l)
     {
+        /*
         //actualizar orders
         DefaultTableModel model = (DefaultTableModel) orders.getModel();
         ArrayList<Orders> list = new Orders().getLista();
@@ -63,7 +64,7 @@ public class COrders
             modelList.addElement(name);
             l.setModel(modelList);
         }
-        
+        */
     }
         
     public void addOrders()

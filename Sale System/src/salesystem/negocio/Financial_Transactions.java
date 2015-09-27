@@ -1,5 +1,6 @@
 package salesystem.negocio;
 
+import Modelo.Main;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;

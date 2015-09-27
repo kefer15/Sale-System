@@ -10,8 +10,8 @@ import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import salesystem.negocio.Measures;
 import salesystem.negocio.Product_Categories;
-import salesystem.negocio.Products;
-import salesystem.presentacion.CMain;
+import Modelo.Products;
+import Controlador.CMain;
 
 public class CProducts_Add_Update implements IProducts_Add_Update {
     private boolean window; 

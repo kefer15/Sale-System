@@ -12,6 +12,7 @@ public class CCustomers
 {
     public CCustomers(JTable c)
     {
+        /*
         DefaultTableModel model = (DefaultTableModel) c.getModel();
         ArrayList<Customers> customer = new Customers().getLista();
         model.setRowCount(0);
@@ -31,6 +32,7 @@ public class CCustomers
                 customer.get(i).getState()
             });
         }
+                */
     }
     
     public void addCustomers()

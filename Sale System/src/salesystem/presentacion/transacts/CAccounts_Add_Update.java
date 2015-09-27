@@ -5,7 +5,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import salesystem.negocio.Accounts;
-import salesystem.presentacion.CMain;
+import Controlador.CMain;
 
 public class CAccounts_Add_Update implements IAccounts_Add_Update{
     

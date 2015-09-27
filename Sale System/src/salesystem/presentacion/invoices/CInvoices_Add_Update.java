@@ -15,8 +15,8 @@ import salesystem.negocio.Invoice_Line_Items;
 import salesystem.negocio.Invoices;
 import salesystem.negocio.Order_Items;
 import salesystem.negocio.Orders;
-import salesystem.negocio.Products;
-import salesystem.presentacion.CMain;
+import Modelo.Products;
+import Controlador.CMain;
 
 public class CInvoices_Add_Update implements IInvoices_Add_Update {
     

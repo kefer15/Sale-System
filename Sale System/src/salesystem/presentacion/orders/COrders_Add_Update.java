@@ -20,7 +20,7 @@ import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
 import salesystem.negocio.Customers;
 import salesystem.negocio.Orders;
-import salesystem.presentacion.CMain;
+import Controlador.CMain;
 
 public class COrders_Add_Update implements IOrders_Add_Update
 {

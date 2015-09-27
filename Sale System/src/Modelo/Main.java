@@ -1,7 +1,8 @@
-package salesystem.negocio;
+package Modelo;
 
+import Modelo.Conexion;
 import javax.swing.UIManager;
-import salesystem.presentacion.CMain;
+import Controlador.CMain;
 
 public class Main
 {

@@ -4,7 +4,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JSpinner;
 import javax.swing.JTextField;
 import salesystem.negocio.Product_Categories;
-import salesystem.presentacion.CMain;
+import Controlador.CMain;
 
 public class CCategory_Add_Update implements ICategory_Add_Update
 {

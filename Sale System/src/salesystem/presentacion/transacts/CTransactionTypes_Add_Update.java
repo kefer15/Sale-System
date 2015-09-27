@@ -1,7 +1,7 @@
 package salesystem.presentacion.transacts;
 
 import salesystem.negocio.Transaction_Types;
-import salesystem.presentacion.CMain;
+import Controlador.CMain;
 
 public class CTransactionTypes_Add_Update implements ITransactionTypes_Add_Update{
     

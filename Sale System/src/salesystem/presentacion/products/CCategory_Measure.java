@@ -12,6 +12,7 @@ public class CCategory_Measure
 {
     public CCategory_Measure(JTable c, JTable m)
     {
+        /*
         DefaultTableModel model = (DefaultTableModel) c.getModel();
         ArrayList<Product_Categories> categorias = new Product_Categories().getLista();
         model.setRowCount(0);
@@ -34,6 +35,7 @@ public class CCategory_Measure
                                         unidades.get(i).getMeasure_description(),
                                         unidades.get(i).getRegister_state()});
         }
+        */
     }
     
     public void agregarCategories()

@@ -8,7 +8,7 @@ import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
 import salesystem.negocio.Product_Categories;
-import salesystem.negocio.Products;
+import Modelo.Products;
 
 public class CProducts implements IProducts{
     ArrayList <Products> products;
@@ -17,10 +17,12 @@ public class CProducts implements IProducts{
     ArrayList <String> catIndexes;
     
     public CProducts() {
+        /*
         products = new ArrayList <> ();
         proIndexes = new ArrayList <> ();
         categories = new ArrayList <> ();
         catIndexes = new ArrayList <> ();
+        */
     }
     
     private void head(DefaultTableModel model) {
