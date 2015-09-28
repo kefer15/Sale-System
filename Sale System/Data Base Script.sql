@@ -1,0 +1,182 @@
+
+-- Create data base -----------------------------------------------------
+
+DROP DATABASE IF EXISTS  BD_SALE_SYSTEM ;
+
+CREATE DATABASE BD_SALE_SYSTEM;
+USE BD_SALE_SYSTEM;
+
+-- Create tables section -------------------------------------------------
+
+-- Table Usuario
+
+CREATE TABLE Usuario
+(
+  UsuCod Int(3) ZEROFILL NOT NULL AUTO_INCREMENT,
+  UsuIde Char(10) NOT NULL,
+  UsuCon Char(20) NOT NULL,
+  UsuNom Char(40) NOT NULL,
+  UsuApePat Char(20) NOT NULL,
+  UsuApeMat Char(20) NOT NULL,
+  UsuDni Char(8) NOT NULL,
+  GenCod Int(1) ZEROFILL,
+  UsuDir Char(100),
+  CarCod Int(3) ZEROFILL,
+  UsuCel Char(9) NOT NULL,
+  UsuCorEle Char(60) NOT NULL,
+  UsuNumEme Char(9) NOT NULL,
+  UsuOtr Char(100),
+  EstCod Int(2) ZEROFILL,
+ PRIMARY KEY (UsuCod),
+ UNIQUE UsuCod (UsuCod)
+);
+
+ALTER TABLE Usuario ADD UNIQUE UseId (UsuIde);
+CREATE INDEX IX_Relationship2 ON Usuario (CarCod);
+CREATE INDEX IX_Relationship3 ON Usuario (GenCod);
+CREATE INDEX IX_Relationship9 ON Usuario (EstCod);
+
+-- Table Cargo
+
+CREATE TABLE Cargo
+(
+  CarCod Int(3) ZEROFILL NOT NULL AUTO_INCREMENT,
+  CarNom Char(50) NOT NULL,
+ PRIMARY KEY (CarCod),
+ UNIQUE CarCod (CarCod)
+);
+
+ALTER TABLE Cargo ADD UNIQUE CarNom (CarNom);
+
+-- Table Proveedor
+
+CREATE TABLE Proveedor
+(
+  ProCod Int(3) ZEROFILL NOT NULL AUTO_INCREMENT,
+  ProNom Char(50) NOT NULL,
+  ProRuc Char(12) NOT NULL,
+  ProTel Char(9) NOT NULL,
+  ProDir Char(100),
+  EstCod Int(2) ZEROFILL,
+ PRIMARY KEY (ProCod),
+ UNIQUE ProCod (ProCod)
+);
+
+ALTER TABLE Proveedor ADD UNIQUE ProNom (ProNom);
+ALTER TABLE Proveedor ADD UNIQUE ProRuc (ProRuc);
+CREATE INDEX IX_Relationship11 ON Proveedor (EstCod);
+
+-- Table Genero
+
+CREATE TABLE Genero
+(
+  GenCod Int(1) ZEROFILL NOT NULL AUTO_INCREMENT,
+  GenNom Char(20) NOT NULL,
+ PRIMARY KEY (GenCod),
+ UNIQUE GenCod (GenCod)
+);
+
+ALTER TABLE Genero ADD UNIQUE GenNom (GenNom);
+
+-- Table Producto
+
+CREATE TABLE Producto
+(
+  ProdCod Int(5) ZEROFILL NOT NULL AUTO_INCREMENT,
+  ProdNom Char(30) NOT NULL,
+  ProdMar Char(50) NOT NULL,
+  ProdPres Char(20),
+  ProdPrec Double NOT NULL,
+  ProdSto Int NOT NULL,
+  CatCod Int(3) ZEROFILL,
+  EstCod Int(2) ZEROFILL,
+ PRIMARY KEY (ProdCod),
+ UNIQUE ProdCod (ProdCod)
+);
+
+CREATE INDEX IX_Relationship1 ON Producto (CatCod);
+CREATE INDEX IX_Relationship10 ON Producto (EstCod);
+
+-- Table Estado
+
+CREATE TABLE Estado
+(
+  EstCod Int(2) ZEROFILL NOT NULL AUTO_INCREMENT,
+  EstNom Char(20) NOT NULL,
+ PRIMARY KEY (EstCod),
+ UNIQUE EstCod (EstCod)
+);
+
+ALTER TABLE Estado ADD UNIQUE EstNom (EstNom);
+
+-- Table Categoria
+
+CREATE TABLE Categoria
+(
+  CatCod Int(3) ZEROFILL NOT NULL AUTO_INCREMENT,
+  CatNom Char(50) NOT NULL,
+ PRIMARY KEY (CatCod),
+ UNIQUE CatCod (CatCod)
+);
+
+ALTER TABLE Categoria ADD UNIQUE CatNom (CatNom);
+
+-- Table ProProd
+
+CREATE TABLE ProProd
+(
+  ProdCod Int(5) ZEROFILL NOT NULL,
+  ProCod Int(3) ZEROFILL NOT NULL
+);
+
+ALTER TABLE ProProd ADD PRIMARY KEY (ProdCod,ProCod);
+
+-- Create relationships section ------------------------------------------------- 
+
+ALTER TABLE Usuario ADD CONSTRAINT Relationship2 FOREIGN KEY (CarCod) REFERENCES Cargo (CarCod) ON DELETE NO ACTION ON UPDATE NO ACTION;
+ALTER TABLE Usuario ADD CONSTRAINT Relationship3 FOREIGN KEY (GenCod) REFERENCES Genero (GenCod) ON DELETE NO ACTION ON UPDATE NO ACTION;
+ALTER TABLE Usuario ADD CONSTRAINT Relationship9 FOREIGN KEY (EstCod) REFERENCES Estado (EstCod) ON DELETE NO ACTION ON UPDATE NO ACTION;
+ALTER TABLE Producto ADD CONSTRAINT Relationship10 FOREIGN KEY (CatCod) REFERENCES Categoria (CatCod) ON DELETE NO ACTION ON UPDATE NO ACTION;
+ALTER TABLE Producto ADD CONSTRAINT Relationship12 FOREIGN KEY (EstCod) REFERENCES Estado (EstCod) ON DELETE NO ACTION ON UPDATE NO ACTION;
+ALTER TABLE Proveedor ADD CONSTRAINT Relationship13 FOREIGN KEY (EstCod) REFERENCES Estado (EstCod) ON DELETE NO ACTION ON UPDATE NO ACTION;
+ALTER TABLE ProProd ADD CONSTRAINT Relationship14 FOREIGN KEY (ProdCod) REFERENCES Producto (ProdCod) ON DELETE NO ACTION ON UPDATE NO ACTION;
+ALTER TABLE ProProd ADD CONSTRAINT Relationship15 FOREIGN KEY (ProCod) REFERENCES Proveedor (ProCod) ON DELETE NO ACTION ON UPDATE NO ACTION;
+
+-- Create views section ------------------------------------------------- 
+
+CREATE VIEW Usuario_Cargo
+	AS SELECT UsuCod, UsuIde, UsuCon, UsuNom, UsuApePat, UsuApeMat, UsuDni, GenNom, UsuDir, CarNom, UsuCel, UsuCorEle, UsuNumEme, UsuOtr, EstNom
+	FROM Usuario, Cargo, Genero, Estado
+	WHERE Usuario.GenCod = Genero.GenCod AND Usuario.CarCod = Cargo.CarCod AND Usuario.EstCod = Estado.EstCod
+ORDER BY UsuNom;
+
+CREATE VIEW Producto_Categoria
+	AS SELECT ProdCod, ProdNom, ProdMar, ProdPres, ProdPrec, ProdSto, CatNom, 		EstNom
+	FROM Producto, Categoria, Estado
+	WHERE Producto.CatCod = Categoria.CatCod AND Producto.EstCod = Estado.EstCod
+ORDER BY ProdNom;
+
+-- Create instances section ------------------------------------------------- 
+
+INSERT INTO Cargo VALUES (DEFAULT,"Administrador");
+INSERT INTO Cargo VALUES (DEFAULT,"Empleado");
+
+INSERT INTO Genero VALUES (DEFAULT,"Femenino");
+INSERT INTO Genero VALUES (DEFAULT,"Masculino");
+
+INSERT INTO Estado VALUES (DEFAULT,"Activo");
+INSERT INTO Estado VALUES (DEFAULT,"Eliminado");
+
+INSERT INTO Categoria VALUES (DEFAULT,"Lacteos");
+INSERT INTO Categoria VALUES (DEFAULT,"Carnes");
+INSERT INTO Categoria VALUES (DEFAULT,"Verduras");
+INSERT INTO Categoria VALUES (DEFAULT,"Frutas");
+INSERT INTO Categoria VALUES (DEFAULT,"Cereales");
+INSERT INTO Categoria VALUES (DEFAULT,"Enlatados");
+
+INSERT INTO Usuario VALUES (DEFAULT,"SVTA","SVTA","SVTA","SVTA","SVTA","SVTA",1,"SVTA",1,"SVTA","SVTA","SVTA","SVTA",1);
+
+
+
+
+
