@@ -7,21 +7,21 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class Users {
-    String code;
-    String id;
-    String password;
-    String name;
-    String fatherLastName;
-    String motherLastName;
-    String ni;
-    String genderCode;
-    String address;
-    String positionCode;
-    String cellphone;
-    String eMail;
-    String emergencyCell;
-    String other;
-    String state;
+    private String code;
+    private String id;
+    private String password;
+    private String name;
+    private String fatherLastName;
+    private String motherLastName;
+    private String ni;
+    private String genderCode;
+    private String address;
+    private String positionCode;
+    private String cellphone;
+    private String eMail;
+    private String emergencyCell;
+    private String other;
+    private String state;
     
     public Users() {
         this("-1","NULL","NULL","NULL","NULL","NULL","NULL","-1","NULL","-1","NULL","NULL","NULL","NULL","-1");

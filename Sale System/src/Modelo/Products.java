@@ -8,132 +8,102 @@ import java.util.logging.Logger;
 
 public class Products
 {
-    private String product_id;
-    private String parent_product_id;
-    private String product_type_code;
-    private String product_name;
-    private String product_price;
-    private String product_color;
-    private String product_size;
-    private String measure_id;
-    private String product_description;
-    private String other_product_details;
-    private String register_state;
+    private String code;
+    private String name;
+    private String brand;
+    private String presentation;
+    private String price;
+    private String stock;
+    private String category;
+    private String state;
     
-    public Products() {
-        this("-1",  "-1",  "-1",  "NULL",  "0.0", "NULL" , "0.0" , "-1" , "NULL" , "NULL", "A");
+    public Products(){
+        this("-1","NULL","NULL","NULL","0.0","-1","-1","-1");
+    }
+    
+    public Products(String code, String name, String brand, String presentation, String price, String stock, String category, String state) {
+        this.code = code;
+        this.name = name;
+        this.brand = brand;
+        this.presentation = presentation;
+        this.price = price;
+        this.stock = stock;
+        this.category = category;
+        this.state = state;
     }
 
-    public Products(String product_id, String parent_product_id, String product_type_code, String product_name, String product_price, String product_color, String product_size, String measure_id, String product_description, String other_product_details, String register_state) {
-        this.product_id = product_id;
-        this.parent_product_id = parent_product_id;
-        this.product_type_code = product_type_code;
-        this.product_name = product_name;
-        this.product_price = product_price;
-        this.product_color = product_color;
-        this.product_size = product_size;
-        this.measure_id = measure_id;
-        this.product_description = product_description;
-        this.other_product_details = other_product_details;
-        this.register_state = register_state;
+    public String getCode() {
+        return code;
     }
 
-    public String getProduct_id() {
-        return product_id;
+    public void setCode(String code) {
+        this.code = code;
     }
 
-    public void setProduct_id(String product_id) {
-        this.product_id = product_id;
+    public String getName() {
+        return name;
     }
 
-    public String getParent_product_id() {
-        return parent_product_id;
+    public void setName(String name) {
+        this.name = name;
     }
 
-    public void setParent_product_id(String parent_product_id) {
-        this.parent_product_id = parent_product_id;
+    public String getBrand() {
+        return brand;
     }
 
-    public String getProduct_type_code() {
-        return product_type_code;
+    public void setBrand(String brand) {
+        this.brand = brand;
+    }
+    
+    public String getPresentation() {
+        return presentation;
     }
 
-    public void setProduct_type_code(String product_type_code) {
-        this.product_type_code = product_type_code;
+    public void setPresentation(String presentation) {
+        this.presentation = presentation;
     }
 
-    public String getProduct_name() {
-        return product_name;
+    public String getPrice() {
+        return price;
     }
 
-    public void setProduct_name(String product_name) {
-        this.product_name = product_name;
+    public void setPrice(String price) {
+        this.price = price;
     }
 
-    public String getProduct_price() {
-        return product_price;
+    public String getStock() {
+        return stock;
     }
 
-    public void setProduct_price(String product_price) {
-        this.product_price = product_price;
+    public void setStock(String stock) {
+        this.stock = stock;
     }
 
-    public String getProduct_color() {
-        return product_color;
+    public String getCategory() {
+        return category;
     }
 
-    public void setProduct_color(String product_color) {
-        this.product_color = product_color;
+    public void setCategory(String category) {
+        this.category = category;
     }
 
-    public String getProduct_size() {
-        return product_size;
+    public String getState() {
+        return state;
     }
 
-    public void setProduct_size(String product_size) {
-        this.product_size = product_size;
+    public void setState(String state) {
+        this.state = state;
     }
-
-    public String getMeasure_id() {
-        return measure_id;
-    }
-
-    public void setMeasure_id(String measure_id) {
-        this.measure_id = measure_id;
-    }
-
-    public String getProduct_description() {
-        return product_description;
-    }
-
-    public void setProduct_description(String product_description) {
-        this.product_description = product_description;
-    }
-
-    public String getOther_product_details() {
-        return other_product_details;
-    }
-
-    public void setOther_product_details(String other_product_details) {
-        this.other_product_details = other_product_details;
-    }
-
-    public String getRegister_state() {
-        return register_state;
-    }
-
-    public void setRegister_state(String register_state) {
-        this.register_state = register_state;
-    }
-       
+    
     public String insert() {
         Main.conexion.conectar();
         String err = "";
         
         try {
-            Main.conexion.send("INSERT INTO PRODUCTS VALUES( DEFAULT , " + parent_product_id + " , " + product_type_code + " , '" +
-                    product_name + "' , " + product_price + " , '" + product_color + "' , " + product_size + " , " + 
-                    measure_id + " , '" + product_description + "' , '" + other_product_details + "' , '" + register_state + "' )");
+            Main.conexion.send("INSERT INTO Producto VALUES( DEFAULT , '" + name + "' , '" + brand + "' , '" + 
+                    presentation + "' , " + price + " , " + stock + " , " + category + " , " + state + " )");
+            
             Main.conexion.desconectar();
         } catch (SQLException ex) {
             err = ex.getMessage();
@@ -146,14 +116,10 @@ public class Products
         Main.conexion.conectar();
         String err = "";  
         
-        try {
-            Main.conexion.send("UPDATE PRODUCTS SET parent_product_id = " + parent_product_id + 
-                    " , product_type_code = " + product_type_code +  
-                    " , product_name = '" + product_name +  "' , product_price = " + product_price +
-                    " , product_color = '" + product_color  + "' , product_size = " + product_size + 
-                    " , measure_id = " + measure_id + " , product_description = '" +  product_description +
-                    "' , other_product_details = '" + other_product_details + 
-                    "' WHERE product_id = " + product_id);
+        try {            
+            Main.conexion.send("UPDATE Producto SET ProdNom = '" + name + 
+                    "' , ProdMar = '" + brand + "' , ProdPres = '" + presentation  + "' , ProdPrec = " + price + 
+                    " , ProdSto = " + stock + " , CatCod = " + category + " WHERE ProdCod = " + code);
             
             Main.conexion.desconectar();  
         } catch (SQLException ex) {
@@ -163,12 +129,12 @@ public class Products
         return err;
     }
     
-    public String remove(String product_id) {
+    public String remove(String product_code) {
         Main.conexion.conectar();
         String err = "";
         
         try {
-            Main.conexion.send("UPDATE PRODUCTS SET register_state = '*' WHERE product_id = " + product_id);
+            Main.conexion.send("UPDATE Producto SET EstCod = '2' WHERE ProdCod = " + product_code);
             Main.conexion.desconectar();
         } catch (SQLException ex) {
              err = ex.getMessage();
@@ -177,62 +143,55 @@ public class Products
         return err;
     }
     
-    public ArrayList <Products> getList(int option, String category, String name, String code) {
+    public ArrayList <Products> getList(int option, String code, String name) {
         Main.conexion.conectar();
         ArrayList <Products> products = new ArrayList <> ();
         
         try {
             ResultSet result = null;
+            boolean access = false;
             
-            switch(option){
-                case 0: result = Main.conexion.receive("SELECT * FROM PRODUCTS WHERE product_type_code = " + category);
+            switch(option){              
+                case 0: result = Main.conexion.receive("SELECT * FROM Producto WHERE ProdCod = " + code);
                         break;
-                
-                case 1: result = Main.conexion.receive("SELECT * FROM PRODUCTS WHERE product_name LIKE '" + name + "%'");
-                        break;
-                    
-                case 2: result = Main.conexion.receive("SELECT * FROM PRODUCTS WHERE register_state = 'A'");
+                        
+                case 1: result = Main.conexion.receive("SELECT * FROM Producto_Categoria");
+                        access = true;
                         break;
                     
-                case 3: result = Main.conexion.receive("SELECT * FROM PRODUCTS WHERE product_id = " + code);
+                case 2: result = Main.conexion.receive("SELECT * FROM Producto_Categoria WHERE EstNom = 'Activo' AND ProdNom LIKE '" + name + "%'");
+                        access = true;
+                        break;
+                    
+                case 3: result = Main.conexion.receive("SELECT * FROM Producto WHERE EstCod = 1 ORDER BY ProdNom");
                         break;
             }
             
             while(result.next())
             {                
-                Products product = new Products(result.getString("product_id"),
-                        result.getString("parent_product_id"),
-                        result.getString("product_type_code"),
-                        result.getString("product_name"),
-                        result.getString("product_price"),
-                        result.getString("product_color"),
-                        result.getString("product_size"),
-                        result.getString("measure_id"),
-                        result.getString("product_description"),
-                        result.getString("other_product_details"),
-                        result.getString("register_state"));
+                Products product = new Products();
+                
+                product.setCode(result.getString("ProdCod"));
+                product.setName(result.getString("ProdNom"));
+                product.setBrand(result.getString("ProdMar"));
+                product.setPresentation(result.getString("ProdPres"));
+                product.setPrice(result.getString("ProdPrec"));
+                product.setStock(result.getString("ProdSto"));
+                
+                if(access) {
+                    product.setCategory(result.getString("CatNom"));
+                    product.setState(result.getString("EstNom"));
+                } else {
+                    product.setCategory(result.getString("CatCod"));
+                    product.setState(result.getString("EstCod"));
+                }
+                
                 products.add(product);
             }
         } catch (SQLException ex) {
-            Logger.getLogger(Products.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(Users.class.getName()).log(Level.SEVERE, null, ex);
         }
         
         return products;
-    }
-    
-    public String getVAT(String id)
-    {
-        try
-        {
-            ResultSet result = Main.conexion.receive("SELECT vat_rating FROM Products INNER JOIN Product_Categories ON Product_Categories.product_type_code = Products.product_type_code " +
-                    " WHERE product_id = " + id);
-            result.next();
-            return result.getString("vat_rating");
-        }
-        catch (SQLException ex)
-        {
-            ex.printStackTrace();
-        }
-        return "0.00";
     }
 }

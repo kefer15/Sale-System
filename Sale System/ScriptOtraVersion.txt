@@ -1,10 +1,14 @@
-
--- Create data base -------------------------------------------------
-
 DROP DATABASE IF EXISTS  BD_SALE_SYSTEM ;
 
 CREATE DATABASE BD_SALE_SYSTEM;
 USE BD_SALE_SYSTEM;
+
+/*
+Created: 26/09/2015
+Modified: 26/09/2015
+Model: MySQL 5.5
+Database: MySQL 5.5
+*/
 
 -- Create tables section -------------------------------------------------
 
@@ -82,29 +86,6 @@ ALTER TABLE Proveedor ADD UNIQUE ProRuc (ProRuc)
 CREATE INDEX IX_Relationship11 ON Proveedor (EstCod)
 ;
 
--- Table Producto
-
-CREATE TABLE Producto
-(
-  ProdCod Int(5) ZEROFILL NOT NULL AUTO_INCREMENT,
-  ProdNom Char(30) NOT NULL,
-  ProdMar Char(50) NOT NULL,
-  ProdPres Char(20) NOT NULL,
-  ProdPrec Double NOT NULL,
-  ProdSto Int NOT NULL,
-  CatCod Int(3) ZEROFILL,
-  EstCod Int(2) ZEROFILL,
- PRIMARY KEY (ProdCod),
- UNIQUE ProdCod (ProdCod)
-)
-;
-
-CREATE INDEX IX_Relationship1 ON Producto (CatCod)
-;
-
-CREATE INDEX IX_Relationship10 ON Producto (EstCod)
-;
-
 -- Table Genero
 
 CREATE TABLE Genero
@@ -119,15 +100,27 @@ CREATE TABLE Genero
 ALTER TABLE Genero ADD UNIQUE GenNom (GenNom)
 ;
 
--- Table Categoria
+-- Table Producto
 
-CREATE TABLE Categoria
+CREATE TABLE Producto
 (
-  CatCod Int(3) ZEROFILL NOT NULL AUTO_INCREMENT,
-  CatNom Char(50) NOT NULL,
- PRIMARY KEY (CatCod),
- UNIQUE CatCod (CatCod)
+  ProdCod Int(5) ZEROFILL NOT NULL AUTO_INCREMENT,
+  ProdNom Char(30) NOT NULL,
+  ProdMar Char(50) NOT NULL,
+  ProdPres Char(20),
+  ProdPrec Double NOT NULL,
+  ProdSto Int NOT NULL,
+  CatCod Int(3) ZEROFILL,
+  EstCod Int(2) ZEROFILL,
+ PRIMARY KEY (ProdCod),
+ UNIQUE ProdCod (ProdCod)
 )
+;
+
+CREATE INDEX IX_Relationship1 ON Producto (CatCod)
+;
+
+CREATE INDEX IX_Relationship10 ON Producto (EstCod)
 ;
 
 -- Table Estado
@@ -144,6 +137,32 @@ CREATE TABLE Estado
 ALTER TABLE Estado ADD UNIQUE EstNom (EstNom)
 ;
 
+-- Table Categoria
+
+CREATE TABLE Categoria
+(
+  CatCod Int(3) ZEROFILL NOT NULL AUTO_INCREMENT,
+  CatNom Char(50) NOT NULL,
+ PRIMARY KEY (CatCod),
+ UNIQUE CatCod (CatCod)
+)
+;
+
+ALTER TABLE Categoria ADD UNIQUE CatNom (CatNom)
+;
+
+-- Table ProProd
+
+CREATE TABLE ProProd
+(
+  ProdCod Int(5) ZEROFILL NOT NULL,
+  ProCod Int(3) ZEROFILL NOT NULL
+)
+;
+
+ALTER TABLE ProProd ADD PRIMARY KEY (ProdCod,ProCod)
+;
+
 -- Create relationships section ------------------------------------------------- 
 
 ALTER TABLE Usuario ADD CONSTRAINT Relationship2 FOREIGN KEY (CarCod) REFERENCES Cargo (CarCod) ON DELETE NO ACTION ON UPDATE NO ACTION
@@ -155,15 +174,20 @@ ALTER TABLE Usuario ADD CONSTRAINT Relationship3 FOREIGN KEY (GenCod) REFERENCES
 ALTER TABLE Usuario ADD CONSTRAINT Relationship9 FOREIGN KEY (EstCod) REFERENCES Estado (EstCod) ON DELETE NO ACTION ON UPDATE NO ACTION
 ;
 
-ALTER TABLE Proveedor ADD CONSTRAINT Relationship10 FOREIGN KEY (EstCod) REFERENCES Estado (EstCod) ON DELETE NO ACTION ON UPDATE NO ACTION
-;
-
-ALTER TABLE Producto ADD CONSTRAINT Relationship11 FOREIGN KEY (CatCod) REFERENCES Categoria (CatCod) ON DELETE NO ACTION ON UPDATE NO ACTION
+ALTER TABLE Producto ADD CONSTRAINT Relationship10 FOREIGN KEY (CatCod) REFERENCES Categoria (CatCod) ON DELETE NO ACTION ON UPDATE NO ACTION
 ;
 
 ALTER TABLE Producto ADD CONSTRAINT Relationship12 FOREIGN KEY (EstCod) REFERENCES Estado (EstCod) ON DELETE NO ACTION ON UPDATE NO ACTION
 ;
 
+ALTER TABLE Proveedor ADD CONSTRAINT Relationship13 FOREIGN KEY (EstCod) REFERENCES Estado (EstCod) ON DELETE NO ACTION ON UPDATE NO ACTION
+;
+
+ALTER TABLE ProProd ADD CONSTRAINT Relationship14 FOREIGN KEY (ProdCod) REFERENCES Producto (ProdCod) ON DELETE NO ACTION ON UPDATE NO ACTION
+;
+
+ALTER TABLE ProProd ADD CONSTRAINT Relationship15 FOREIGN KEY (ProCod) REFERENCES Proveedor (ProCod) ON DELETE NO ACTION ON UPDATE NO ACTION
+;
 
 
 CREATE VIEW Usuario_Cargo
@@ -211,21 +235,4 @@ CREATE VIEW Producto_Categoria
 	WHERE
 		Producto.CatCod = Categoria.CatCod AND
 		Producto.EstCod = Estado.EstCod
-ORDER BY ProNom;
-
--- Data ------------------------------------------------- 
-
-INSERT INTO Cargo VALUES (NULL,"Administrador");
-INSERT INTO Cargo VALUES (NULL,"Empleado");
-
-INSERT INTO Genero VALUES (NULL,"Femenino");
-INSERT INTO Genero VALUES (NULL,"Masculino");
-
-INSERT INTO Estado VALUES (NULL,"Activo");
-INSERT INTO Estado VALUES (NULL,"Eliminado");
-
-INSERT INTO Categoria VALUES (NULL,"Lacteos");
-INSERT INTO Categoria VALUES (NULL,"Carnes");
-
-INSERT INTO Usuario VALUES (NULL,"SVTA","12","SVTA","SVTA","SVTA","SVTA",1,"SVTA",1,"SVTA","SVTA","SVTA","SVTA",1);
-INSERT INTO Usuario VALUES (NULL,"Kevin","123456","SVTA","SVTA","SVTA","SVTA",1,"SVTA",2,"SVTA","SVTA","SVTA","SVTA",1);
+ORDER BY ProdNom;

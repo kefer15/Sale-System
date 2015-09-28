@@ -6,15 +6,15 @@ import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-public class Gender {
+public class Category {
     private String code;
     private String description;
 
-    public Gender() {
+    public Category() {
         this("-1","NULL");
     }
     
-    public Gender(String code, String description) {
+    public Category(String code, String description) {
         this.code = code;
         this.description = description;
     }
@@ -35,24 +35,24 @@ public class Gender {
         this.description = description;
     }
     
-    public ArrayList <Gender> getList() {
+    public ArrayList <Category> getList() {
         Main.conexion.conectar();
-        ArrayList <Gender> genders = new ArrayList <> ();
+        ArrayList <Category> categories = new ArrayList <> ();
         
         try {
-            ResultSet result = Main.conexion.receive("SELECT * FROM Genero");
+            ResultSet result = Main.conexion.receive("SELECT * FROM Categoria");
             
             while(result.next())
             {    
-                Gender gender = new Gender(
-                        result.getString("GenCod"),
-                        result.getString("GenNom"));
-                genders.add(gender);
+                Category category = new Category(
+                        result.getString("CatCod"),
+                        result.getString("CatNom"));
+                categories.add(category);
             }
         } catch (SQLException ex) {
-            Logger.getLogger(Gender.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(Category.class.getName()).log(Level.SEVERE, null, ex);
         }
         
-        return genders;
-    }    
+        return categories;
+    }
 }
