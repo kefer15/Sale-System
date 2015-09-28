@@ -143,6 +143,8 @@ public class CSuppliers implements ISuppliers{
         ArrayList <String> suppliersInd = new ArrayList <>();
         ArrayList <Suppliers> suppliers = (new Suppliers()).getList(2, null, name.getText());
         
+        
+        
         if(!suppliers.isEmpty()) {        
             DefaultListModel model = new DefaultListModel();
 
@@ -163,5 +165,9 @@ public class CSuppliers implements ISuppliers{
     @Override
     public void link(boolean []state, ArrayList <String> products, String supplier){
         (new Suppliers()).link(state, products, supplier);
+        JOptionPane.showMessageDialog(  null,
+                                            "La vinculación ha sido exitosa.", 
+                                            "Vinculación", 
+                                            JOptionPane.INFORMATION_MESSAGE);
     }
 }

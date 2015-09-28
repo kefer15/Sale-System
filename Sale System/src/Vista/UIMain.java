@@ -7,13 +7,10 @@ import Controlador.CSuppliers;
 import Controlador.CUsers;
 import Controlador.IMain;
 import Modelo.Users;
-import salesystem.presentacion.transacts.CTransacts;
-import salesystem.presentacion.orders.COrders;
-import salesystem.presentacion.transacts.CType_Account;
-import salesystem.presentacion.customers.CCustomers;
 import java.awt.CardLayout;
 import java.awt.Toolkit;
 import java.util.ArrayList;
+import javax.swing.DefaultListModel;
 import javax.swing.JButton;
 
 import javax.swing.JOptionPane;
@@ -28,11 +25,8 @@ public class UIMain extends javax.swing.JFrame
     private CSuppliers suppliers;
     private CProducts products;
     
-    private CCustomers customers;
-    private CTransacts transacts;
-    private COrders orders;
+    
     private CHelp help;
-    private CType_Account typeAccounts;
     private ArrayList <JButton> menuBtn;
     private ListSelectionModel cellSelectionModel;
     
@@ -487,7 +481,6 @@ public class UIMain extends javax.swing.JFrame
         lblImgLog.setForeground(new java.awt.Color(204, 0, 51));
         lblImgLog.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         lblImgLog.setIcon(new javax.swing.ImageIcon("C:\\Users\\Miguel\\Pictures\\Penguins.jpg")); // NOI18N
-        lblImgLog.setText("Imagen");
         lblImgLog.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
 
         lblId.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
@@ -2284,7 +2277,7 @@ public class UIMain extends javax.swing.JFrame
     }//GEN-LAST:event_txtSupplierAddressActionPerformed
 
     private void btnSearchSupplierActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSearchSupplierActionPerformed
-        clean(2);
+        ((DefaultTableModel) tblResultSupplier.getModel()).getDataVector().clear();
         suppliersSearch = suppliers.searchSupplier(txtNameSearchSupplier, tblResultSupplier);
     }//GEN-LAST:event_btnSearchSupplierActionPerformed
 
@@ -2318,8 +2311,10 @@ public class UIMain extends javax.swing.JFrame
             for(int i = 0;i < tblLinkProducts.getRowCount();i++)
                 productsSelected[i] = (Boolean) tblLinkProducts.getValueAt(i, 0);
             
-            if(productsSelected.length != 0)
+            if(productsSelected.length != 0){
                 suppliers.link(productsSelected, productsInd, suppliersInd.get(supplierSelected));
+                suppliers.changeSupplierShow((CardLayout)pnlSupplierSlave.getLayout(), pnlSupplierSlave, tblSupplierShow);
+            }
             else
                 JOptionPane.showMessageDialog(  null, 
                                             "No ha seleccionado ningún registro de productos.", 
@@ -2533,7 +2528,7 @@ public class UIMain extends javax.swing.JFrame
                     txtSupplierTr.setText("");
                     txtSupplierPhone.setText("");
                     txtSupplierAddress.setText("");
-                    
+                    txtLinkSupplier.setText("");
                     txtNameSearchSupplier.setText("");
                     
                     model = (DefaultTableModel) tblResultSupplier.getModel();
@@ -2545,6 +2540,8 @@ public class UIMain extends javax.swing.JFrame
                     model = (DefaultTableModel) tblLinkProducts.getModel();
                     model.getDataVector().removeAllElements();
                     
+                    
+                    lstLinkSupplier.setModel((new DefaultListModel()));
                     lblNewSupplier.removeAll();
                     break;    
             case 3:

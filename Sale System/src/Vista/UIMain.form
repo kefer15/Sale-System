@@ -486,7 +486,6 @@
                     <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
                       <Image iconType="2" name="C:\Users\Miguel\Pictures\Penguins.jpg"/>
                     </Property>
-                    <Property name="text" type="java.lang.String" value="Imagen"/>
                     <Property name="horizontalTextPosition" type="int" value="0"/>
                   </Properties>
                 </Component>

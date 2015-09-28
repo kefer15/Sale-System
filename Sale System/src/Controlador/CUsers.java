@@ -95,8 +95,15 @@ public class CUsers implements IUsers {
         String error = "";
         
         switch(option){
-            case 0: String id = name.getText().substring(0,2) + fatherLastName.getText().substring(0,2) + ni.getText().substring(3,5) + eMail.getText().substring(0,2) + ni.getText().substring(3,5);
-                    String password = id.substring(0,2) + cellphone.getText().substring(5,6) + id.substring(7,9);
+            case 0: String id = "", password = "";
+                    try {
+                        id = name.getText().substring(0,2) + fatherLastName.getText().substring(0,2) + ni.getText().substring(3,5) + eMail.getText().substring(0,2) + ni.getText().substring(3,5);
+                        password = id.substring(0,2) + cellphone.getText().substring(5,6) + id.substring(7,9);
+                    } catch(StringIndexOutOfBoundsException ex) {
+                        id = name.getText() + fatherLastName.getText();
+                        password = cellphone.getText();
+                    }
+                    
                     user.setId(id);
                     user.setPassword(password);
                     user.setState("1");
