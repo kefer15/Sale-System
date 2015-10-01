@@ -165,6 +165,14 @@ public class Products
                     
                 case 3: result = Main.conexion.receive("SELECT * FROM Producto WHERE EstCod = 1 ORDER BY ProdNom");
                         break;
+                    
+                case 4: result = Main.conexion.receive("SELECT * FROM Producto_Categoria WHERE EstNom = 'Activo' AND ProdMar LIKE '" + name + "%'");
+                        access = true;
+                        break;
+                    
+                case 5: result = Main.conexion.receive("SELECT * FROM Producto_Categoria WHERE EstNom = 'Activo' AND CatNom LIKE '" + name + "%'");
+                        access = true;
+                        break;
             }
             
             while(result.next())
@@ -189,7 +197,7 @@ public class Products
                 products.add(product);
             }
         } catch (SQLException ex) {
-            Logger.getLogger(Users.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(Products.class.getName()).log(Level.SEVERE, null, ex);
         }
         
         return products;

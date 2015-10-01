@@ -4,6 +4,7 @@ import java.awt.CardLayout;
 import java.util.ArrayList;
 import javax.swing.JButton;
 import javax.swing.JPanel;
+import javax.swing.JTextField;
 
 public interface IMain
 {
@@ -15,4 +16,7 @@ public interface IMain
     public void changeSale(CardLayout card, JPanel panel);
     
     public void paint(int num, ArrayList<JButton> menu);
+    
+    public void logOut();
+    public void forgottenPass(JTextField user);
 }

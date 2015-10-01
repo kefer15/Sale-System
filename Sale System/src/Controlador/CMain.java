@@ -6,6 +6,7 @@ import java.awt.Color;
 import java.util.ArrayList;
 import javax.swing.JButton;
 import javax.swing.JPanel;
+import javax.swing.JTextField;
 
 public class CMain implements IMain
 {
@@ -64,4 +65,16 @@ public class CMain implements IMain
         menu.get(num).setBackground(new Color(170, 170, 170));
         menu.get(num).setForeground(new Color(255, 255, 255));
     }
+    
+    @Override
+    public void logOut(){
+        ventana.dispose();
+        CMain main = new CMain(0);
+    }
+    
+    @Override
+    public void forgottenPass(JTextField user){
+        ventana.dispose();
+        CForgottenPass pass = new CForgottenPass(user.getText());    
+    }    
 }
