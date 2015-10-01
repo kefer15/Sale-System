@@ -70,49 +70,50 @@ public class UIMain extends javax.swing.JFrame
         menuBtn.add(btnStore);
         menuBtn.add(btnSale);
         menuBtn.add(btnHelp);
+        this.interfaz = interfaz;
         
         switch(num_ventana)
         {
             case 0:
-                interfaz.changeHome((CardLayout)pnlContent.getLayout(), pnlContent);
-                interfaz.paint(0, menuBtn);
+                this.interfaz.changeHome((CardLayout)pnlContent.getLayout(), pnlContent);
+                this.interfaz.paint(0, menuBtn);
             break;
                 
             case 1:
-                interfaz.changeUsers((CardLayout)pnlContent.getLayout(), pnlContent);
-                interfaz.paint(1, menuBtn);
+                this.interfaz.changeUsers((CardLayout)pnlContent.getLayout(), pnlContent);
+                this.interfaz.paint(1, menuBtn);
                 users.changeUserShow((CardLayout)pnlUserSlave.getLayout(), pnlUserSlave, tblUserShow);
             break;
             
             case 2:
-                interfaz.changeSuppliers((CardLayout)pnlContent.getLayout(), pnlContent);
-                interfaz.paint(2, menuBtn);
+                this.interfaz.changeSuppliers((CardLayout)pnlContent.getLayout(), pnlContent);
+                this.interfaz.paint(2, menuBtn);
                 suppliers.changeSupplierShow((CardLayout)pnlSupplierSlave.getLayout(), pnlSupplierSlave, tblSupplierShow);
             break;
             
             case 3:
-                interfaz.changeProducts((CardLayout)pnlContent.getLayout(), pnlContent);
-                interfaz.paint(3, menuBtn);
+                this.interfaz.changeProducts((CardLayout)pnlContent.getLayout(), pnlContent);
+                this.interfaz.paint(3, menuBtn);
                 products.changeProductShow((CardLayout)pnlProductSlave.getLayout(), pnlProductSlave, tblProductShow);
             break;
             
             case 4:
-                interfaz.changeStore((CardLayout)pnlContent.getLayout(), pnlContent);
-                interfaz.paint(4, menuBtn);
+                this.interfaz.changeStore((CardLayout)pnlContent.getLayout(), pnlContent);
+                this.interfaz.paint(4, menuBtn);
             break;
             
             case 5:
-                interfaz.changeSale((CardLayout)pnlContent.getLayout(), pnlContent);
-                interfaz.paint(5, menuBtn);
+                this.interfaz.changeSale((CardLayout)pnlContent.getLayout(), pnlContent);
+                this.interfaz.paint(5, menuBtn);
                 
                 Date date = new Date();
-                DateFormat format = new SimpleDateFormat("dd/MM/yyyy");
+                DateFormat format = new SimpleDateFormat("yyyy/MM/dd");
                 this.lblSaleOrderDateOn.setText(format.format(date));
-                System.out.println("VIEN AQUI");
+                this.interfaz.setOrderNumber(lblSaleOrderNumber);
             break;
         }
         
-        this.interfaz = interfaz;
+        
         this.home = new CHome();
         this.users = new CUsers();
         this.suppliers = new CSuppliers();
@@ -125,7 +126,6 @@ public class UIMain extends javax.swing.JFrame
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jPanel1 = new javax.swing.JPanel();
         pnlMenu = new javax.swing.JPanel();
         btnHome = new javax.swing.JButton();
         btnUsers = new javax.swing.JButton();
@@ -299,7 +299,6 @@ public class UIMain extends javax.swing.JFrame
         lblSaleOrderTotal = new javax.swing.JLabel();
         lblSaleOrderTotalOn = new javax.swing.JLabel();
         lblSaleOrderPrint = new javax.swing.JButton();
-        lblSaleOrderNumberLbl = new javax.swing.JLabel();
         pnlSaleSearchProduct = new javax.swing.JPanel();
         pnlSaleSearchProductOn = new javax.swing.JPanel();
         lblSaleSearchProduct = new javax.swing.JLabel();
@@ -310,19 +309,6 @@ public class UIMain extends javax.swing.JFrame
         tblSaleSearchProduct = new javax.swing.JTable();
         lblWelcome = new javax.swing.JLabel();
         lblLogOut = new javax.swing.JLabel();
-
-        jPanel1.setBorder(javax.swing.BorderFactory.createEtchedBorder());
-
-        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
-        jPanel1.setLayout(jPanel1Layout);
-        jPanel1Layout.setHorizontalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 762, Short.MAX_VALUE)
-        );
-        jPanel1Layout.setVerticalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 492, Short.MAX_VALUE)
-        );
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setIconImage(Toolkit.getDefaultToolkit().getImage(ClassLoader.getSystemResource("recursos/icon.png")));
@@ -535,7 +521,6 @@ public class UIMain extends javax.swing.JFrame
         lblImgLog.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         lblImgLog.setForeground(new java.awt.Color(204, 0, 51));
         lblImgLog.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        lblImgLog.setIcon(new javax.swing.ImageIcon("C:\\Users\\Miguel\\Pictures\\Penguins.jpg")); // NOI18N
         lblImgLog.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
 
         lblId.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
@@ -627,7 +612,7 @@ public class UIMain extends javax.swing.JFrame
                 .addGap(20, 20, 20)
                 .addGroup(pnlAccessLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(lblImgLog, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(pnlDataAccess, javax.swing.GroupLayout.DEFAULT_SIZE, 0, Short.MAX_VALUE))
+                    .addComponent(pnlDataAccess, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
                 .addGap(18, 18, 18)
                 .addComponent(lblForgottenPass)
                 .addContainerGap(21, Short.MAX_VALUE))
@@ -2167,6 +2152,7 @@ public class UIMain extends javax.swing.JFrame
                 return canEdit [columnIndex];
             }
         });
+        tblSaleOrderTable.getTableHeader().setReorderingAllowed(false);
         tblSaleOrderTable.addPropertyChangeListener(new java.beans.PropertyChangeListener() {
             public void propertyChange(java.beans.PropertyChangeEvent evt) {
                 tblSaleOrderTablePropertyChange(evt);
@@ -2191,10 +2177,11 @@ public class UIMain extends javax.swing.JFrame
         lblSaleOrderTotalOn.setText("Total");
 
         lblSaleOrderPrint.setText("Imprimir Comprobante");
-
-        lblSaleOrderNumberLbl.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
-        lblSaleOrderNumberLbl.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        lblSaleOrderNumberLbl.setText("N°");
+        lblSaleOrderPrint.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                lblSaleOrderPrintActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout pnlSaleOrderLayout = new javax.swing.GroupLayout(pnlSaleOrder);
         pnlSaleOrder.setLayout(pnlSaleOrderLayout);
@@ -2214,21 +2201,21 @@ public class UIMain extends javax.swing.JFrame
                         .addGap(0, 0, Short.MAX_VALUE)
                         .addComponent(lblSaleOrderPrint, javax.swing.GroupLayout.PREFERRED_SIZE, 158, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(pnlSaleOrderLayout.createSequentialGroup()
-                        .addGroup(pnlSaleOrderLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(pnlSaleOrderLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addGroup(pnlSaleOrderLayout.createSequentialGroup()
                                 .addComponent(lblSaleOrderClient)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(txtSaleOrderClient, javax.swing.GroupLayout.PREFERRED_SIZE, 199, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(10, 10, 10)
-                                .addComponent(lblSaleOrderDate))
-                            .addGroup(pnlSaleOrderLayout.createSequentialGroup()
-                                .addComponent(lblSaleOrder, javax.swing.GroupLayout.PREFERRED_SIZE, 258, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(lblSaleOrderNumberLbl, javax.swing.GroupLayout.PREFERRED_SIZE, 21, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(txtSaleOrderClient, javax.swing.GroupLayout.PREFERRED_SIZE, 199, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(lblSaleOrder, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                         .addGroup(pnlSaleOrderLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(lblSaleOrderDateOn, javax.swing.GroupLayout.DEFAULT_SIZE, 110, Short.MAX_VALUE)
-                            .addComponent(lblSaleOrderNumber, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                            .addGroup(pnlSaleOrderLayout.createSequentialGroup()
+                                .addGap(10, 10, 10)
+                                .addComponent(lblSaleOrderDate)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(lblSaleOrderDateOn, javax.swing.GroupLayout.DEFAULT_SIZE, 110, Short.MAX_VALUE))
+                            .addGroup(pnlSaleOrderLayout.createSequentialGroup()
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(lblSaleOrderNumber, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))))
                 .addContainerGap())
         );
         pnlSaleOrderLayout.setVerticalGroup(
@@ -2237,8 +2224,7 @@ public class UIMain extends javax.swing.JFrame
                 .addContainerGap()
                 .addGroup(pnlSaleOrderLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(lblSaleOrder, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(lblSaleOrderNumber, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(lblSaleOrderNumberLbl, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(lblSaleOrderNumber, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(pnlSaleOrderLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
                     .addComponent(txtSaleOrderClient, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -2305,15 +2291,20 @@ public class UIMain extends javax.swing.JFrame
 
         tblSaleSearchProduct.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
+
             },
             new String [] {
-                "Title 1", "Title 2", "Title 3", "Title 4"
+                "", "", "", ""
             }
-        ));
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
         tblSaleSearchProduct.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 tblSaleSearchProductMouseClicked(evt);
@@ -2327,7 +2318,7 @@ public class UIMain extends javax.swing.JFrame
             pnlSaleSearchProductLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(pnlSaleSearchProductLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(scpSaleSearchProduct, javax.swing.GroupLayout.DEFAULT_SIZE, 287, Short.MAX_VALUE)
+                .addComponent(scpSaleSearchProduct, javax.swing.GroupLayout.DEFAULT_SIZE, 283, Short.MAX_VALUE)
                 .addContainerGap())
             .addGroup(pnlSaleSearchProductLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(pnlSaleSearchProductLayout.createSequentialGroup()
@@ -2458,9 +2449,9 @@ public class UIMain extends javax.swing.JFrame
         interfaz.changeSale((CardLayout)pnlContent.getLayout(), pnlContent);
         interfaz.paint(5, menuBtn);
         Date date = new Date();
-        DateFormat format = new SimpleDateFormat("dd/MM/yyyy");
+        DateFormat format = new SimpleDateFormat("yyyy/MM/dd");
         this.lblSaleOrderDateOn.setText(format.format(date));
-        System.out.println("VIEN AQUIaaaaa");
+        this.interfaz.setOrderNumber(lblSaleOrderNumber);
     }//GEN-LAST:event_btnSaleActionPerformed
 
     private void btnHelpActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_btnHelpActionPerformed
@@ -2561,9 +2552,9 @@ public class UIMain extends javax.swing.JFrame
             supplierCode = suppliers.sent((CardLayout)pnlSupplierSlave.getLayout(), pnlSupplierSlave, suppliersSearch.get(value), lblNewSupplier, txtSupplierName, txtSupplierTr, txtSupplierPhone, txtSupplierAddress, btnSupplierRegister);
         } else
         JOptionPane.showMessageDialog(  null,
-            "No ha seleccionado ningún registro.",
-            "Dato no Seleccionado",
-            JOptionPane.WARNING_MESSAGE);
+                                        "No ha seleccionado ningún registro.",
+                                        "Dato no Seleccionado",
+                                        JOptionPane.WARNING_MESSAGE);
     }//GEN-LAST:event_btnModifySupplierActionPerformed
 
     private void btnSearchSupplierActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSearchSupplierActionPerformed
@@ -2660,18 +2651,18 @@ public class UIMain extends javax.swing.JFrame
             home.activate(Integer.parseInt(user.getPositionCode()), btnHome, btnUsers, btnSuppliers, btnProducts, btnStore, btnSale);
             
             switch(Integer.parseInt(user.getPositionCode())){
-                case 1:
-                interfaz.changeUsers((CardLayout)pnlContent.getLayout(), pnlContent);
-                interfaz.paint(1, menuBtn);
-                users.changeUserShow((CardLayout)pnlUserSlave.getLayout(), pnlUserSlave, tblUserShow);
-                break;
-                case 2:
-                interfaz.changeSale((CardLayout)pnlContent.getLayout(), pnlContent);
-                interfaz.paint(5, menuBtn);
-                Date date = new Date();
-                DateFormat format = new SimpleDateFormat("dd/MM/yyyy");
-                this.lblSaleOrderDateOn.setText(format.format(date));
-                break;
+                case 1: interfaz.changeUsers((CardLayout)pnlContent.getLayout(), pnlContent);
+                        interfaz.paint(1, menuBtn);
+                        users.changeUserShow((CardLayout)pnlUserSlave.getLayout(), pnlUserSlave, tblUserShow);
+                        break;
+                    
+                case 2: interfaz.changeSale((CardLayout)pnlContent.getLayout(), pnlContent);
+                        interfaz.paint(5, menuBtn);
+                        Date date = new Date();
+                        DateFormat format = new SimpleDateFormat("yyyy/MM/dd");
+                        this.lblSaleOrderDateOn.setText(format.format(date));
+                        this.interfaz.setOrderNumber(lblSaleOrderNumber);
+                        break;
             }
         }
     }//GEN-LAST:event_btnLogInActionPerformed
@@ -2702,8 +2693,8 @@ public class UIMain extends javax.swing.JFrame
             if(!this.sale.verifyQuantity(String.valueOf(this.tblSaleOrderTable.getValueAt(row, 0)), String.valueOf(this.tblSaleOrderTable.getValueAt(row, 1)))){
                 this.tblSaleOrderTable.setValueAt("1" , row, 1);
                 JOptionPane.showMessageDialog(  null,
-                                                "El stock del producto está en cero.",
-                                                "Stock en Cero",
+                                                "El stock del producto es menor al solicitado.",
+                                                "Cantidad Incorrecta",
                                                 JOptionPane.WARNING_MESSAGE);
             }
             
@@ -2715,6 +2706,18 @@ public class UIMain extends javax.swing.JFrame
             this.lblSaleOrderTotalOn.setText("S/. " + format.format(total));
         }
     }//GEN-LAST:event_tblSaleOrderTablePropertyChange
+
+    private void lblSaleOrderPrintActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_lblSaleOrderPrintActionPerformed
+        if(this.tblSaleOrderTable.getRowCount() != 0){
+            this.sale.safeSale(user, txtSaleOrderClient, lblSaleOrderTotalOn, lblSaleOrderDateOn, tblSaleOrderTable);
+            clean(5);
+            this.interfaz.setOrderNumber(lblSaleOrderNumber);
+        } else
+            JOptionPane.showMessageDialog(  null,
+                                            "No se ha ingresado algún registro a la Orden de Venta",
+                                            "Datos No Ingresados",
+                                            JOptionPane.ERROR_MESSAGE);
+    }//GEN-LAST:event_lblSaleOrderPrintActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnHelp;
@@ -2754,7 +2757,6 @@ public class UIMain extends javax.swing.JFrame
     private javax.swing.JComboBox cbxSaleSearchProduct;
     private javax.swing.JComboBox cbxUserGender;
     private javax.swing.JComboBox cbxUserPosition;
-    private javax.swing.JPanel jPanel1;
     private javax.swing.JLabel lbProductName;
     private javax.swing.JLabel lblForgottenPass;
     private javax.swing.JLabel lblHome;
@@ -2783,7 +2785,6 @@ public class UIMain extends javax.swing.JFrame
     private javax.swing.JLabel lblSaleOrderDate;
     private javax.swing.JLabel lblSaleOrderDateOn;
     private javax.swing.JLabel lblSaleOrderNumber;
-    private javax.swing.JLabel lblSaleOrderNumberLbl;
     private javax.swing.JButton lblSaleOrderPrint;
     private javax.swing.JLabel lblSaleOrderTotal;
     private javax.swing.JLabel lblSaleOrderTotalOn;
@@ -2968,6 +2969,16 @@ public class UIMain extends javax.swing.JFrame
                     
                     lblNewProduct.removeAll();     
                     break;
+                
+            case 5: txtSaleOrderClient.setText("");
+                    lblSaleOrderNumber.setText("");
+                    lblSaleOrderTotalOn.setText("");
+                    
+                    model = (DefaultTableModel) tblSaleOrderTable.getModel();
+                    model.getDataVector().removeAllElements();
+                    tblSaleOrderTable.removeAll();
+                    break;
+                    
         }
     }
 }

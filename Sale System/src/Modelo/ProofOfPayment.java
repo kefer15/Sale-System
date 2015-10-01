@@ -70,6 +70,8 @@ public class ProofOfPayment {
         String err = "";
         
         try {
+            System.out.println("INSERT INTO Comprobante_Cab VALUES( DEFAULT , '" + clientName + "' , " + amount + " , '" + 
+                    date + "' , " + user + " )");
             Main.conexion.send("INSERT INTO Comprobante_Cab VALUES( DEFAULT , '" + clientName + "' , " + amount + " , '" + 
                     date + "' , " + user + " )");
             
@@ -123,4 +125,18 @@ public class ProofOfPayment {
         return payments;
     }
     
+    public String getNextCode() {
+        Main.conexion.conectar();
+        
+        try {
+            ResultSet result = Main.conexion.receive("SELECT MAX(ComCod) FROM Comprobante_Cab");
+                        
+            while(result.next())
+                return result.getString("MAX(ComCod)");
+        } catch (SQLException ex) {
+            Logger.getLogger(ProofOfPayment.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        return null;
+    }    
 }

@@ -3,6 +3,7 @@ package Controlador;
 import java.awt.CardLayout;
 import java.util.ArrayList;
 import javax.swing.JButton;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
@@ -19,4 +20,5 @@ public interface IMain
     
     public void logOut();
     public void forgottenPass(JTextField user);
+    public void setOrderNumber(JLabel number);
 }

@@ -1,10 +1,13 @@
 package Controlador;
 
+import Modelo.ProofOfPayment;
 import Vista.UIMain;
 import java.awt.CardLayout;
 import java.awt.Color;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import javax.swing.JButton;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
@@ -77,4 +80,11 @@ public class CMain implements IMain
         ventana.dispose();
         CForgottenPass pass = new CForgottenPass(user.getText());    
     }    
+    
+    @Override
+    public void setOrderNumber(JLabel number){
+        String code = (new ProofOfPayment()).getNextCode();
+        DecimalFormat format = new DecimalFormat("00000000000");            
+        number.setText("N° " + String.valueOf(format.format(Integer.parseInt(code)+1)));
+    }
 }

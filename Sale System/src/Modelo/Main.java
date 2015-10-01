@@ -2,6 +2,8 @@ package Modelo;
 
 import javax.swing.UIManager;
 import Controlador.CMain;
+import java.text.DecimalFormat;
+import javax.swing.SwingConstants;
 import javax.swing.UnsupportedLookAndFeelException;
 
 public class Main

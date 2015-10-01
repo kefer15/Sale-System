@@ -1,16 +1,19 @@
 package Controlador;
 
 import Modelo.Products;
+import Modelo.ProofOfPayment;
+import Modelo.Users;
 import java.util.ArrayList;
 import java.util.Vector;
 import javax.swing.JComboBox;
+import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
 
 public class CSale implements ISale{
-    @Override
+    @Override    
     public ArrayList <Products> search(JComboBox comboBox, JTextField text, JTable table){
         ArrayList <Products> products = null;
         DefaultTableModel model = (DefaultTableModel) table.getModel();
@@ -77,5 +80,28 @@ public class CSale implements ISale{
     public boolean verifyQuantity(String code, String quantity){
         ArrayList <Products> product = (new Products()).getList(0, code, null);
         return (Integer.parseInt(quantity) <= Integer.parseInt(product.get(0).getStock()));
+    }
+    
+    @Override
+    public void safeSale(Users user, JTextField client, JLabel mount, JLabel date, JTable products){
+        ProofOfPayment payment = new ProofOfPayment();
+        payment.setClientName(client.getText());
+        payment.setAmount(mount.getText().substring(3).replace(',', '.'));
+        payment.setDate(date.getText().replace('/', '-'));
+        payment.setUser(user.getCode());
+        
+        String error = "";
+        payment.insertCab();
+        
+        if(error.equals(""))
+            JOptionPane.showMessageDialog(  null, 
+                                            "Se ha registrado correctamente la venta.", 
+                                            "Venta exitosa", 
+                                            JOptionPane.INFORMATION_MESSAGE);
+        else
+            JOptionPane.showMessageDialog(  null, 
+                                            error, 
+                                            "Error en la Venta", 
+                                            JOptionPane.WARNING_MESSAGE);
     }
 }

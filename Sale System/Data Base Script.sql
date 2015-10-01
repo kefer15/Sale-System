@@ -29,12 +29,23 @@ CREATE TABLE Usuario
   EstCod Int(2) ZEROFILL,
  PRIMARY KEY (UsuCod),
  UNIQUE UsuCod (UsuCod)
-);
+)
+;
 
-ALTER TABLE Usuario ADD UNIQUE UseId (UsuIde);
-CREATE INDEX IX_Relationship2 ON Usuario (CarCod);
-CREATE INDEX IX_Relationship3 ON Usuario (GenCod);
-CREATE INDEX IX_Relationship9 ON Usuario (EstCod);
+ALTER TABLE Usuario ADD UNIQUE UseId (UsuIde)
+;
+
+ALTER TABLE Usuario ADD UNIQUE UsuCorEle (UsuCorEle)
+;
+
+CREATE INDEX IX_Relationship2 ON Usuario (CarCod)
+;
+
+CREATE INDEX IX_Relationship3 ON Usuario (GenCod)
+;
+
+CREATE INDEX IX_Relationship9 ON Usuario (EstCod)
+;
 
 -- Table Cargo
 
@@ -44,9 +55,11 @@ CREATE TABLE Cargo
   CarNom Char(50) NOT NULL,
  PRIMARY KEY (CarCod),
  UNIQUE CarCod (CarCod)
-);
+)
+;
 
-ALTER TABLE Cargo ADD UNIQUE CarNom (CarNom);
+ALTER TABLE Cargo ADD UNIQUE CarNom (CarNom)
+;
 
 -- Table Proveedor
 
@@ -60,11 +73,17 @@ CREATE TABLE Proveedor
   EstCod Int(2) ZEROFILL,
  PRIMARY KEY (ProCod),
  UNIQUE ProCod (ProCod)
-);
+)
+;
 
-ALTER TABLE Proveedor ADD UNIQUE ProNom (ProNom);
-ALTER TABLE Proveedor ADD UNIQUE ProRuc (ProRuc);
-CREATE INDEX IX_Relationship11 ON Proveedor (EstCod);
+ALTER TABLE Proveedor ADD UNIQUE ProNom (ProNom)
+;
+
+ALTER TABLE Proveedor ADD UNIQUE ProRuc (ProRuc)
+;
+
+CREATE INDEX IX_Relationship11 ON Proveedor (EstCod)
+;
 
 -- Table Genero
 
@@ -74,9 +93,11 @@ CREATE TABLE Genero
   GenNom Char(20) NOT NULL,
  PRIMARY KEY (GenCod),
  UNIQUE GenCod (GenCod)
-);
+)
+;
 
-ALTER TABLE Genero ADD UNIQUE GenNom (GenNom);
+ALTER TABLE Genero ADD UNIQUE GenNom (GenNom)
+;
 
 -- Table Producto
 
@@ -92,10 +113,14 @@ CREATE TABLE Producto
   EstCod Int(2) ZEROFILL,
  PRIMARY KEY (ProdCod),
  UNIQUE ProdCod (ProdCod)
-);
+)
+;
 
-CREATE INDEX IX_Relationship1 ON Producto (CatCod);
-CREATE INDEX IX_Relationship10 ON Producto (EstCod);
+CREATE INDEX IX_Relationship1 ON Producto (CatCod)
+;
+
+CREATE INDEX IX_Relationship10 ON Producto (EstCod)
+;
 
 -- Table Estado
 
@@ -105,9 +130,11 @@ CREATE TABLE Estado
   EstNom Char(20) NOT NULL,
  PRIMARY KEY (EstCod),
  UNIQUE EstCod (EstCod)
-);
+)
+;
 
-ALTER TABLE Estado ADD UNIQUE EstNom (EstNom);
+ALTER TABLE Estado ADD UNIQUE EstNom (EstNom)
+;
 
 -- Table Categoria
 
@@ -117,9 +144,11 @@ CREATE TABLE Categoria
   CatNom Char(50) NOT NULL,
  PRIMARY KEY (CatCod),
  UNIQUE CatCod (CatCod)
-);
+)
+;
 
-ALTER TABLE Categoria ADD UNIQUE CatNom (CatNom);
+ALTER TABLE Categoria ADD UNIQUE CatNom (CatNom)
+;
 
 -- Table ProProd
 
@@ -127,20 +156,76 @@ CREATE TABLE ProProd
 (
   ProdCod Int(5) ZEROFILL NOT NULL,
   ProCod Int(3) ZEROFILL NOT NULL
-);
+)
+;
 
-ALTER TABLE ProProd ADD PRIMARY KEY (ProdCod,ProCod);
+ALTER TABLE ProProd ADD PRIMARY KEY (ProdCod,ProCod)
+;
+
+-- Table Comprobante_Cab
+
+CREATE TABLE Comprobante_Cab
+(
+  ComCod Int(11) ZEROFILL NOT NULL AUTO_INCREMENT,
+  CabNomCli Char(50),
+  ComMon Double,
+  ComFec Date NOT NULL,
+  UsuCod Int(3) ZEROFILL,
+ PRIMARY KEY (ComCod),
+ UNIQUE ComCod (ComCod)
+)
+;
+
+CREATE INDEX IX_Relationship6 ON Comprobante_Cab (UsuCod)
+;
+
+-- Table Comprobante_Det
+
+CREATE TABLE Comprobante_Det
+(
+  ComCod Int(11) ZEROFILL NOT NULL,
+  ProdCod Int(5) ZEROFILL NOT NULL,
+  ComCan Int(3) ZEROFILL NOT NULL
+)
+;
+
+ALTER TABLE Comprobante_Det ADD PRIMARY KEY (ComCod,ProdCod)
+;
 
 -- Create relationships section ------------------------------------------------- 
 
-ALTER TABLE Usuario ADD CONSTRAINT Relationship2 FOREIGN KEY (CarCod) REFERENCES Cargo (CarCod) ON DELETE NO ACTION ON UPDATE NO ACTION;
-ALTER TABLE Usuario ADD CONSTRAINT Relationship3 FOREIGN KEY (GenCod) REFERENCES Genero (GenCod) ON DELETE NO ACTION ON UPDATE NO ACTION;
-ALTER TABLE Usuario ADD CONSTRAINT Relationship9 FOREIGN KEY (EstCod) REFERENCES Estado (EstCod) ON DELETE NO ACTION ON UPDATE NO ACTION;
-ALTER TABLE Producto ADD CONSTRAINT Relationship10 FOREIGN KEY (CatCod) REFERENCES Categoria (CatCod) ON DELETE NO ACTION ON UPDATE NO ACTION;
-ALTER TABLE Producto ADD CONSTRAINT Relationship12 FOREIGN KEY (EstCod) REFERENCES Estado (EstCod) ON DELETE NO ACTION ON UPDATE NO ACTION;
-ALTER TABLE Proveedor ADD CONSTRAINT Relationship13 FOREIGN KEY (EstCod) REFERENCES Estado (EstCod) ON DELETE NO ACTION ON UPDATE NO ACTION;
-ALTER TABLE ProProd ADD CONSTRAINT Relationship14 FOREIGN KEY (ProdCod) REFERENCES Producto (ProdCod) ON DELETE NO ACTION ON UPDATE NO ACTION;
-ALTER TABLE ProProd ADD CONSTRAINT Relationship15 FOREIGN KEY (ProCod) REFERENCES Proveedor (ProCod) ON DELETE NO ACTION ON UPDATE NO ACTION;
+ALTER TABLE Usuario ADD CONSTRAINT Relationship2 FOREIGN KEY (CarCod) REFERENCES Cargo (CarCod) ON DELETE NO ACTION ON UPDATE NO ACTION
+;
+
+ALTER TABLE Usuario ADD CONSTRAINT Relationship3 FOREIGN KEY (GenCod) REFERENCES Genero (GenCod) ON DELETE NO ACTION ON UPDATE NO ACTION
+;
+
+ALTER TABLE Usuario ADD CONSTRAINT Relationship9 FOREIGN KEY (EstCod) REFERENCES Estado (EstCod) ON DELETE NO ACTION ON UPDATE NO ACTION
+;
+
+ALTER TABLE Producto ADD CONSTRAINT Relationship10 FOREIGN KEY (CatCod) REFERENCES Categoria (CatCod) ON DELETE NO ACTION ON UPDATE NO ACTION
+;
+
+ALTER TABLE Producto ADD CONSTRAINT Relationship12 FOREIGN KEY (EstCod) REFERENCES Estado (EstCod) ON DELETE NO ACTION ON UPDATE NO ACTION
+;
+
+ALTER TABLE Proveedor ADD CONSTRAINT Relationship13 FOREIGN KEY (EstCod) REFERENCES Estado (EstCod) ON DELETE NO ACTION ON UPDATE NO ACTION
+;
+
+ALTER TABLE ProProd ADD CONSTRAINT Relationship14 FOREIGN KEY (ProdCod) REFERENCES Producto (ProdCod) ON DELETE NO ACTION ON UPDATE NO ACTION
+;
+
+ALTER TABLE ProProd ADD CONSTRAINT Relationship15 FOREIGN KEY (ProCod) REFERENCES Proveedor (ProCod) ON DELETE NO ACTION ON UPDATE NO ACTION
+;
+
+ALTER TABLE Comprobante_Cab ADD CONSTRAINT Relationship17 FOREIGN KEY (UsuCod) REFERENCES Usuario (UsuCod) ON DELETE NO ACTION ON UPDATE NO ACTION
+;
+
+ALTER TABLE Comprobante_Det ADD CONSTRAINT Relationship18 FOREIGN KEY (ComCod) REFERENCES Comprobante_Cab (ComCod) ON DELETE NO ACTION ON UPDATE NO ACTION
+;
+
+ALTER TABLE Comprobante_Det ADD CONSTRAINT Relationship19 FOREIGN KEY (ProdCod) REFERENCES Producto (ProdCod) ON DELETE NO ACTION ON UPDATE NO ACTION
+;
 
 -- Create views section ------------------------------------------------- 
 
