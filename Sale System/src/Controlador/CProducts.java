@@ -68,7 +68,7 @@ public class CProducts implements IProducts{
         
         String error = "";
         
-        product.insert();
+        error = product.insert();
         if(error.equals(""))
             JOptionPane.showMessageDialog(  null, 
                                             "Los datos han sido ingresados correctamente.", 

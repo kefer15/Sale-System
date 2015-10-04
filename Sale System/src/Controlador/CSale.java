@@ -4,7 +4,6 @@ import Modelo.Products;
 import Modelo.ProofOfPayment;
 import Modelo.Users;
 import java.util.ArrayList;
-import java.util.Vector;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -91,7 +90,7 @@ public class CSale implements ISale{
         payment.setUser(user.getCode());
         
         String error = "";
-        payment.insertCab();
+        error = payment.insertCab();
         
         if(error.equals(""))
             JOptionPane.showMessageDialog(  null, 

@@ -107,7 +107,7 @@ public class CUsers implements IUsers {
                     user.setId(id);
                     user.setPassword(password);
                     user.setState("1");
-                    user.insert();
+                    error = user.insert();
                     if(error.equals(""))
                         JOptionPane.showMessageDialog(  null, 
                                                         "Se ha generado su Id y su Contraseña para \npoder ingresar al Sistema de Ventas: "
@@ -120,7 +120,7 @@ public class CUsers implements IUsers {
                                                         "Nuevo Usuario", 
                                                         JOptionPane.WARNING_MESSAGE);
                     break;
-            case 1: user.update();
+            case 1: error = user.update();
                     if(error.equals(""))
                         JOptionPane.showMessageDialog(  null, 
                                                         "Los datos han sido modificados correctamente.", 

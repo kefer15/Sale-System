@@ -104,8 +104,7 @@ public class ProofOfPayment {
         ArrayList <ProofOfPayment> payments = new ArrayList <> ();
         
         try {
-            ResultSet result = Main.conexion.receive("SELECT * FROM Comprobante_Cab WHERE ComCod = " + code);
-                        
+            ResultSet result = Main.conexion.receive("SELECT * FROM Comprobante_Cab WHERE ComCod LIKE '" + code + "%'");
             
             while(result.next())
             {                
@@ -139,4 +138,54 @@ public class ProofOfPayment {
         
         return null;
     }    
+    
+    public ArrayList <ProofOfPayment> getList(String dateStart, String dateEnd) {
+        Main.conexion.conectar();
+        ArrayList <ProofOfPayment> payments = new ArrayList <> ();
+        
+        try {
+            ResultSet result = Main.conexion.receive("SELECT * FROM Comprobante WHERE ComFec >= '" + dateStart + "' AND ComFec <= '" + dateEnd + "'");
+            
+            while(result.next())
+            {                
+                ProofOfPayment payment = new ProofOfPayment();
+                payment.setCode(result.getString("ComCod"));
+                payment.setClientName("");
+                payment.setAmount(result.getString("ComMon"));
+                payment.setDate(result.getString("ComFec"));
+                payment.setUser(result.getString("UsuNom"));
+                
+                payments.add(payment);
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(ProofOfPayment.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        return payments;
+    }
+    
+    public ArrayList <ProofOfPayment> getUsersMount(String dateStart, String dateEnd) {
+        Main.conexion.conectar();
+        ArrayList <ProofOfPayment> payments = new ArrayList <> ();
+        
+        try {
+            ResultSet result = Main.conexion.receive("SELECT UsuNom, SUM(ComMon) FROM Comprobante WHERE ComFec >= '" + dateStart + "' AND ComFec <= '" + dateEnd + "' GROUP By UsuNom");
+            
+            while(result.next())
+            {                
+                ProofOfPayment payment = new ProofOfPayment();
+                payment.setCode("");
+                payment.setClientName("");
+                payment.setAmount(result.getString("SUM(ComMon)"));
+                payment.setDate("");
+                payment.setUser(result.getString("UsuNom"));
+                
+                payments.add(payment);
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(ProofOfPayment.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        return payments;
+    }
 }

@@ -155,7 +155,7 @@ public class Products
                 case 0: result = Main.conexion.receive("SELECT * FROM Producto WHERE ProdCod = " + code);
                         break;
                         
-                case 1: result = Main.conexion.receive("SELECT * FROM Producto_Categoria");
+                case 1: result = Main.conexion.receive("SELECT * FROM Producto_Categoria ORDER BY ProdNom");
                         access = true;
                         break;
                     
@@ -171,6 +171,14 @@ public class Products
                         break;
                     
                 case 5: result = Main.conexion.receive("SELECT * FROM Producto_Categoria WHERE EstNom = 'Activo' AND CatNom LIKE '" + name + "%'");
+                        access = true;
+                        break;
+                    
+                case 6: result = Main.conexion.receive("SELECT * FROM Producto_Categoria ORDER BY ProdMar");
+                        access = true;
+                        break;
+                    
+                case 7: result = Main.conexion.receive("SELECT * FROM Producto_Categoria ORDER BY CatNom");
                         access = true;
                         break;
             }

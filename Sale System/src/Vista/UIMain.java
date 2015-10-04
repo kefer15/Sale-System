@@ -4,18 +4,27 @@ import Controlador.CHelp;
 import Controlador.CHome;
 import Controlador.CProducts;
 import Controlador.CSale;
+import Controlador.CStore;
 import Controlador.CSuppliers;
+import Controlador.CTicket;
 import Controlador.CUsers;
 import Controlador.IMain;
 import Modelo.Products;
 import Modelo.Users;
 import java.awt.CardLayout;
 import java.awt.Toolkit;
+import java.awt.event.ItemEvent;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 import java.text.DateFormat;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.imageio.ImageIO;
 import javax.swing.DefaultListModel;
 import javax.swing.JButton;
 
@@ -30,6 +39,7 @@ public class UIMain extends javax.swing.JFrame
     private CUsers users;
     private CSuppliers suppliers;
     private CProducts products;
+    private CStore store;
     private CSale sale;
     
     
@@ -40,9 +50,12 @@ public class UIMain extends javax.swing.JFrame
     private Users user;
     private int state;
     private ArrayList <String> usersSearch;
+    private ArrayList <String> productsSearch;
     private String userCode;
     private ArrayList <String> suppliersSearch;
+    private ArrayList <String> ticketsSearch;
     private String supplierCode;
+    private String productCode;
     private ArrayList <String> productsInd;
     private ArrayList <String> suppliersInd;
     private ArrayList <Products> productsList;
@@ -54,13 +67,18 @@ public class UIMain extends javax.swing.JFrame
         this.setVisible(true);
         this.setTitle("Sale System");
         setLocationRelativeTo(null);
+        
         usersSearch = new ArrayList <>();
+        productsSearch = new ArrayList <>();
         suppliersSearch = new ArrayList <>();
+        ticketsSearch = new ArrayList <>();
         productsInd = new ArrayList <>();
         suppliersInd = new ArrayList <>();
         productsList = new ArrayList <>();
+        
         userCode = "";
         supplierCode = "";
+        productCode = "";
         total = 0;
         menuBtn = new ArrayList <>();
         menuBtn.add(btnHome);
@@ -100,6 +118,7 @@ public class UIMain extends javax.swing.JFrame
             case 4:
                 this.interfaz.changeStore((CardLayout)pnlContent.getLayout(), pnlContent);
                 this.interfaz.paint(4, menuBtn);
+                store.changeInventStore((CardLayout)pnlStoreSlave.getLayout(), pnlStoreSlave, tblProductShowStore);
             break;
             
             case 5:
@@ -110,6 +129,7 @@ public class UIMain extends javax.swing.JFrame
                 DateFormat format = new SimpleDateFormat("yyyy/MM/dd");
                 this.lblSaleOrderDateOn.setText(format.format(date));
                 this.interfaz.setOrderNumber(lblSaleOrderNumber);
+                this.lblUserOnSale.setText("Usuario: " + user.getName() + " " + user.getFatherLastName());
             break;
         }
         
@@ -118,6 +138,7 @@ public class UIMain extends javax.swing.JFrame
         this.users = new CUsers();
         this.suppliers = new CSuppliers();
         this.products = new CProducts();
+        this.store = new CStore();
         this.sale = new CSale();
         
     }
@@ -280,10 +301,59 @@ public class UIMain extends javax.swing.JFrame
         btnStoreInvent = new javax.swing.JButton();
         pnlStoreSlave = new javax.swing.JPanel();
         pnlStoreSearchPro = new javax.swing.JPanel();
+        pnlSeekProduct = new javax.swing.JPanel();
+        txtNameSearchProduct = new javax.swing.JTextField();
+        btnSearchProduct = new javax.swing.JButton();
+        pnlResultProduct = new javax.swing.JPanel();
+        scpResultProduct = new javax.swing.JScrollPane();
+        tblResultProduct = new javax.swing.JTable();
+        lblResultProduct = new javax.swing.JLabel();
+        btnModifyProduct = new javax.swing.JButton();
+        lblProductSearch = new javax.swing.JLabel();
         pnlStoreSearchTic = new javax.swing.JPanel();
-        pnlStoreReportProd = new javax.swing.JPanel();
-        pnlStoreReportSale = new javax.swing.JPanel();
+        pnlSeekTicket = new javax.swing.JPanel();
+        txtNameSearchTicket = new javax.swing.JTextField();
+        btnSearchTicket = new javax.swing.JButton();
+        pnlResultTicket = new javax.swing.JPanel();
+        scpResultTicket = new javax.swing.JScrollPane();
+        tblResultTicket = new javax.swing.JTable();
+        lblResultTicket = new javax.swing.JLabel();
+        btnSeeTicket = new javax.swing.JButton();
+        lblTicketSearch = new javax.swing.JLabel();
         pnlStoreInvent = new javax.swing.JPanel();
+        lblProductShowStore = new javax.swing.JLabel();
+        scpProductShowStore = new javax.swing.JScrollPane();
+        tblProductShowStore = new javax.swing.JTable();
+        cbxSaleSearchProductStore = new javax.swing.JComboBox();
+        pnlStoreModifyPro = new javax.swing.JPanel();
+        lblProductStore = new javax.swing.JLabel();
+        pnlProductStore = new javax.swing.JPanel();
+        txtProductNameStore = new javax.swing.JTextField();
+        txtProductBrandStore = new javax.swing.JTextField();
+        txtProductPresentationStore = new javax.swing.JTextField();
+        txtProductStockStore = new javax.swing.JTextField();
+        txtProductPriceStore = new javax.swing.JTextField();
+        lbProductNameStore = new javax.swing.JLabel();
+        lblProductBrandStore = new javax.swing.JLabel();
+        lblProductPresentationStore = new javax.swing.JLabel();
+        lblProductStockStore = new javax.swing.JLabel();
+        lblProductPriceStore = new javax.swing.JLabel();
+        cbxProductCategoryStore = new javax.swing.JComboBox();
+        lblProductCategoryStore = new javax.swing.JLabel();
+        btnProductUpdateStore = new javax.swing.JButton();
+        lblUserMandatoryStore = new javax.swing.JLabel();
+        pnlStoreSaleReport = new javax.swing.JPanel();
+        lblSaleReport = new javax.swing.JLabel();
+        pnlContentSaleReport = new javax.swing.JPanel();
+        clrStart = new com.toedter.calendar.JCalendar();
+        lblSateReportStart = new javax.swing.JLabel();
+        lblSateReportEnd = new javax.swing.JLabel();
+        clrEnd = new com.toedter.calendar.JCalendar();
+        lblSelectDateStart = new javax.swing.JLabel();
+        lblSelectDateEnd = new javax.swing.JLabel();
+        lblSelectDateStartReport = new javax.swing.JLabel();
+        lblSelectDateEndReport = new javax.swing.JLabel();
+        jButton1 = new javax.swing.JButton();
         pnlSale = new javax.swing.JPanel();
         lblSale = new javax.swing.JLabel();
         pnlSaleOrder = new javax.swing.JPanel();
@@ -298,7 +368,8 @@ public class UIMain extends javax.swing.JFrame
         btnSaleOrderDelete = new javax.swing.JButton();
         lblSaleOrderTotal = new javax.swing.JLabel();
         lblSaleOrderTotalOn = new javax.swing.JLabel();
-        lblSaleOrderPrint = new javax.swing.JButton();
+        btnSaleOrderPrint = new javax.swing.JButton();
+        lblUserOnSale = new javax.swing.JLabel();
         pnlSaleSearchProduct = new javax.swing.JPanel();
         pnlSaleSearchProductOn = new javax.swing.JPanel();
         lblSaleSearchProduct = new javax.swing.JLabel();
@@ -624,7 +695,7 @@ public class UIMain extends javax.swing.JFrame
             pnlHomeLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(pnlHomeLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(lblHome, javax.swing.GroupLayout.DEFAULT_SIZE, 742, Short.MAX_VALUE)
+                .addComponent(lblHome, javax.swing.GroupLayout.DEFAULT_SIZE, 759, Short.MAX_VALUE)
                 .addContainerGap())
             .addGroup(pnlHomeLayout.createSequentialGroup()
                 .addGap(175, 175, 175)
@@ -638,7 +709,7 @@ public class UIMain extends javax.swing.JFrame
                 .addComponent(lblHome, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(pnlAccess, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(235, Short.MAX_VALUE))
+                .addContainerGap(239, Short.MAX_VALUE))
         );
 
         pnlAccess.getAccessibleContext().setAccessibleName(""); // NOI18N
@@ -705,7 +776,7 @@ public class UIMain extends javax.swing.JFrame
                 .addComponent(btnUserSearch, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(btnUserShow, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(319, Short.MAX_VALUE))
+                .addContainerGap(323, Short.MAX_VALUE))
         );
 
         pnlUserSlave.setPreferredSize(new java.awt.Dimension(500, 100));
@@ -741,7 +812,7 @@ public class UIMain extends javax.swing.JFrame
                 .addContainerGap()
                 .addGroup(pnlUserShowLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(lblUserShow, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(scpUserShow, javax.swing.GroupLayout.DEFAULT_SIZE, 515, Short.MAX_VALUE))
+                    .addComponent(scpUserShow, javax.swing.GroupLayout.DEFAULT_SIZE, 532, Short.MAX_VALUE))
                 .addContainerGap())
         );
         pnlUserShowLayout.setVerticalGroup(
@@ -750,7 +821,7 @@ public class UIMain extends javax.swing.JFrame
                 .addContainerGap()
                 .addComponent(lblUserShow, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(scpUserShow, javax.swing.GroupLayout.DEFAULT_SIZE, 429, Short.MAX_VALUE)
+                .addComponent(scpUserShow, javax.swing.GroupLayout.DEFAULT_SIZE, 433, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
@@ -939,7 +1010,7 @@ public class UIMain extends javax.swing.JFrame
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(lblUserOther, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(scpUserOther, javax.swing.GroupLayout.DEFAULT_SIZE, 81, Short.MAX_VALUE)
+                .addComponent(scpUserOther, javax.swing.GroupLayout.DEFAULT_SIZE, 85, Short.MAX_VALUE)
                 .addGap(18, 18, 18)
                 .addGroup(pnlNewUserLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(btnUserRegister, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -958,7 +1029,7 @@ public class UIMain extends javax.swing.JFrame
             .addGroup(pnlUserAddLayout.createSequentialGroup()
                 .addGap(66, 66, 66)
                 .addComponent(pnlNewUser, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(66, Short.MAX_VALUE))
+                .addContainerGap(83, Short.MAX_VALUE))
         );
         pnlUserAddLayout.setVerticalGroup(
             pnlUserAddLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -1046,7 +1117,7 @@ public class UIMain extends javax.swing.JFrame
             .addGroup(pnlResultUserLayout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(pnlResultUserLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(scpResultUser, javax.swing.GroupLayout.DEFAULT_SIZE, 491, Short.MAX_VALUE)
+                    .addComponent(scpResultUser, javax.swing.GroupLayout.DEFAULT_SIZE, 508, Short.MAX_VALUE)
                     .addComponent(lblResultUser, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlResultUserLayout.createSequentialGroup()
                         .addGap(0, 0, Short.MAX_VALUE)
@@ -1059,7 +1130,7 @@ public class UIMain extends javax.swing.JFrame
                 .addContainerGap()
                 .addComponent(lblResultUser, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(scpResultUser, javax.swing.GroupLayout.DEFAULT_SIZE, 261, Short.MAX_VALUE)
+                .addComponent(scpResultUser, javax.swing.GroupLayout.DEFAULT_SIZE, 265, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(btnModifyUser, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
@@ -1107,7 +1178,7 @@ public class UIMain extends javax.swing.JFrame
                 .addContainerGap()
                 .addComponent(pnlUserMaster, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(pnlUserSlave, javax.swing.GroupLayout.DEFAULT_SIZE, 535, Short.MAX_VALUE)
+                .addComponent(pnlUserSlave, javax.swing.GroupLayout.DEFAULT_SIZE, 552, Short.MAX_VALUE)
                 .addContainerGap())
         );
         pnlUsersLayout.setVerticalGroup(
@@ -1191,7 +1262,7 @@ public class UIMain extends javax.swing.JFrame
                 .addComponent(btnSupplierShow, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(btnSupplierLink, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(278, Short.MAX_VALUE))
+                .addContainerGap(282, Short.MAX_VALUE))
         );
 
         pnlSupplierSlave.setPreferredSize(new java.awt.Dimension(500, 100));
@@ -1206,11 +1277,11 @@ public class UIMain extends javax.swing.JFrame
 
             },
             new String [] {
-                "Código", "Nombre", "RUC", "Teléfono", "Dirección", "Estado"
+                "Código", "Nombre", "RUC", "Teléfono", "Dirección"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
+                java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -1227,7 +1298,7 @@ public class UIMain extends javax.swing.JFrame
                 .addContainerGap()
                 .addGroup(pnlSupplierShowLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(lblSupplierShow, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(scpSupplierShow, javax.swing.GroupLayout.DEFAULT_SIZE, 515, Short.MAX_VALUE))
+                    .addComponent(scpSupplierShow, javax.swing.GroupLayout.DEFAULT_SIZE, 532, Short.MAX_VALUE))
                 .addContainerGap())
         );
         pnlSupplierShowLayout.setVerticalGroup(
@@ -1236,7 +1307,7 @@ public class UIMain extends javax.swing.JFrame
                 .addContainerGap()
                 .addComponent(lblSupplierShow, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(scpSupplierShow, javax.swing.GroupLayout.DEFAULT_SIZE, 429, Short.MAX_VALUE)
+                .addComponent(scpSupplierShow, javax.swing.GroupLayout.DEFAULT_SIZE, 433, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
@@ -1357,7 +1428,7 @@ public class UIMain extends javax.swing.JFrame
             .addGroup(pnlSupplierAddLayout.createSequentialGroup()
                 .addGap(66, 66, 66)
                 .addComponent(pnlNewSupplier, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(66, Short.MAX_VALUE))
+                .addContainerGap(83, Short.MAX_VALUE))
         );
         pnlSupplierAddLayout.setVerticalGroup(
             pnlSupplierAddLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -1445,7 +1516,7 @@ public class UIMain extends javax.swing.JFrame
             .addGroup(pnlResultSupplierLayout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(pnlResultSupplierLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(scpResultSupplier, javax.swing.GroupLayout.DEFAULT_SIZE, 491, Short.MAX_VALUE)
+                    .addComponent(scpResultSupplier, javax.swing.GroupLayout.DEFAULT_SIZE, 508, Short.MAX_VALUE)
                     .addComponent(lblResultSupplier, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlResultSupplierLayout.createSequentialGroup()
                         .addGap(0, 0, Short.MAX_VALUE)
@@ -1458,7 +1529,7 @@ public class UIMain extends javax.swing.JFrame
                 .addContainerGap()
                 .addComponent(lblResultSupplier, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(scpResultSupplier, javax.swing.GroupLayout.DEFAULT_SIZE, 261, Short.MAX_VALUE)
+                .addComponent(scpResultSupplier, javax.swing.GroupLayout.DEFAULT_SIZE, 265, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(btnModifySupplier, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
@@ -1545,7 +1616,7 @@ public class UIMain extends javax.swing.JFrame
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(btnLinkSupplierSearch, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(scpLinkSupplier, javax.swing.GroupLayout.DEFAULT_SIZE, 310, Short.MAX_VALUE)
+                .addComponent(scpLinkSupplier, javax.swing.GroupLayout.DEFAULT_SIZE, 314, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
@@ -1623,7 +1694,7 @@ public class UIMain extends javax.swing.JFrame
                         .addComponent(pnlLinkSupplier, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(pnlLinkProducts, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                    .addComponent(lblLinkSupplierTitle, javax.swing.GroupLayout.DEFAULT_SIZE, 515, Short.MAX_VALUE))
+                    .addComponent(lblLinkSupplierTitle, javax.swing.GroupLayout.DEFAULT_SIZE, 532, Short.MAX_VALUE))
                 .addContainerGap())
         );
         pnlSupplierLinkLayout.setVerticalGroup(
@@ -1648,7 +1719,7 @@ public class UIMain extends javax.swing.JFrame
                 .addContainerGap()
                 .addComponent(pnlSupplierMaster, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(pnlSupplierSlave, javax.swing.GroupLayout.DEFAULT_SIZE, 535, Short.MAX_VALUE)
+                .addComponent(pnlSupplierSlave, javax.swing.GroupLayout.DEFAULT_SIZE, 552, Short.MAX_VALUE)
                 .addContainerGap())
         );
         pnlSuppliersLayout.setVerticalGroup(
@@ -1708,7 +1779,7 @@ public class UIMain extends javax.swing.JFrame
                 .addComponent(btnProductAdd, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(btnProductShow, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(360, Short.MAX_VALUE))
+                .addContainerGap(364, Short.MAX_VALUE))
         );
 
         pnlProductSlave.setPreferredSize(new java.awt.Dimension(500, 100));
@@ -1852,7 +1923,7 @@ public class UIMain extends javax.swing.JFrame
             .addGroup(pnlProductAddLayout.createSequentialGroup()
                 .addGap(66, 66, 66)
                 .addComponent(pnlNewProduct, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(66, Short.MAX_VALUE))
+                .addContainerGap(83, Short.MAX_VALUE))
         );
         pnlProductAddLayout.setVerticalGroup(
             pnlProductAddLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -1868,7 +1939,7 @@ public class UIMain extends javax.swing.JFrame
 
         lblProductShow.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         lblProductShow.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        lblProductShow.setText("USUARIOS REGISTRADOS");
+        lblProductShow.setText("PRODUCTOS REGISTRADOS");
 
         tblProductShow.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -1896,7 +1967,7 @@ public class UIMain extends javax.swing.JFrame
                 .addContainerGap()
                 .addGroup(pnlProductShowLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(lblProductShow, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(scpProductShow, javax.swing.GroupLayout.DEFAULT_SIZE, 515, Short.MAX_VALUE))
+                    .addComponent(scpProductShow, javax.swing.GroupLayout.DEFAULT_SIZE, 532, Short.MAX_VALUE))
                 .addContainerGap())
         );
         pnlProductShowLayout.setVerticalGroup(
@@ -1905,7 +1976,7 @@ public class UIMain extends javax.swing.JFrame
                 .addContainerGap()
                 .addComponent(lblProductShow, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(scpProductShow, javax.swing.GroupLayout.DEFAULT_SIZE, 429, Short.MAX_VALUE)
+                .addComponent(scpProductShow, javax.swing.GroupLayout.DEFAULT_SIZE, 433, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
@@ -1919,7 +1990,7 @@ public class UIMain extends javax.swing.JFrame
                 .addContainerGap()
                 .addComponent(pnlProductMaster, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(pnlProductSlave, javax.swing.GroupLayout.DEFAULT_SIZE, 535, Short.MAX_VALUE)
+                .addComponent(pnlProductSlave, javax.swing.GroupLayout.DEFAULT_SIZE, 552, Short.MAX_VALUE)
                 .addContainerGap())
         );
         pnlProductsLayout.setVerticalGroup(
@@ -2015,76 +2086,625 @@ public class UIMain extends javax.swing.JFrame
                 .addComponent(btnStoreReportSale, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(btnStoreInvent, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(237, Short.MAX_VALUE))
+                .addContainerGap(241, Short.MAX_VALUE))
         );
 
         pnlStoreSlave.setPreferredSize(new java.awt.Dimension(500, 100));
         pnlStoreSlave.setLayout(new java.awt.CardLayout());
 
+        txtNameSearchProduct.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        txtNameSearchProduct.setText("Ingrese nombre de Producto");
+        txtNameSearchProduct.setToolTipText("");
+        txtNameSearchProduct.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                txtNameSearchProductMouseClicked(evt);
+            }
+        });
+        txtNameSearchProduct.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtNameSearchProductActionPerformed(evt);
+            }
+        });
+
+        btnSearchProduct.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        btnSearchProduct.setText("Buscar");
+        btnSearchProduct.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        btnSearchProduct.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnSearchProductActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout pnlSeekProductLayout = new javax.swing.GroupLayout(pnlSeekProduct);
+        pnlSeekProduct.setLayout(pnlSeekProductLayout);
+        pnlSeekProductLayout.setHorizontalGroup(
+            pnlSeekProductLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(pnlSeekProductLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(txtNameSearchProduct, javax.swing.GroupLayout.DEFAULT_SIZE, 296, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(btnSearchProduct, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
+        );
+        pnlSeekProductLayout.setVerticalGroup(
+            pnlSeekProductLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(pnlSeekProductLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(pnlSeekProductLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
+                    .addComponent(txtNameSearchProduct, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnSearchProduct, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+
+        pnlResultProduct.setBorder(javax.swing.BorderFactory.createEtchedBorder());
+
+        tblResultProduct.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+                "Stock", "Nombre del Producto", "Precio"
+            }
+        ) {
+            Class[] types = new Class [] {
+                java.lang.String.class, java.lang.String.class, java.lang.String.class
+            };
+            boolean[] canEdit = new boolean [] {
+                false, false, false
+            };
+
+            public Class getColumnClass(int columnIndex) {
+                return types [columnIndex];
+            }
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        scpResultProduct.setViewportView(tblResultProduct);
+
+        lblResultProduct.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        lblResultProduct.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        lblResultProduct.setText("RESULTADOS DE LA BÚSQUEDA");
+
+        btnModifyProduct.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        btnModifyProduct.setText("Modificar Datos");
+        btnModifyProduct.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        btnModifyProduct.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnModifyProductActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout pnlResultProductLayout = new javax.swing.GroupLayout(pnlResultProduct);
+        pnlResultProduct.setLayout(pnlResultProductLayout);
+        pnlResultProductLayout.setHorizontalGroup(
+            pnlResultProductLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(pnlResultProductLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(pnlResultProductLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(scpResultProduct, javax.swing.GroupLayout.DEFAULT_SIZE, 491, Short.MAX_VALUE)
+                    .addComponent(lblResultProduct, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlResultProductLayout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(btnModifyProduct)))
+                .addContainerGap())
+        );
+        pnlResultProductLayout.setVerticalGroup(
+            pnlResultProductLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(pnlResultProductLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(lblResultProduct, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(scpResultProduct, javax.swing.GroupLayout.DEFAULT_SIZE, 265, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(btnModifyProduct, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
+        );
+
+        lblProductSearch.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        lblProductSearch.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        lblProductSearch.setText("BUSCAR PRODUCTO");
+
         javax.swing.GroupLayout pnlStoreSearchProLayout = new javax.swing.GroupLayout(pnlStoreSearchPro);
         pnlStoreSearchPro.setLayout(pnlStoreSearchProLayout);
         pnlStoreSearchProLayout.setHorizontalGroup(
             pnlStoreSearchProLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 535, Short.MAX_VALUE)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlStoreSearchProLayout.createSequentialGroup()
+                .addGroup(pnlStoreSearchProLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(lblProductSearch, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, pnlStoreSearchProLayout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(pnlResultProduct, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                .addContainerGap())
+            .addGroup(pnlStoreSearchProLayout.createSequentialGroup()
+                .addGap(59, 59, 59)
+                .addComponent(pnlSeekProduct, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         pnlStoreSearchProLayout.setVerticalGroup(
             pnlStoreSearchProLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 484, Short.MAX_VALUE)
+            .addGroup(pnlStoreSearchProLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(lblProductSearch, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(pnlSeekProduct, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(pnlResultProduct, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap())
         );
 
         pnlStoreSlave.add(pnlStoreSearchPro, "pnlStoreSearchPro");
+
+        txtNameSearchTicket.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        txtNameSearchTicket.setText("Ingrese número de la Boleta");
+        txtNameSearchTicket.setToolTipText("");
+        txtNameSearchTicket.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtNameSearchTicketActionPerformed(evt);
+            }
+        });
+
+        btnSearchTicket.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        btnSearchTicket.setText("Buscar");
+        btnSearchTicket.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        btnSearchTicket.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnSearchTicketActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout pnlSeekTicketLayout = new javax.swing.GroupLayout(pnlSeekTicket);
+        pnlSeekTicket.setLayout(pnlSeekTicketLayout);
+        pnlSeekTicketLayout.setHorizontalGroup(
+            pnlSeekTicketLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(pnlSeekTicketLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(txtNameSearchTicket, javax.swing.GroupLayout.DEFAULT_SIZE, 296, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(btnSearchTicket, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
+        );
+        pnlSeekTicketLayout.setVerticalGroup(
+            pnlSeekTicketLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(pnlSeekTicketLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(pnlSeekTicketLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
+                    .addComponent(txtNameSearchTicket, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnSearchTicket, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+
+        pnlResultTicket.setBorder(javax.swing.BorderFactory.createEtchedBorder());
+
+        tblResultTicket.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+                "Código", "Ganancia", "Fecha"
+            }
+        ) {
+            Class[] types = new Class [] {
+                java.lang.String.class, java.lang.String.class, java.lang.String.class
+            };
+
+            public Class getColumnClass(int columnIndex) {
+                return types [columnIndex];
+            }
+        });
+        scpResultTicket.setViewportView(tblResultTicket);
+
+        lblResultTicket.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        lblResultTicket.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        lblResultTicket.setText("RESULTADOS DE LA BÚSQUEDA");
+
+        btnSeeTicket.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        btnSeeTicket.setText("Visualizar Boleta");
+        btnSeeTicket.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        btnSeeTicket.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnSeeTicketActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout pnlResultTicketLayout = new javax.swing.GroupLayout(pnlResultTicket);
+        pnlResultTicket.setLayout(pnlResultTicketLayout);
+        pnlResultTicketLayout.setHorizontalGroup(
+            pnlResultTicketLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(pnlResultTicketLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(pnlResultTicketLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(scpResultTicket, javax.swing.GroupLayout.DEFAULT_SIZE, 491, Short.MAX_VALUE)
+                    .addComponent(lblResultTicket, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlResultTicketLayout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(btnSeeTicket)))
+                .addContainerGap())
+        );
+        pnlResultTicketLayout.setVerticalGroup(
+            pnlResultTicketLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(pnlResultTicketLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(lblResultTicket, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(scpResultTicket, javax.swing.GroupLayout.DEFAULT_SIZE, 265, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(btnSeeTicket, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
+        );
+
+        lblTicketSearch.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        lblTicketSearch.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        lblTicketSearch.setText("BUSCAR BOLETA DE VENTA");
 
         javax.swing.GroupLayout pnlStoreSearchTicLayout = new javax.swing.GroupLayout(pnlStoreSearchTic);
         pnlStoreSearchTic.setLayout(pnlStoreSearchTicLayout);
         pnlStoreSearchTicLayout.setHorizontalGroup(
             pnlStoreSearchTicLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 535, Short.MAX_VALUE)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlStoreSearchTicLayout.createSequentialGroup()
+                .addGroup(pnlStoreSearchTicLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(lblTicketSearch, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, pnlStoreSearchTicLayout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(pnlResultTicket, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                .addContainerGap())
+            .addGroup(pnlStoreSearchTicLayout.createSequentialGroup()
+                .addGap(59, 59, 59)
+                .addComponent(pnlSeekTicket, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         pnlStoreSearchTicLayout.setVerticalGroup(
             pnlStoreSearchTicLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 484, Short.MAX_VALUE)
+            .addGroup(pnlStoreSearchTicLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(lblTicketSearch, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(pnlSeekTicket, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(pnlResultTicket, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap())
         );
 
         pnlStoreSlave.add(pnlStoreSearchTic, "pnlStoreSearchTic");
 
-        javax.swing.GroupLayout pnlStoreReportProdLayout = new javax.swing.GroupLayout(pnlStoreReportProd);
-        pnlStoreReportProd.setLayout(pnlStoreReportProdLayout);
-        pnlStoreReportProdLayout.setHorizontalGroup(
-            pnlStoreReportProdLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 535, Short.MAX_VALUE)
-        );
-        pnlStoreReportProdLayout.setVerticalGroup(
-            pnlStoreReportProdLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 484, Short.MAX_VALUE)
-        );
+        lblProductShowStore.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        lblProductShowStore.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        lblProductShowStore.setText("PRODUCTOS REGISTRADOS");
 
-        pnlStoreSlave.add(pnlStoreReportProd, "pnlStoreReportProd");
+        tblProductShowStore.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
 
-        javax.swing.GroupLayout pnlStoreReportSaleLayout = new javax.swing.GroupLayout(pnlStoreReportSale);
-        pnlStoreReportSale.setLayout(pnlStoreReportSaleLayout);
-        pnlStoreReportSaleLayout.setHorizontalGroup(
-            pnlStoreReportSaleLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 535, Short.MAX_VALUE)
-        );
-        pnlStoreReportSaleLayout.setVerticalGroup(
-            pnlStoreReportSaleLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 484, Short.MAX_VALUE)
-        );
+            },
+            new String [] {
+                "Código", "Nombre", "Marca", "Presentación", "Categoría", "Stock", "Precio"
+            }
+        ) {
+            Class[] types = new Class [] {
+                java.lang.Object.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
+            };
+            boolean[] canEdit = new boolean [] {
+                true, true, true, true, false, true, true
+            };
 
-        pnlStoreSlave.add(pnlStoreReportSale, "pnlStoreReportSale");
+            public Class getColumnClass(int columnIndex) {
+                return types [columnIndex];
+            }
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        scpProductShowStore.setViewportView(tblProductShowStore);
+
+        cbxSaleSearchProductStore.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Nombre", "Marca", "Categoría" }));
+        cbxSaleSearchProductStore.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                cbxSaleSearchProductStoreItemStateChanged(evt);
+            }
+        });
 
         javax.swing.GroupLayout pnlStoreInventLayout = new javax.swing.GroupLayout(pnlStoreInvent);
         pnlStoreInvent.setLayout(pnlStoreInventLayout);
         pnlStoreInventLayout.setHorizontalGroup(
             pnlStoreInventLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 535, Short.MAX_VALUE)
+            .addGroup(pnlStoreInventLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(pnlStoreInventLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(pnlStoreInventLayout.createSequentialGroup()
+                        .addComponent(lblProductShowStore, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(cbxSaleSearchProductStore, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(scpProductShowStore, javax.swing.GroupLayout.DEFAULT_SIZE, 515, Short.MAX_VALUE))
+                .addContainerGap())
         );
         pnlStoreInventLayout.setVerticalGroup(
             pnlStoreInventLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 484, Short.MAX_VALUE)
+            .addGroup(pnlStoreInventLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(pnlStoreInventLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
+                    .addComponent(lblProductShowStore, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(cbxSaleSearchProductStore, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(scpProductShowStore, javax.swing.GroupLayout.DEFAULT_SIZE, 433, Short.MAX_VALUE)
+                .addContainerGap())
         );
 
         pnlStoreSlave.add(pnlStoreInvent, "pnlStoreInvent");
+
+        lblProductStore.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        lblProductStore.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        lblProductStore.setText("REGISTRO DE NUEVO USUARIO");
+
+        pnlProductStore.setBorder(javax.swing.BorderFactory.createEtchedBorder(javax.swing.border.EtchedBorder.RAISED));
+
+        txtProductNameStore.setToolTipText("");
+
+        txtProductBrandStore.setToolTipText("");
+
+        txtProductPresentationStore.setToolTipText("");
+
+        txtProductStockStore.setToolTipText("");
+
+        txtProductPriceStore.setToolTipText("");
+
+        lbProductNameStore.setFont(new java.awt.Font("Gisha", 1, 11)); // NOI18N
+        lbProductNameStore.setText("Nombre");
+
+        lblProductBrandStore.setFont(new java.awt.Font("Gisha", 1, 11)); // NOI18N
+        lblProductBrandStore.setText("Marca");
+
+        lblProductPresentationStore.setFont(new java.awt.Font("Gisha", 1, 11)); // NOI18N
+        lblProductPresentationStore.setText("Presentación");
+
+        lblProductStockStore.setFont(new java.awt.Font("Gisha", 1, 11)); // NOI18N
+        lblProductStockStore.setText("Stock");
+
+        lblProductPriceStore.setFont(new java.awt.Font("Gisha", 1, 11)); // NOI18N
+        lblProductPriceStore.setText("Precio");
+
+        lblProductCategoryStore.setFont(new java.awt.Font("Gisha", 1, 11)); // NOI18N
+        lblProductCategoryStore.setText("Categoría");
+
+        btnProductUpdateStore.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        btnProductUpdateStore.setText("Actualizar");
+        btnProductUpdateStore.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        btnProductUpdateStore.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnProductUpdateStoreActionPerformed(evt);
+            }
+        });
+
+        lblUserMandatoryStore.setFont(new java.awt.Font("Gisha", 0, 10)); // NOI18N
+        lblUserMandatoryStore.setText("* Obligatorio");
+
+        javax.swing.GroupLayout pnlProductStoreLayout = new javax.swing.GroupLayout(pnlProductStore);
+        pnlProductStore.setLayout(pnlProductStoreLayout);
+        pnlProductStoreLayout.setHorizontalGroup(
+            pnlProductStoreLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(pnlProductStoreLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(pnlProductStoreLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(pnlProductStoreLayout.createSequentialGroup()
+                        .addComponent(lblProductPresentationStore, javax.swing.GroupLayout.PREFERRED_SIZE, 99, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(txtProductPresentationStore))
+                    .addGroup(pnlProductStoreLayout.createSequentialGroup()
+                        .addGroup(pnlProductStoreLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addGroup(pnlProductStoreLayout.createSequentialGroup()
+                                .addComponent(lblProductStockStore, javax.swing.GroupLayout.PREFERRED_SIZE, 99, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(18, 18, 18)
+                                .addComponent(txtProductStockStore, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(10, 10, 10)
+                                .addComponent(lblProductCategoryStore, javax.swing.GroupLayout.PREFERRED_SIZE, 55, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(cbxProductCategoryStore, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                            .addGroup(pnlProductStoreLayout.createSequentialGroup()
+                                .addGroup(pnlProductStoreLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(pnlProductStoreLayout.createSequentialGroup()
+                                        .addComponent(lblProductPriceStore, javax.swing.GroupLayout.PREFERRED_SIZE, 99, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addGap(18, 18, 18)
+                                        .addComponent(txtProductPriceStore, javax.swing.GroupLayout.PREFERRED_SIZE, 116, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addComponent(lblUserMandatoryStore, javax.swing.GroupLayout.PREFERRED_SIZE, 99, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 46, Short.MAX_VALUE)
+                                .addComponent(btnProductUpdateStore, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(pnlProductStoreLayout.createSequentialGroup()
+                                .addGroup(pnlProductStoreLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                    .addComponent(lbProductNameStore, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(lblProductBrandStore, javax.swing.GroupLayout.DEFAULT_SIZE, 99, Short.MAX_VALUE))
+                                .addGroup(pnlProductStoreLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(pnlProductStoreLayout.createSequentialGroup()
+                                        .addGap(18, 18, 18)
+                                        .addComponent(txtProductBrandStore))
+                                    .addGroup(pnlProductStoreLayout.createSequentialGroup()
+                                        .addGap(18, 18, 18)
+                                        .addComponent(txtProductNameStore)))))
+                        .addGap(0, 0, Short.MAX_VALUE)))
+                .addGap(10, 10, 10))
+        );
+        pnlProductStoreLayout.setVerticalGroup(
+            pnlProductStoreLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(pnlProductStoreLayout.createSequentialGroup()
+                .addGap(18, 18, 18)
+                .addGroup(pnlProductStoreLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(lbProductNameStore, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txtProductNameStore, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(pnlProductStoreLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(lblProductBrandStore, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txtProductBrandStore, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(pnlProductStoreLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(lblProductPresentationStore, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txtProductPresentationStore, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(pnlProductStoreLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(lblProductStockStore, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txtProductStockStore, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(cbxProductCategoryStore, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(lblProductCategoryStore, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(pnlProductStoreLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(lblProductPriceStore, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txtProductPriceStore, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(pnlProductStoreLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(lblUserMandatoryStore, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnProductUpdateStore, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+
+        javax.swing.GroupLayout pnlStoreModifyProLayout = new javax.swing.GroupLayout(pnlStoreModifyPro);
+        pnlStoreModifyPro.setLayout(pnlStoreModifyProLayout);
+        pnlStoreModifyProLayout.setHorizontalGroup(
+            pnlStoreModifyProLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(pnlStoreModifyProLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(lblProductStore, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap())
+            .addGroup(pnlStoreModifyProLayout.createSequentialGroup()
+                .addGap(66, 66, 66)
+                .addComponent(pnlProductStore, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(66, Short.MAX_VALUE))
+        );
+        pnlStoreModifyProLayout.setVerticalGroup(
+            pnlStoreModifyProLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(pnlStoreModifyProLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(lblProductStore, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(pnlProductStore, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap())
+        );
+
+        pnlStoreSlave.add(pnlStoreModifyPro, "pnlStoreModifyPro");
+
+        lblSaleReport.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        lblSaleReport.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        lblSaleReport.setText("PRODUCTOS REGISTRADOS");
+
+        clrStart.addPropertyChangeListener(new java.beans.PropertyChangeListener() {
+            public void propertyChange(java.beans.PropertyChangeEvent evt) {
+                clrStartPropertyChange(evt);
+            }
+        });
+
+        lblSateReportStart.setText("Seleccione fecha de Inicio:");
+
+        lblSateReportEnd.setText("Seleccione fecha de Fin:");
+
+        clrEnd.addPropertyChangeListener(new java.beans.PropertyChangeListener() {
+            public void propertyChange(java.beans.PropertyChangeEvent evt) {
+                clrEndPropertyChange(evt);
+            }
+        });
+
+        lblSelectDateStart.setText("Fecha Seleccionada:");
+
+        lblSelectDateEnd.setText("Fecha Seleccionada:");
+
+        lblSelectDateStartReport.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        lblSelectDateStartReport.setText("Fecha Seleccionada:");
+
+        lblSelectDateEndReport.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        lblSelectDateEndReport.setText("Fecha Seleccionada:");
+
+        javax.swing.GroupLayout pnlContentSaleReportLayout = new javax.swing.GroupLayout(pnlContentSaleReport);
+        pnlContentSaleReport.setLayout(pnlContentSaleReportLayout);
+        pnlContentSaleReportLayout.setHorizontalGroup(
+            pnlContentSaleReportLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(pnlContentSaleReportLayout.createSequentialGroup()
+                .addGroup(pnlContentSaleReportLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(pnlContentSaleReportLayout.createSequentialGroup()
+                        .addGap(20, 20, 20)
+                        .addComponent(clrStart, javax.swing.GroupLayout.PREFERRED_SIZE, 281, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGroup(pnlContentSaleReportLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(pnlContentSaleReportLayout.createSequentialGroup()
+                                .addComponent(lblSelectDateStart)
+                                .addGap(0, 0, Short.MAX_VALUE))
+                            .addGroup(pnlContentSaleReportLayout.createSequentialGroup()
+                                .addGap(10, 10, 10)
+                                .addComponent(lblSelectDateStartReport, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                    .addGroup(pnlContentSaleReportLayout.createSequentialGroup()
+                        .addContainerGap()
+                        .addGroup(pnlContentSaleReportLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(pnlContentSaleReportLayout.createSequentialGroup()
+                                .addGroup(pnlContentSaleReportLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(lblSateReportStart)
+                                    .addComponent(lblSateReportEnd))
+                                .addGap(100, 100, 100))
+                            .addGroup(pnlContentSaleReportLayout.createSequentialGroup()
+                                .addGap(10, 10, 10)
+                                .addComponent(clrEnd, javax.swing.GroupLayout.PREFERRED_SIZE, 283, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addGroup(pnlContentSaleReportLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(pnlContentSaleReportLayout.createSequentialGroup()
+                                        .addGap(10, 10, 10)
+                                        .addComponent(lblSelectDateEndReport, javax.swing.GroupLayout.DEFAULT_SIZE, 182, Short.MAX_VALUE))
+                                    .addGroup(pnlContentSaleReportLayout.createSequentialGroup()
+                                        .addComponent(lblSelectDateEnd)
+                                        .addGap(0, 0, Short.MAX_VALUE)))))))
+                .addContainerGap())
+        );
+        pnlContentSaleReportLayout.setVerticalGroup(
+            pnlContentSaleReportLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlContentSaleReportLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(lblSateReportStart)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(pnlContentSaleReportLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(clrStart, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(pnlContentSaleReportLayout.createSequentialGroup()
+                        .addComponent(lblSelectDateStart)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(lblSelectDateStartReport)))
+                .addGap(13, 13, 13)
+                .addComponent(lblSateReportEnd)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(pnlContentSaleReportLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(clrEnd, javax.swing.GroupLayout.PREFERRED_SIZE, 157, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(pnlContentSaleReportLayout.createSequentialGroup()
+                        .addComponent(lblSelectDateEnd, javax.swing.GroupLayout.PREFERRED_SIZE, 15, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(lblSelectDateEndReport, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+
+        jButton1.setText("Generar");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout pnlStoreSaleReportLayout = new javax.swing.GroupLayout(pnlStoreSaleReport);
+        pnlStoreSaleReport.setLayout(pnlStoreSaleReportLayout);
+        pnlStoreSaleReportLayout.setHorizontalGroup(
+            pnlStoreSaleReportLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(pnlStoreSaleReportLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(pnlStoreSaleReportLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(pnlContentSaleReport, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(lblSaleReport, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlStoreSaleReportLayout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 85, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap())
+        );
+        pnlStoreSaleReportLayout.setVerticalGroup(
+            pnlStoreSaleReportLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(pnlStoreSaleReportLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(lblSaleReport, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(pnlContentSaleReport, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+
+        pnlStoreSlave.add(pnlStoreSaleReport, "pnlStoreSaleReport");
 
         javax.swing.GroupLayout pnlStoreLayout = new javax.swing.GroupLayout(pnlStore);
         pnlStore.setLayout(pnlStoreLayout);
@@ -2176,12 +2796,15 @@ public class UIMain extends javax.swing.JFrame
         lblSaleOrderTotalOn.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         lblSaleOrderTotalOn.setText("Total");
 
-        lblSaleOrderPrint.setText("Imprimir Comprobante");
-        lblSaleOrderPrint.addActionListener(new java.awt.event.ActionListener() {
+        btnSaleOrderPrint.setText("Imprimir Comprobante");
+        btnSaleOrderPrint.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                lblSaleOrderPrintActionPerformed(evt);
+                btnSaleOrderPrintActionPerformed(evt);
             }
         });
+
+        lblUserOnSale.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        lblUserOnSale.setText("xxxxxxxxxxxxxxxxx");
 
         javax.swing.GroupLayout pnlSaleOrderLayout = new javax.swing.GroupLayout(pnlSaleOrder);
         pnlSaleOrder.setLayout(pnlSaleOrderLayout);
@@ -2198,8 +2821,9 @@ public class UIMain extends javax.swing.JFrame
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(lblSaleOrderTotalOn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlSaleOrderLayout.createSequentialGroup()
-                        .addGap(0, 0, Short.MAX_VALUE)
-                        .addComponent(lblSaleOrderPrint, javax.swing.GroupLayout.PREFERRED_SIZE, 158, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(lblUserOnSale, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(btnSaleOrderPrint, javax.swing.GroupLayout.PREFERRED_SIZE, 158, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(pnlSaleOrderLayout.createSequentialGroup()
                         .addGroup(pnlSaleOrderLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addGroup(pnlSaleOrderLayout.createSequentialGroup()
@@ -2239,7 +2863,9 @@ public class UIMain extends javax.swing.JFrame
                     .addComponent(lblSaleOrderTotal, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btnSaleOrderDelete))
                 .addGap(18, 18, 18)
-                .addComponent(lblSaleOrderPrint)
+                .addGroup(pnlSaleOrderLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
+                    .addComponent(lblUserOnSale)
+                    .addComponent(btnSaleOrderPrint))
                 .addContainerGap())
         );
 
@@ -2404,7 +3030,7 @@ public class UIMain extends javax.swing.JFrame
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(pnlMenu, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(pnlContent, javax.swing.GroupLayout.DEFAULT_SIZE, 510, Short.MAX_VALUE)
+                .addComponent(pnlContent, javax.swing.GroupLayout.DEFAULT_SIZE, 514, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
@@ -2442,6 +3068,7 @@ public class UIMain extends javax.swing.JFrame
     {//GEN-HEADEREND:event_btnStoreActionPerformed
         interfaz.changeStore((CardLayout)pnlContent.getLayout(), pnlContent);
         interfaz.paint(4, menuBtn);
+        store.changeInventStore((CardLayout)pnlStoreSlave.getLayout(), pnlStoreSlave, tblProductShowStore);
     }//GEN-LAST:event_btnStoreActionPerformed
 
     private void btnSaleActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_btnSaleActionPerformed
@@ -2452,6 +3079,7 @@ public class UIMain extends javax.swing.JFrame
         DateFormat format = new SimpleDateFormat("yyyy/MM/dd");
         this.lblSaleOrderDateOn.setText(format.format(date));
         this.interfaz.setOrderNumber(lblSaleOrderNumber);
+        this.lblUserOnSale.setText("Usuario: " + user.getName() + " " + user.getFatherLastName());
     }//GEN-LAST:event_btnSaleActionPerformed
 
     private void btnHelpActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_btnHelpActionPerformed
@@ -2476,23 +3104,34 @@ public class UIMain extends javax.swing.JFrame
     }//GEN-LAST:event_btnSaleOrderDeleteActionPerformed
 
     private void btnStoreInventActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnStoreInventActionPerformed
-
+        store.changeInventStore((CardLayout)pnlStoreSlave.getLayout(), pnlStoreSlave, tblProductShowStore);
     }//GEN-LAST:event_btnStoreInventActionPerformed
 
     private void btnStoreReportSaleActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnStoreReportSaleActionPerformed
-
+        store.changeReportSale((CardLayout)pnlStoreSlave.getLayout(), pnlStoreSlave);
     }//GEN-LAST:event_btnStoreReportSaleActionPerformed
 
     private void btnStoreSearchProActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnStoreSearchProActionPerformed
-
+        //clean(1);
+        store.changeProductSearch((CardLayout)pnlStoreSlave.getLayout(), pnlStoreSlave);
+        //userCode = "";
     }//GEN-LAST:event_btnStoreSearchProActionPerformed
 
     private void btnStoreSearchTicActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnStoreSearchTicActionPerformed
-
+        store.changeTicketSearch((CardLayout)pnlStoreSlave.getLayout(), pnlStoreSlave);
     }//GEN-LAST:event_btnStoreSearchTicActionPerformed
 
     private void btnStoreReportProdActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnStoreReportProdActionPerformed
-
+        if(store.productReport(user))
+                JOptionPane.showMessageDialog(  null,
+                                            "El Reporte se ha generado correctamente. Se encuentra en la dirección consignada al crearlo",
+                                            "Reporte Generado",
+                                            JOptionPane.INFORMATION_MESSAGE);
+        else
+            JOptionPane.showMessageDialog(  null,
+                                            "Hubieron problemas al generar el resporte. Revise los datos y vuelva a generarlo",
+                                            "Reporte No Generado",
+                                            JOptionPane.ERROR_MESSAGE);
     }//GEN-LAST:event_btnStoreReportProdActionPerformed
 
     private void btnProductRegisterActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnProductRegisterActionPerformed
@@ -2598,7 +3237,7 @@ public class UIMain extends javax.swing.JFrame
         int value = 0;
         if((value = tblResultUser.getSelectedRow()) != -1){
             clean(2);
-            supplierCode = suppliers.sent((CardLayout)pnlSupplierSlave.getLayout(), pnlSupplierSlave, suppliersSearch.get(value), lblNewSupplier, txtSupplierName, txtSupplierTr, txtSupplierPhone, txtSupplierAddress, btnSupplierRegister);
+            userCode = users.sent((CardLayout)pnlUserSlave.getLayout(), pnlUserSlave, usersSearch.get(value), lblNewSupplier, txtUserName, txtUserFatherLastName, txtUserMotherLastName, txtUserNi, cbxUserGender, txtUserAddress, cbxUserPosition, txtUserCellphone, txtUserEmail, txtUserEmergencyNumber, txaUserOthers, btnUserRegister);
         } else
             JOptionPane.showMessageDialog(  null,
                                             "No ha seleccionado ningún registro.",
@@ -2662,6 +3301,7 @@ public class UIMain extends javax.swing.JFrame
                         DateFormat format = new SimpleDateFormat("yyyy/MM/dd");
                         this.lblSaleOrderDateOn.setText(format.format(date));
                         this.interfaz.setOrderNumber(lblSaleOrderNumber);
+                        this.lblUserOnSale.setText("Usuario: " + user.getName() + " " + user.getFatherLastName());
                         break;
             }
         }
@@ -2707,8 +3347,19 @@ public class UIMain extends javax.swing.JFrame
         }
     }//GEN-LAST:event_tblSaleOrderTablePropertyChange
 
-    private void lblSaleOrderPrintActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_lblSaleOrderPrintActionPerformed
+    private void btnSaleOrderPrintActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSaleOrderPrintActionPerformed
         if(this.tblSaleOrderTable.getRowCount() != 0){
+            btnSaleOrderDelete.setVisible(false);
+            
+            try {
+                BufferedImage imagen = new BufferedImage(pnlSaleOrder.getWidth(), pnlSaleOrder.getHeight(), BufferedImage.TYPE_INT_ARGB);
+                pnlSaleOrder.paint(imagen.getGraphics());
+                ImageIO.write(imagen, "png", new File("Boletas/"+lblSaleOrderNumber.getText()+".png"));
+            } catch (IOException ex) {
+                Logger.getLogger(UIMain.class.getName()).log(Level.SEVERE, null, ex);
+            }         
+            
+            btnSaleOrderDelete.setVisible(true);
             this.sale.safeSale(user, txtSaleOrderClient, lblSaleOrderTotalOn, lblSaleOrderDateOn, tblSaleOrderTable);
             clean(5);
             this.interfaz.setOrderNumber(lblSaleOrderNumber);
@@ -2717,7 +3368,87 @@ public class UIMain extends javax.swing.JFrame
                                             "No se ha ingresado algún registro a la Orden de Venta",
                                             "Datos No Ingresados",
                                             JOptionPane.ERROR_MESSAGE);
-    }//GEN-LAST:event_lblSaleOrderPrintActionPerformed
+    }//GEN-LAST:event_btnSaleOrderPrintActionPerformed
+
+    private void btnProductUpdateStoreActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnProductUpdateStoreActionPerformed
+        store.actProduct(productCode, txtProductNameStore, txtProductBrandStore, txtProductPresentationStore, txtProductStockStore, cbxProductCategoryStore, txtProductPriceStore);
+        store.changeInventStore((CardLayout)pnlStoreSlave.getLayout(), pnlStoreSlave, tblProductShowStore);
+    }//GEN-LAST:event_btnProductUpdateStoreActionPerformed
+
+    private void btnSearchProductActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSearchProductActionPerformed
+        //Clean
+        productsSearch = store.searchProduct(txtNameSearchProduct, tblResultProduct);
+    }//GEN-LAST:event_btnSearchProductActionPerformed
+
+    private void btnModifyProductActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnModifyProductActionPerformed
+        int value = 0;
+        if((value = tblResultProduct.getSelectedRow()) != -1){
+            //clean(2);
+            store.changeModify((CardLayout)pnlStoreSlave.getLayout(), pnlStoreSlave);
+            productCode = store.sendProduct(productsSearch.get(value), txtProductNameStore, txtProductBrandStore, txtProductPresentationStore, txtProductStockStore, cbxProductCategoryStore, txtProductPriceStore);
+        } else
+            JOptionPane.showMessageDialog(  null,
+                                            "No ha seleccionado ningún registro.",
+                                            "Dato no Seleccionado",
+                                            JOptionPane.WARNING_MESSAGE);
+    }//GEN-LAST:event_btnModifyProductActionPerformed
+
+    private void btnSearchTicketActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSearchTicketActionPerformed
+        //Clean
+        ticketsSearch = store.searchTicket(txtNameSearchTicket, tblResultTicket);
+    }//GEN-LAST:event_btnSearchTicketActionPerformed
+
+    private void btnSeeTicketActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSeeTicketActionPerformed
+        int row = 0;
+        if((row = tblResultTicket.getSelectedRow()) != -1){
+            CTicket ticket = new CTicket(ticketsSearch.get(row));
+        } else
+            JOptionPane.showMessageDialog(  null,
+                                            "No ha seleccionado ningún registro.",
+                                            "Dato no Seleccionado",
+                                            JOptionPane.WARNING_MESSAGE);
+    }//GEN-LAST:event_btnSeeTicketActionPerformed
+
+    private void cbxSaleSearchProductStoreItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_cbxSaleSearchProductStoreItemStateChanged
+         if (evt.getStateChange() == ItemEvent.SELECTED) {
+             store.chargeProduct(tblProductShowStore, cbxSaleSearchProductStore);
+         }
+    }//GEN-LAST:event_cbxSaleSearchProductStoreItemStateChanged
+
+    private void clrStartPropertyChange(java.beans.PropertyChangeEvent evt) {//GEN-FIRST:event_clrStartPropertyChange
+        SimpleDateFormat format = new SimpleDateFormat("dd 'de' MMMM 'del' yyyy");
+        lblSelectDateStartReport.setText(format.format(clrStart.getCalendar().getTime()));
+    }//GEN-LAST:event_clrStartPropertyChange
+
+    private void clrEndPropertyChange(java.beans.PropertyChangeEvent evt) {//GEN-FIRST:event_clrEndPropertyChange
+        SimpleDateFormat format = new SimpleDateFormat("dd 'de' MMMM 'del' yyyy");
+        lblSelectDateEndReport.setText(format.format(clrEnd.getCalendar().getTime()));
+    }//GEN-LAST:event_clrEndPropertyChange
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        if(store.saleReport(user,  clrStart, clrEnd))
+            JOptionPane.showMessageDialog(  null,
+                                            "El Reporte se ha generado correctamente. Se encuentra en la dirección consignada al crearlo",
+                                            "Reporte Generado",
+                                            JOptionPane.INFORMATION_MESSAGE);
+        else
+            JOptionPane.showMessageDialog(  null,
+                                            "Hubieron problemas al generar el resporte. Revise los datos y vuelva a generarlo",
+                                            "Reporte No Generado",
+                                            JOptionPane.ERROR_MESSAGE);
+    }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void txtNameSearchTicketActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtNameSearchTicketActionPerformed
+        this.txtNameSearchTicket.setText("");
+    }//GEN-LAST:event_txtNameSearchTicketActionPerformed
+
+    private void txtNameSearchProductActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtNameSearchProductActionPerformed
+        
+    }//GEN-LAST:event_txtNameSearchProductActionPerformed
+
+    private void txtNameSearchProductMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_txtNameSearchProductMouseClicked
+        this.txtNameSearchProduct.setText("");
+    }//GEN-LAST:event_txtNameSearchProductMouseClicked
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnHelp;
@@ -2725,17 +3456,23 @@ public class UIMain extends javax.swing.JFrame
     private javax.swing.JButton btnLinkSupplier;
     private javax.swing.JButton btnLinkSupplierSearch;
     private javax.swing.JButton btnLogIn;
+    private javax.swing.JButton btnModifyProduct;
     private javax.swing.JButton btnModifySupplier;
     private javax.swing.JButton btnModifyUser;
     private javax.swing.JButton btnProductAdd;
     private javax.swing.JButton btnProductRegister;
     private javax.swing.JButton btnProductShow;
+    private javax.swing.JButton btnProductUpdateStore;
     private javax.swing.JButton btnProducts;
     private javax.swing.JButton btnSale;
     private javax.swing.JButton btnSaleOrderDelete;
+    private javax.swing.JButton btnSaleOrderPrint;
     private javax.swing.JButton btnSaleSearchProduct;
+    private javax.swing.JButton btnSearchProduct;
     private javax.swing.JButton btnSearchSupplier;
+    private javax.swing.JButton btnSearchTicket;
     private javax.swing.JButton btnSearchUser;
+    private javax.swing.JButton btnSeeTicket;
     private javax.swing.JButton btnStore;
     private javax.swing.JButton btnStoreInvent;
     private javax.swing.JButton btnStoreReportProd;
@@ -2754,10 +3491,16 @@ public class UIMain extends javax.swing.JFrame
     private javax.swing.JButton btnUserShow;
     private javax.swing.JButton btnUsers;
     private javax.swing.JComboBox cbxProductCategory;
+    private javax.swing.JComboBox cbxProductCategoryStore;
     private javax.swing.JComboBox cbxSaleSearchProduct;
+    private javax.swing.JComboBox cbxSaleSearchProductStore;
     private javax.swing.JComboBox cbxUserGender;
     private javax.swing.JComboBox cbxUserPosition;
+    private com.toedter.calendar.JCalendar clrEnd;
+    private com.toedter.calendar.JCalendar clrStart;
+    private javax.swing.JButton jButton1;
     private javax.swing.JLabel lbProductName;
+    private javax.swing.JLabel lbProductNameStore;
     private javax.swing.JLabel lblForgottenPass;
     private javax.swing.JLabel lblHome;
     private javax.swing.JLabel lblId;
@@ -2772,12 +3515,22 @@ public class UIMain extends javax.swing.JFrame
     private javax.swing.JLabel lblPass;
     private javax.swing.JLabel lblProduct;
     private javax.swing.JLabel lblProductBrand;
+    private javax.swing.JLabel lblProductBrandStore;
     private javax.swing.JLabel lblProductCategory;
+    private javax.swing.JLabel lblProductCategoryStore;
     private javax.swing.JLabel lblProductPresentation;
+    private javax.swing.JLabel lblProductPresentationStore;
     private javax.swing.JLabel lblProductPrice;
+    private javax.swing.JLabel lblProductPriceStore;
+    private javax.swing.JLabel lblProductSearch;
     private javax.swing.JLabel lblProductShow;
+    private javax.swing.JLabel lblProductShowStore;
     private javax.swing.JLabel lblProductStock;
+    private javax.swing.JLabel lblProductStockStore;
+    private javax.swing.JLabel lblProductStore;
+    private javax.swing.JLabel lblResultProduct;
     private javax.swing.JLabel lblResultSupplier;
+    private javax.swing.JLabel lblResultTicket;
     private javax.swing.JLabel lblResultUser;
     private javax.swing.JLabel lblSale;
     private javax.swing.JLabel lblSaleOrder;
@@ -2785,10 +3538,16 @@ public class UIMain extends javax.swing.JFrame
     private javax.swing.JLabel lblSaleOrderDate;
     private javax.swing.JLabel lblSaleOrderDateOn;
     private javax.swing.JLabel lblSaleOrderNumber;
-    private javax.swing.JButton lblSaleOrderPrint;
     private javax.swing.JLabel lblSaleOrderTotal;
     private javax.swing.JLabel lblSaleOrderTotalOn;
+    private javax.swing.JLabel lblSaleReport;
     private javax.swing.JLabel lblSaleSearchProduct;
+    private javax.swing.JLabel lblSateReportEnd;
+    private javax.swing.JLabel lblSateReportStart;
+    private javax.swing.JLabel lblSelectDateEnd;
+    private javax.swing.JLabel lblSelectDateEndReport;
+    private javax.swing.JLabel lblSelectDateStart;
+    private javax.swing.JLabel lblSelectDateStartReport;
     private javax.swing.JLabel lblStore;
     private javax.swing.JLabel lblSupplier;
     private javax.swing.JLabel lblSupplierAddress;
@@ -2798,6 +3557,7 @@ public class UIMain extends javax.swing.JFrame
     private javax.swing.JLabel lblSupplierSearch;
     private javax.swing.JLabel lblSupplierShow;
     private javax.swing.JLabel lblSupplierTr;
+    private javax.swing.JLabel lblTicketSearch;
     private javax.swing.JLabel lblUser;
     private javax.swing.JLabel lblUserAdress;
     private javax.swing.JLabel lblUserCellphone;
@@ -2807,9 +3567,11 @@ public class UIMain extends javax.swing.JFrame
     private javax.swing.JLabel lblUserGender;
     private javax.swing.JLabel lblUserMandatory;
     private javax.swing.JLabel lblUserMandatory1;
+    private javax.swing.JLabel lblUserMandatoryStore;
     private javax.swing.JLabel lblUserMotherLastName;
     private javax.swing.JLabel lblUserName;
     private javax.swing.JLabel lblUserNi;
+    private javax.swing.JLabel lblUserOnSale;
     private javax.swing.JLabel lblUserOther;
     private javax.swing.JLabel lblUserPosition;
     private javax.swing.JLabel lblUserSearch;
@@ -2818,6 +3580,7 @@ public class UIMain extends javax.swing.JFrame
     private javax.swing.JList lstLinkSupplier;
     private javax.swing.JPanel pnlAccess;
     private javax.swing.JPanel pnlContent;
+    private javax.swing.JPanel pnlContentSaleReport;
     private javax.swing.JPanel pnlDataAccess;
     private javax.swing.JPanel pnlHome;
     private javax.swing.JPanel pnlLinkProducts;
@@ -2830,20 +3593,25 @@ public class UIMain extends javax.swing.JFrame
     private javax.swing.JPanel pnlProductMaster;
     private javax.swing.JPanel pnlProductShow;
     private javax.swing.JPanel pnlProductSlave;
+    private javax.swing.JPanel pnlProductStore;
     private javax.swing.JPanel pnlProducts;
+    private javax.swing.JPanel pnlResultProduct;
     private javax.swing.JPanel pnlResultSupplier;
+    private javax.swing.JPanel pnlResultTicket;
     private javax.swing.JPanel pnlResultUser;
     private javax.swing.JPanel pnlSale;
     private javax.swing.JPanel pnlSaleOrder;
     private javax.swing.JPanel pnlSaleSearchProduct;
     private javax.swing.JPanel pnlSaleSearchProductOn;
+    private javax.swing.JPanel pnlSeekProduct;
     private javax.swing.JPanel pnlSeekSupplier;
+    private javax.swing.JPanel pnlSeekTicket;
     private javax.swing.JPanel pnlSeekUser;
     private javax.swing.JPanel pnlStore;
     private javax.swing.JPanel pnlStoreInvent;
     private javax.swing.JPanel pnlStoreMaster;
-    private javax.swing.JPanel pnlStoreReportProd;
-    private javax.swing.JPanel pnlStoreReportSale;
+    private javax.swing.JPanel pnlStoreModifyPro;
+    private javax.swing.JPanel pnlStoreSaleReport;
     private javax.swing.JPanel pnlStoreSearchPro;
     private javax.swing.JPanel pnlStoreSearchTic;
     private javax.swing.JPanel pnlStoreSlave;
@@ -2863,7 +3631,10 @@ public class UIMain extends javax.swing.JFrame
     private javax.swing.JScrollPane scpLinkProducts;
     private javax.swing.JScrollPane scpLinkSupplier;
     private javax.swing.JScrollPane scpProductShow;
+    private javax.swing.JScrollPane scpProductShowStore;
+    private javax.swing.JScrollPane scpResultProduct;
     private javax.swing.JScrollPane scpResultSupplier;
+    private javax.swing.JScrollPane scpResultTicket;
     private javax.swing.JScrollPane scpResultUser;
     private javax.swing.JScrollPane scpSaleOrderTable;
     private javax.swing.JScrollPane scpSaleSearchProduct;
@@ -2872,7 +3643,10 @@ public class UIMain extends javax.swing.JFrame
     private javax.swing.JScrollPane scpUserShow;
     private javax.swing.JTable tblLinkProducts;
     private javax.swing.JTable tblProductShow;
+    private javax.swing.JTable tblProductShowStore;
+    private javax.swing.JTable tblResultProduct;
     private javax.swing.JTable tblResultSupplier;
+    private javax.swing.JTable tblResultTicket;
     private javax.swing.JTable tblResultUser;
     private javax.swing.JTable tblSaleOrderTable;
     private javax.swing.JTable tblSaleSearchProduct;
@@ -2881,14 +3655,21 @@ public class UIMain extends javax.swing.JFrame
     private javax.swing.JTextArea txaUserOthers;
     private javax.swing.JTextField txtId;
     private javax.swing.JTextField txtLinkSupplier;
+    private javax.swing.JTextField txtNameSearchProduct;
     private javax.swing.JTextField txtNameSearchSupplier;
+    private javax.swing.JTextField txtNameSearchTicket;
     private javax.swing.JTextField txtNameSearchUser;
     private javax.swing.JPasswordField txtPass;
     private javax.swing.JTextField txtProductBrand;
+    private javax.swing.JTextField txtProductBrandStore;
     private javax.swing.JTextField txtProductName;
+    private javax.swing.JTextField txtProductNameStore;
     private javax.swing.JTextField txtProductPresentation;
+    private javax.swing.JTextField txtProductPresentationStore;
     private javax.swing.JTextField txtProductPrice;
+    private javax.swing.JTextField txtProductPriceStore;
     private javax.swing.JTextField txtProductStock;
+    private javax.swing.JTextField txtProductStockStore;
     private javax.swing.JTextField txtSaleOrderClient;
     private javax.swing.JTextField txtSaleSearchProduct;
     private javax.swing.JTextField txtSupplierAddress;

@@ -53,7 +53,7 @@ public class CSuppliers implements ISuppliers{
         model.getDataVector().removeAllElements();
         
         for (Products product : products) {
-            model.addRow(new Object[]{false, product.getName() + " "+ product.getBrand()});
+            model.addRow(new Object[]{false, product.getName() + " "+ product.getBrand() + " " + product.getPresentation()});
             productsInd.add(product.getCode());
         }
         
@@ -74,7 +74,7 @@ public class CSuppliers implements ISuppliers{
         
         switch(option){
             case 0: supplier.setState("1");
-                    supplier.insert();
+                    error = supplier.insert();
                     if(error.equals(""))
                         JOptionPane.showMessageDialog(  null, 
                                                         "Los datos han sido ingresados correctamente.", 
@@ -86,7 +86,7 @@ public class CSuppliers implements ISuppliers{
                                                         "Nuevo Proveedor", 
                                                         JOptionPane.WARNING_MESSAGE);
                     break;
-            case 1: supplier.update();
+            case 1: error = supplier.update();
                     if(error.equals(""))
                         JOptionPane.showMessageDialog(  null, 
                                                         "Los datos han sido modificados correctamente.", 
@@ -142,8 +142,6 @@ public class CSuppliers implements ISuppliers{
     public ArrayList <String> searchSupplierLink(JTextField name, JList list){
         ArrayList <String> suppliersInd = new ArrayList <>();
         ArrayList <Suppliers> suppliers = (new Suppliers()).getList(2, null, name.getText());
-        
-        
         
         if(!suppliers.isEmpty()) {        
             DefaultListModel model = new DefaultListModel();
