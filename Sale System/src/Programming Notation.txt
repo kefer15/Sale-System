@@ -1,0 +1,27 @@
+Hungarian Notation for Programming
+
+I	Interface 
+C	Contralator
+UI	View
+
+i	Integer
+d	Double
+str	String
+b 	Boolean
+a	Array
+wd	UI window
+
+crd	CardLayout object 
+pnl	JPanel object
+ary	ArrayList object
+btn	JButton object
+c	Class created object
+
+txt	JTextField object
+lbl	JLabel object
+cbx	JComboBox object
+tbl	JTable object
+cld	JCalendar object
+fcs	JFileChooser object
+lst	JList object
+txa	JTextArea object

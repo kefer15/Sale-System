@@ -208,6 +208,12 @@ CREATE VIEW Comprobante
 	WHERE Comprobante_Cab.UsuCod = Usuario.UsuCod
 ORDER BY ComCod;
 
+CREATE VIEW Producto_Proveedor 
+	AS SELECT ProProd.ProCod, ProProd.ProdCod, Producto.ProdNom, Producto.ProdMar, Producto.ProdPres
+	FROM ProProd, Producto
+	WHERE ProProd.ProdCod = Producto.ProdCod
+ORDER BY ProCod;
+
 -- Create instances section ------------------------------------------------- 
 
 INSERT INTO Cargo VALUES (DEFAULT,"Administrador");
