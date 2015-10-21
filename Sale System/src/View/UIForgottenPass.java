@@ -5,11 +5,9 @@ import java.awt.Toolkit;
 import javax.swing.JOptionPane;
 
 public class UIForgottenPass extends javax.swing.JFrame {
-
     private final IForgottenPass iForgottenPass;
     
-    public UIForgottenPass(IForgottenPass iForgottenPass, String strUser)
-    {
+    public UIForgottenPass(IForgottenPass iForgottenPass, String strUser) {
         initComponents();
         this.setVisible(true);
         this.setTitle("Sale System");

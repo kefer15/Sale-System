@@ -3,23 +3,19 @@ package View;
 import Interface.ITicket;
 import java.awt.Toolkit;
 import javax.swing.ImageIcon;
-import javax.swing.JLabel;
 
 public class UITicket extends javax.swing.JFrame {
-
-    ITicket ticket;
+    private ITicket iTicket;
     
-    public UITicket(ITicket ticket, String code) {
+    public UITicket(ITicket iTicket, String strCode) {
         initComponents();
         this.setVisible(true);
         this.setTitle("Detalle de Compra");
         setLocationRelativeTo(null);        
-        this.ticket = ticket;
+        this.iTicket = iTicket;
         
-        
-        ImageIcon icono = new ImageIcon("Boletas/" + code + ".png");  
-               
-        this.lblTicket.setIcon(icono);
+        ImageIcon cIcono = new ImageIcon("Boletas/" + strCode + ".png");  
+        this.lblTicket.setIcon(cIcono);
     }
 
     @SuppressWarnings("unchecked")
@@ -66,7 +62,7 @@ public class UITicket extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnAceptActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAceptActionPerformed
-        this.ticket.close();
+        this.iTicket.close();
     }//GEN-LAST:event_btnAceptActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

@@ -6,6 +6,7 @@ UI	View
 
 i	Integer
 d	Double
+f	Float
 str	String
 b 	Boolean
 a	Array

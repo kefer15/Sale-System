@@ -32,110 +32,108 @@ import javax.swing.JButton;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
-public class UIMain extends javax.swing.JFrame
-{
-    private IMain interfaz;
-    private CHome home;
-    private CUsers users;
-    private CSuppliers suppliers;
-    private CProducts products;
-    private CStore store;
-    private CSale sale;    
-    private CHelp help;
-    private ArrayList <JButton> menuBtn;
-    private Users user;
-    private int state;
-    private ArrayList <String> usersSearch;
-    private ArrayList <String> productsSearch;
-    private String userCode;
-    private ArrayList <String> suppliersSearch;
-    private ArrayList <String> ticketsSearch;
-    private String supplierCode;
-    private String productCode;
-    private ArrayList <String> productsInd;
-    private ArrayList <String> suppliersInd;
-    private ArrayList <Products> productsList;
-    private double total;
-    private float color[];
+public class UIMain extends javax.swing.JFrame {
+    private IMain iInterface;
+    private CHome cHome;
+    private CUsers cUsers;
+    private CSuppliers cSuppliers;
+    private CProducts cProducts;
+    private CStore cStore;
+    private CSale cSale;    
+    private CHelp CHelp;
+    private ArrayList <JButton> aMenuButtons;
+    private Users cUser;
+    private int iState;
+    private ArrayList <String> aUsersSearch;
+    private ArrayList <String> aProductsSearch;
+    private String strUserCode;
+    private ArrayList <String> aSuppliersSearch;
+    private ArrayList <String> aTicketsSearch;
+    private String strSupplierCode;
+    private String strProductCode;
+    private ArrayList <String> aProductsIndexes;
+    private ArrayList <String> aSuppliersIndexes;
+    private ArrayList <Products> aProductsList;
+    private double dTtotal;
+    private float fColor[];
     
-    public UIMain(IMain iMain, int iWindowNumber)
-    {
+    public UIMain(IMain iMain, int iWindowNumber) {
         initComponents();
         this.setVisible(true);
         this.setTitle("Sale System");
         setLocationRelativeTo(null);
         
-        this.color = new float[3];
-        Color.RGBtoHSB(240, 240, 240, this.color);
-        this.usersSearch = new ArrayList <>();
-        this.productsSearch = new ArrayList <>();
-        this.suppliersSearch = new ArrayList <>();
-        this.ticketsSearch = new ArrayList <>();
-        this.productsInd = new ArrayList <>();
-        this.suppliersInd = new ArrayList <>();
-        this.productsList = new ArrayList <>();
+        this.fColor = new float[3];
+        Color.RGBtoHSB(240, 240, 240, this.fColor);
+        this.aUsersSearch = new ArrayList <>();
+        this.aProductsSearch = new ArrayList <>();
+        this.aSuppliersSearch = new ArrayList <>();
+        this.aTicketsSearch = new ArrayList <>();
+        this.aProductsIndexes = new ArrayList <>();
+        this.aSuppliersIndexes = new ArrayList <>();
+        this.aProductsList = new ArrayList <>();
         
-        this.userCode = "";
-        this.supplierCode = "";
-        this.productCode = "";
-        this.total = 0;
+        this.strUserCode = "";
+        this.strSupplierCode = "";
+        this.strProductCode = "";
+        this.dTtotal = 0;
         
-        this.menuBtn = new ArrayList <>();
-        this.menuBtn.add(btnHome);
-        this.menuBtn.add(btnUsers);
-        this.menuBtn.add(btnSuppliers);
-        this.menuBtn.add(btnProducts);
-        this.menuBtn.add(btnStore);
-        this.menuBtn.add(btnSale);
-        this.menuBtn.add(btnHelp);
+        this.aMenuButtons = new ArrayList <>();
+        this.aMenuButtons.add(btnHome);
+        this.aMenuButtons.add(btnUsers);
+        this.aMenuButtons.add(btnSuppliers);
+        this.aMenuButtons.add(btnProducts);
+        this.aMenuButtons.add(btnStore);
+        this.aMenuButtons.add(btnSale);
+        this.aMenuButtons.add(btnHelp);
         
-        this.interfaz = iMain;
-        this.home = new CHome();
-        this.users = new CUsers();
-        this.suppliers = new CSuppliers();
-        this.products = new CProducts();
-        this.store = new CStore();
-        this.sale = new CSale();
+        this.iInterface = iMain;
+        this.cHome = new CHome();
+        this.cUsers = new CUsers();
+        this.cSuppliers = new CSuppliers();
+        this.cProducts = new CProducts();
+        this.cStore = new CStore();
+        this.cSale = new CSale();
         
         switch(iWindowNumber) {
             case 0:
-                this.interfaz.changeHome((CardLayout)this.pnlContent.getLayout(), this.pnlContent);
-                this.interfaz.paint(0, this.menuBtn);
+                this.iInterface.changeHome((CardLayout)this.pnlContent.getLayout(), this.pnlContent);
+                this.iInterface.paint(0, this.aMenuButtons);
             break;
                 
             case 1:
-                this.interfaz.changeUsers((CardLayout)this.pnlContent.getLayout(), this.pnlContent);
-                this.interfaz.paint(1, this.menuBtn);
-                this.users.changeUserShow((CardLayout)this.pnlUserSlave.getLayout(), this.pnlUserSlave, this.tblUserShow);
+                this.iInterface.changeUsers((CardLayout)this.pnlContent.getLayout(), this.pnlContent);
+                this.iInterface.paint(1, this.aMenuButtons);
+                this.cUsers.changeUserShow((CardLayout)this.pnlUserSlave.getLayout(), this.pnlUserSlave, this.tblUserShow);
             break;
             
             case 2:
-                this.interfaz.changeSuppliers((CardLayout)this.pnlContent.getLayout(), this.pnlContent);
-                this.interfaz.paint(2, this.menuBtn);
-                this.suppliers.changeSupplierShow((CardLayout)this.pnlSupplierSlave.getLayout(), this.pnlSupplierSlave, this.tblSupplierShow);
+                this.iInterface.changeSuppliers((CardLayout)this.pnlContent.getLayout(), this.pnlContent);
+                this.iInterface.paint(2, this.aMenuButtons);
+                this.cSuppliers.changeSupplierShow((CardLayout)this.pnlSupplierSlave.getLayout(), this.pnlSupplierSlave, this.tblSupplierShow);
             break;
             
             case 3:
-                this.interfaz.changeProducts((CardLayout)this.pnlContent.getLayout(), this.pnlContent);
-                this.interfaz.paint(3, this.menuBtn);
-                this.products.changeProductShow((CardLayout)this.pnlProductSlave.getLayout(), this.pnlProductSlave, this.tblProductShow);
+                this.iInterface.changeProducts((CardLayout)this.pnlContent.getLayout(), this.pnlContent);
+                this.iInterface.paint(3, this.aMenuButtons);
+                this.cProducts.changeProductShow((CardLayout)this.pnlProductSlave.getLayout(), this.pnlProductSlave, this.tblProductShow);
             break;
             
             case 4:
-                this.interfaz.changeStore((CardLayout)this.pnlContent.getLayout(), this.pnlContent);
-                this.interfaz.paint(4, this.menuBtn);
-                this.store.changeInventStore((CardLayout)this.pnlStoreSlave.getLayout(), this.pnlStoreSlave, this.tblProductShowStore);
+                this.iInterface.changeStore((CardLayout)this.pnlContent.getLayout(), this.pnlContent);
+                this.iInterface.paint(4, this.aMenuButtons);
+                this.cStore.changeInventStore((CardLayout)this.pnlStoreSlave.getLayout(), this.pnlStoreSlave, this.tblProductShowStore);
             break;
             
             case 5:
-                this.interfaz.changeSale((CardLayout)this.pnlContent.getLayout(), this.pnlContent);
-                this.interfaz.paint(5, this.menuBtn);
+                this.iInterface.changeSale((CardLayout)this.pnlContent.getLayout(), this.pnlContent);
+                this.iInterface.paint(5, this.aMenuButtons);
                 
-                Date date = new Date();
-                DateFormat format = new SimpleDateFormat("yyyy/MM/dd");
-                this.lblSaleOrderDateOn.setText(format.format(date));
-                this.interfaz.setOrderNumber(this.lblSaleOrderNumber);
-                this.lblUserOnSale.setText("Usuario: " + this.user.getName() + " " + this.user.getFatherLastName());
+                Date cDate = new Date();
+                DateFormat cFormat = new SimpleDateFormat("yyyy/MM/dd");
+                this.lblSaleOrderDateOn.setText(cFormat.format(cDate));
+                this.iInterface.setOrderNumber(this.lblSaleOrderNumber);
+                this.lblUserOnSale.setText("Usuario: " + this.cUser.getName() + " " + this.cUser.getFatherLastName());
             break;
         }
     }
@@ -3355,55 +3353,55 @@ public class UIMain extends javax.swing.JFrame
 
     private void btnUsersActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_btnUsersActionPerformed
     {//GEN-HEADEREND:event_btnUsersActionPerformed
-        this.interfaz.changeUsers((CardLayout)this.pnlContent.getLayout(), this.pnlContent);
-        this.interfaz.paint(1, this.menuBtn);
+        this.iInterface.changeUsers((CardLayout)this.pnlContent.getLayout(), this.pnlContent);
+        this.iInterface.paint(1, this.aMenuButtons);
         this.btnUserAdd.setFont(new Font("Tahoma", Font.PLAIN, 12));
         this.btnUserSearch.setFont(new Font("Tahoma", Font.PLAIN, 12));
         this.btnUserShow.setFont(new Font("Tahoma", Font.BOLD, 12));
-        this.btnUserAdd.setBackground(Color.getHSBColor(this.color[0],this.color[1],this.color[2]));
-        this.btnUserSearch.setBackground(Color.getHSBColor(this.color[0],this.color[1],this.color[2]));
+        this.btnUserAdd.setBackground(Color.getHSBColor(this.fColor[0],this.fColor[1],this.fColor[2]));
+        this.btnUserSearch.setBackground(Color.getHSBColor(this.fColor[0],this.fColor[1],this.fColor[2]));
         this.btnUserShow.setBackground(Color.ORANGE);
-        this.users.changeUserShow((CardLayout)this.pnlUserSlave.getLayout(), this.pnlUserSlave, this.tblUserShow);
+        this.cUsers.changeUserShow((CardLayout)this.pnlUserSlave.getLayout(), this.pnlUserSlave, this.tblUserShow);
     }//GEN-LAST:event_btnUsersActionPerformed
 
     private void btnHomeActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_btnHomeActionPerformed
     {//GEN-HEADEREND:event_btnHomeActionPerformed
-        this.interfaz.changeHome((CardLayout)this.pnlContent.getLayout(), this.pnlContent);
-        this.interfaz.paint(0, this.menuBtn);
+        this.iInterface.changeHome((CardLayout)this.pnlContent.getLayout(), this.pnlContent);
+        this.iInterface.paint(0, this.aMenuButtons);
     }//GEN-LAST:event_btnHomeActionPerformed
 
     private void btnSuppliersActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_btnSuppliersActionPerformed
     {//GEN-HEADEREND:event_btnSuppliersActionPerformed
-        this.interfaz.changeSuppliers((CardLayout)this.pnlContent.getLayout(), this.pnlContent);
-        this.interfaz.paint(2, this.menuBtn);
+        this.iInterface.changeSuppliers((CardLayout)this.pnlContent.getLayout(), this.pnlContent);
+        this.iInterface.paint(2, this.aMenuButtons);
         this.btnSupplierAdd.setFont(new Font("Tahoma", Font.PLAIN, 12));
         this.btnSupplierSearch.setFont(new Font("Tahoma", Font.PLAIN, 12));
         this.btnSupplierShow.setFont(new Font("Tahoma", Font.PLAIN, 12));
         this.btnSupplierLink.setFont(new Font("Tahoma", Font.BOLD, 12));        
-        this.btnSupplierAdd.setBackground(Color.getHSBColor(this.color[0],this.color[1],this.color[2]));
-        this.btnSupplierSearch.setBackground(Color.getHSBColor(this.color[0],this.color[1],this.color[2]));
-        this.btnSupplierShow.setBackground(Color.getHSBColor(this.color[0],this.color[1],this.color[2]));
+        this.btnSupplierAdd.setBackground(Color.getHSBColor(this.fColor[0],this.fColor[1],this.fColor[2]));
+        this.btnSupplierSearch.setBackground(Color.getHSBColor(this.fColor[0],this.fColor[1],this.fColor[2]));
+        this.btnSupplierShow.setBackground(Color.getHSBColor(this.fColor[0],this.fColor[1],this.fColor[2]));
         this.btnSupplierLink.setBackground(Color.ORANGE);
-        this.suppliers.changeSupplierShow((CardLayout)this.pnlSupplierSlave.getLayout(), this.pnlSupplierSlave, this.tblSupplierShow);
+        this.cSuppliers.changeSupplierShow((CardLayout)this.pnlSupplierSlave.getLayout(), this.pnlSupplierSlave, this.tblSupplierShow);
     }//GEN-LAST:event_btnSuppliersActionPerformed
 
     private void btnProductsActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_btnProductsActionPerformed
     {//GEN-HEADEREND:event_btnProductsActionPerformed
-        this.interfaz.changeProducts((CardLayout)this.pnlContent.getLayout(), this.pnlContent);
-        this.interfaz.paint(3, this.menuBtn);
+        this.iInterface.changeProducts((CardLayout)this.pnlContent.getLayout(), this.pnlContent);
+        this.iInterface.paint(3, this.aMenuButtons);
         
         this.btnProductAdd.setFont(new Font("Tahoma", Font.PLAIN, 12));
         this.btnProductShow.setFont(new Font("Tahoma", Font.BOLD, 12));
-        this.btnProductAdd.setBackground(Color.getHSBColor(this.color[0],this.color[1],this.color[2]));
+        this.btnProductAdd.setBackground(Color.getHSBColor(this.fColor[0],this.fColor[1],this.fColor[2]));
         this.btnProductShow.setBackground(Color.ORANGE);
         
-        this.products.changeProductShow((CardLayout)this.pnlProductSlave.getLayout(), this.pnlProductSlave, this.tblProductShow);
+        this.cProducts.changeProductShow((CardLayout)this.pnlProductSlave.getLayout(), this.pnlProductSlave, this.tblProductShow);
     }//GEN-LAST:event_btnProductsActionPerformed
 
     private void btnStoreActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_btnStoreActionPerformed
     {//GEN-HEADEREND:event_btnStoreActionPerformed
-        this.interfaz.changeStore((CardLayout)this.pnlContent.getLayout(), this.pnlContent);
-        this.interfaz.paint(4, this.menuBtn);
+        this.iInterface.changeStore((CardLayout)this.pnlContent.getLayout(), this.pnlContent);
+        this.iInterface.paint(4, this.aMenuButtons);
         
         this.btnStoreSearchPro.setFont(new Font("Tahoma", Font.PLAIN, 12));
         this.btnStoreSearchTic.setFont(new Font("Tahoma", Font.PLAIN, 12));
@@ -3411,25 +3409,25 @@ public class UIMain extends javax.swing.JFrame
         this.btnStoreReportSale.setFont(new Font("Tahoma", Font.PLAIN, 12));
         this.btnStoreInvent.setFont(new Font("Tahoma", Font.BOLD, 12));
         
-        this.btnStoreSearchPro.setBackground(Color.getHSBColor(this.color[0],this.color[1],this.color[2]));
-        this.btnStoreSearchTic.setBackground(Color.getHSBColor(this.color[0],this.color[1],this.color[2]));
-        this.btnStoreReportProd.setBackground(Color.getHSBColor(this.color[0],this.color[1],this.color[2]));
-        this.btnStoreReportSale.setBackground(Color.getHSBColor(this.color[0],this.color[1],this.color[2]));
+        this.btnStoreSearchPro.setBackground(Color.getHSBColor(this.fColor[0],this.fColor[1],this.fColor[2]));
+        this.btnStoreSearchTic.setBackground(Color.getHSBColor(this.fColor[0],this.fColor[1],this.fColor[2]));
+        this.btnStoreReportProd.setBackground(Color.getHSBColor(this.fColor[0],this.fColor[1],this.fColor[2]));
+        this.btnStoreReportSale.setBackground(Color.getHSBColor(this.fColor[0],this.fColor[1],this.fColor[2]));
         this.btnStoreInvent.setBackground(Color.ORANGE);
         
-        this.store.changeInventStore((CardLayout)this.pnlStoreSlave.getLayout(), this.pnlStoreSlave, this.tblProductShowStore);
+        this.cStore.changeInventStore((CardLayout)this.pnlStoreSlave.getLayout(), this.pnlStoreSlave, this.tblProductShowStore);
     }//GEN-LAST:event_btnStoreActionPerformed
 
     private void btnSaleActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_btnSaleActionPerformed
     {//GEN-HEADEREND:event_btnSaleActionPerformed
-        this.interfaz.changeSale((CardLayout)this.pnlContent.getLayout(), this.pnlContent);
-        this.interfaz.paint(5, this.menuBtn);
+        this.iInterface.changeSale((CardLayout)this.pnlContent.getLayout(), this.pnlContent);
+        this.iInterface.paint(5, this.aMenuButtons);
         
         Date CDate = new Date();
         DateFormat cFormat = new SimpleDateFormat("yyyy/MM/dd");
         this.lblSaleOrderDateOn.setText(cFormat.format(CDate));
-        this.interfaz.setOrderNumber(this.lblSaleOrderNumber);
-        this.lblUserOnSale.setText("Usuario: " + user.getName() + " " + this.user.getFatherLastName());
+        this.iInterface.setOrderNumber(this.lblSaleOrderNumber);
+        this.lblUserOnSale.setText("Usuario: " + cUser.getName() + " " + this.cUser.getFatherLastName());
     }//GEN-LAST:event_btnSaleActionPerformed
 
     private void btnHelpActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_btnHelpActionPerformed
@@ -3440,13 +3438,13 @@ public class UIMain extends javax.swing.JFrame
     private void btnSaleOrderDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSaleOrderDeleteActionPerformed
         int iRow;
         if((iRow = this.tblSaleOrderTable.getSelectedRow()) != -1){
-            this.total -= Double.parseDouble(String.valueOf(this.tblSaleOrderTable.getValueAt(iRow, 4)));
+            this.dTtotal -= Double.parseDouble(String.valueOf(this.tblSaleOrderTable.getValueAt(iRow, 4)));
             
             DefaultTableModel cModel = (DefaultTableModel)this.tblSaleOrderTable.getModel();
             cModel.removeRow(iRow);
             
             DecimalFormat cFormat = new DecimalFormat("#.##");
-            this.lblSaleOrderTotalOn.setText("S/. " + cFormat.format(this.total));
+            this.lblSaleOrderTotalOn.setText("S/. " + cFormat.format(this.dTtotal));
         }
         else
             JOptionPane.showMessageDialog(  null,
@@ -3462,12 +3460,12 @@ public class UIMain extends javax.swing.JFrame
         this.btnStoreReportSale.setFont(new Font("Tahoma", Font.PLAIN, 12));
         this.btnStoreInvent.setFont(new Font("Tahoma", Font.BOLD, 12));
         
-        this.btnStoreSearchPro.setBackground(Color.getHSBColor(this.color[0],this.color[1],this.color[2]));
-        this.btnStoreSearchTic.setBackground(Color.getHSBColor(this.color[0],this.color[1],this.color[2]));
-        this.btnStoreReportProd.setBackground(Color.getHSBColor(this.color[0],this.color[1],this.color[2]));
-        this.btnStoreReportSale.setBackground(Color.getHSBColor(this.color[0],this.color[1],this.color[2]));
+        this.btnStoreSearchPro.setBackground(Color.getHSBColor(this.fColor[0],this.fColor[1],this.fColor[2]));
+        this.btnStoreSearchTic.setBackground(Color.getHSBColor(this.fColor[0],this.fColor[1],this.fColor[2]));
+        this.btnStoreReportProd.setBackground(Color.getHSBColor(this.fColor[0],this.fColor[1],this.fColor[2]));
+        this.btnStoreReportSale.setBackground(Color.getHSBColor(this.fColor[0],this.fColor[1],this.fColor[2]));
         this.btnStoreInvent.setBackground(Color.ORANGE);
-        this.store.changeInventStore((CardLayout)this.pnlStoreSlave.getLayout(), this.pnlStoreSlave, this.tblProductShowStore);
+        this.cStore.changeInventStore((CardLayout)this.pnlStoreSlave.getLayout(), this.pnlStoreSlave, this.tblProductShowStore);
     }//GEN-LAST:event_btnStoreInventActionPerformed
 
     private void btnStoreReportSaleActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnStoreReportSaleActionPerformed
@@ -3477,12 +3475,12 @@ public class UIMain extends javax.swing.JFrame
         this.btnStoreReportSale.setFont(new Font("Tahoma", Font.BOLD, 12));
         this.btnStoreInvent.setFont(new Font("Tahoma", Font.PLAIN, 12));
         
-        this.btnStoreSearchPro.setBackground(Color.getHSBColor(this.color[0],this.color[1],this.color[2]));
-        this.btnStoreSearchTic.setBackground(Color.getHSBColor(this.color[0],this.color[1],this.color[2]));
-        this.btnStoreReportProd.setBackground(Color.getHSBColor(this.color[0],this.color[1],this.color[2]));
+        this.btnStoreSearchPro.setBackground(Color.getHSBColor(this.fColor[0],this.fColor[1],this.fColor[2]));
+        this.btnStoreSearchTic.setBackground(Color.getHSBColor(this.fColor[0],this.fColor[1],this.fColor[2]));
+        this.btnStoreReportProd.setBackground(Color.getHSBColor(this.fColor[0],this.fColor[1],this.fColor[2]));
         this.btnStoreReportSale.setBackground(Color.ORANGE);
-        this.btnStoreInvent.setBackground(Color.getHSBColor(this.color[0],this.color[1],this.color[2]));
-        this.store.changeReportSale((CardLayout)this.pnlStoreSlave.getLayout(), this.pnlStoreSlave);
+        this.btnStoreInvent.setBackground(Color.getHSBColor(this.fColor[0],this.fColor[1],this.fColor[2]));
+        this.cStore.changeReportSale((CardLayout)this.pnlStoreSlave.getLayout(), this.pnlStoreSlave);
     }//GEN-LAST:event_btnStoreReportSaleActionPerformed
 
     private void btnStoreSearchProActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnStoreSearchProActionPerformed
@@ -3494,12 +3492,12 @@ public class UIMain extends javax.swing.JFrame
         this.btnStoreInvent.setFont(new Font("Tahoma", Font.PLAIN, 12));
         
         this.btnStoreSearchPro.setBackground(Color.ORANGE);
-        this.btnStoreSearchTic.setBackground(Color.getHSBColor(this.color[0],this.color[1],this.color[2]));
-        this.btnStoreReportProd.setBackground(Color.getHSBColor(this.color[0],this.color[1],this.color[2]));
-        this.btnStoreReportSale.setBackground(Color.getHSBColor(this.color[0],this.color[1],this.color[2]));
-        this.btnStoreInvent.setBackground(Color.getHSBColor(this.color[0],this.color[1],this.color[2]));
+        this.btnStoreSearchTic.setBackground(Color.getHSBColor(this.fColor[0],this.fColor[1],this.fColor[2]));
+        this.btnStoreReportProd.setBackground(Color.getHSBColor(this.fColor[0],this.fColor[1],this.fColor[2]));
+        this.btnStoreReportSale.setBackground(Color.getHSBColor(this.fColor[0],this.fColor[1],this.fColor[2]));
+        this.btnStoreInvent.setBackground(Color.getHSBColor(this.fColor[0],this.fColor[1],this.fColor[2]));
         
-        this.store.changeProductSearch((CardLayout)this.pnlStoreSlave.getLayout(), this.pnlStoreSlave);
+        this.cStore.changeProductSearch((CardLayout)this.pnlStoreSlave.getLayout(), this.pnlStoreSlave);
     }//GEN-LAST:event_btnStoreSearchProActionPerformed
 
     private void btnStoreSearchTicActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnStoreSearchTicActionPerformed
@@ -3510,13 +3508,13 @@ public class UIMain extends javax.swing.JFrame
         this.btnStoreReportSale.setFont(new Font("Tahoma", Font.PLAIN, 12));
         this.btnStoreInvent.setFont(new Font("Tahoma", Font.PLAIN, 12));
         
-        this.btnStoreSearchPro.setBackground(Color.getHSBColor(this.color[0],this.color[1],this.color[2]));
+        this.btnStoreSearchPro.setBackground(Color.getHSBColor(this.fColor[0],this.fColor[1],this.fColor[2]));
         this.btnStoreSearchTic.setBackground(Color.ORANGE);
-        this.btnStoreReportProd.setBackground(Color.getHSBColor(this.color[0],this.color[1],this.color[2]));
-        this.btnStoreReportSale.setBackground(Color.getHSBColor(this.color[0],this.color[1],this.color[2]));
-        this.btnStoreInvent.setBackground(Color.getHSBColor(this.color[0],this.color[1],this.color[2]));
+        this.btnStoreReportProd.setBackground(Color.getHSBColor(this.fColor[0],this.fColor[1],this.fColor[2]));
+        this.btnStoreReportSale.setBackground(Color.getHSBColor(this.fColor[0],this.fColor[1],this.fColor[2]));
+        this.btnStoreInvent.setBackground(Color.getHSBColor(this.fColor[0],this.fColor[1],this.fColor[2]));
         
-        this.store.changeTicketSearch((CardLayout)this.pnlStoreSlave.getLayout(), this.pnlStoreSlave);
+        this.cStore.changeTicketSearch((CardLayout)this.pnlStoreSlave.getLayout(), this.pnlStoreSlave);
     }//GEN-LAST:event_btnStoreSearchTicActionPerformed
 
     private void btnStoreReportProdActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnStoreReportProdActionPerformed
@@ -3526,13 +3524,13 @@ public class UIMain extends javax.swing.JFrame
         this.btnStoreReportSale.setFont(new Font("Tahoma", Font.PLAIN, 12));
         this.btnStoreInvent.setFont(new Font("Tahoma", Font.PLAIN, 12));
         
-        this.btnStoreSearchPro.setBackground(Color.getHSBColor(this.color[0],this.color[1],this.color[2]));
-        this.btnStoreSearchTic.setBackground(Color.getHSBColor(this.color[0],this.color[1],this.color[2]));
+        this.btnStoreSearchPro.setBackground(Color.getHSBColor(this.fColor[0],this.fColor[1],this.fColor[2]));
+        this.btnStoreSearchTic.setBackground(Color.getHSBColor(this.fColor[0],this.fColor[1],this.fColor[2]));
         this.btnStoreReportProd.setBackground(Color.ORANGE);
-        this.btnStoreReportSale.setBackground(Color.getHSBColor(this.color[0],this.color[1],this.color[2]));
-        this.btnStoreInvent.setBackground(Color.getHSBColor(this.color[0],this.color[1],this.color[2]));
+        this.btnStoreReportSale.setBackground(Color.getHSBColor(this.fColor[0],this.fColor[1],this.fColor[2]));
+        this.btnStoreInvent.setBackground(Color.getHSBColor(this.fColor[0],this.fColor[1],this.fColor[2]));
         
-        if(this.store.productReport(this.user))
+        if(this.cStore.productReport(this.cUser))
                 JOptionPane.showMessageDialog(  null,
                                                 "El Reporte se ha generado correctamente. Se encuentra en la dirección consignada al crearlo",
                                                 "Reporte Generado",
@@ -3550,8 +3548,8 @@ public class UIMain extends javax.swing.JFrame
 
     private void btnProductRegisterActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnProductRegisterActionPerformed
         if(!(this.txtProductName.getText().equals("*") || this.txtProductBrand.getText().equals("*") || this.txtProductPresentation.getText().equals("*") || this.txtProductPrice.getText().equals("*") || this.txtProductStock.getText().equals("*"))) {
-            this.products.actProduct(this.txtProductName, this.txtProductBrand, this.txtProductPresentation, this.txtProductPrice, this.txtProductStock, this.cbxProductCategory);
-            this.products.changeProductShow((CardLayout)this.pnlProductSlave.getLayout(), this.pnlProductSlave, this.tblProductShow);
+            this.cProducts.actProduct(this.txtProductName, this.txtProductBrand, this.txtProductPresentation, this.txtProductPrice, this.txtProductStock, this.cbxProductCategory);
+            this.cProducts.changeProductShow((CardLayout)this.pnlProductSlave.getLayout(), this.pnlProductSlave, this.tblProductShow);
         } else 
             JOptionPane.showMessageDialog(  null,
                                             "Todos los campos obligatorios deber ser llenados.",
@@ -3560,37 +3558,35 @@ public class UIMain extends javax.swing.JFrame
     }//GEN-LAST:event_btnProductRegisterActionPerformed
 
     private void btnProductAddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnProductAddActionPerformed
-        cleanProductAdd();
-        
+        cleanProductAdd();        
         this.btnProductAdd.setFont(new Font("Tahoma", Font.BOLD, 12));
         this.btnProductShow.setFont(new Font("Tahoma", Font.PLAIN, 12));
         this.btnProductAdd.setBackground(Color.ORANGE);
-        this.btnProductShow.setBackground(Color.getHSBColor(this.color[0],this.color[1],this.color[2]));
+        this.btnProductShow.setBackground(Color.getHSBColor(this.fColor[0],this.fColor[1],this.fColor[2]));
                       
-        this.products.changeProductAdd((CardLayout)this.pnlProductSlave.getLayout(), this.pnlProductSlave, this.cbxProductCategory, this.lblNewProduct, this.btnProductRegister);
+        this.cProducts.changeProductAdd((CardLayout)this.pnlProductSlave.getLayout(), this.pnlProductSlave, this.cbxProductCategory, this.lblNewProduct, this.btnProductRegister);
     }//GEN-LAST:event_btnProductAddActionPerformed
 
     private void btnProductShowActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnProductShowActionPerformed
         this.btnProductAdd.setFont(new Font("Tahoma", Font.PLAIN, 12));
         this.btnProductShow.setFont(new Font("Tahoma", Font.BOLD, 12));
-        this.btnProductAdd.setBackground(Color.getHSBColor(this.color[0],this.color[1],this.color[2]));
+        this.btnProductAdd.setBackground(Color.getHSBColor(this.fColor[0],this.fColor[1],this.fColor[2]));
         this.btnProductShow.setBackground(Color.ORANGE);
         
-        this.products.changeProductShow((CardLayout)this.pnlProductSlave.getLayout(), this.pnlProductSlave, this.tblProductShow);
+        this.cProducts.changeProductShow((CardLayout)this.pnlProductSlave.getLayout(), this.pnlProductSlave, this.tblProductShow);
     }//GEN-LAST:event_btnProductShowActionPerformed
 
     private void btnLinkSupplierActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLinkSupplierActionPerformed
         int iSupplierSelected;
         boolean []bProductsSelected = new boolean[this.tblLinkProducts.getRowCount()];
 
-        if((iSupplierSelected = this.lstLinkSupplier.getSelectedIndex()) != -1)
-        {
+        if((iSupplierSelected = this.lstLinkSupplier.getSelectedIndex()) != -1) {
             for(int i = 0;i < this.tblLinkProducts.getRowCount();i++)
                 bProductsSelected[i] = (Boolean) this.tblLinkProducts.getValueAt(i, 0);
 
             if(bProductsSelected.length != 0) {
-                suppliers.link(bProductsSelected, this.productsInd, this.suppliersInd.get(iSupplierSelected));
-                suppliers.changeSupplierShow((CardLayout)this.pnlSupplierSlave.getLayout(), this.pnlSupplierSlave, this.tblSupplierShow);
+                cSuppliers.link(bProductsSelected, this.aProductsIndexes, this.aSuppliersIndexes.get(iSupplierSelected));
+                cSuppliers.changeSupplierShow((CardLayout)this.pnlSupplierSlave.getLayout(), this.pnlSupplierSlave, this.tblSupplierShow);
             } else
                 JOptionPane.showMessageDialog(  null,
                                                 "No ha seleccionado ningún registro de productos.",
@@ -3609,14 +3605,14 @@ public class UIMain extends javax.swing.JFrame
         this.lstLinkedProducts.setEnabled(false);
         this.lstLinkSupplier.setModel((new DefaultListModel()));
         this.lstLinkedProducts.setModel((new DefaultListModel()));
-        this.suppliersInd = this.suppliers.searchSupplierLink(this.txtLinkSupplier, this.lstLinkSupplier);
+        this.aSuppliersIndexes = this.cSuppliers.searchSupplierLink(this.txtLinkSupplier, this.lstLinkSupplier);
     }//GEN-LAST:event_btnLinkSupplierSearchActionPerformed
 
     private void btnModifySupplierActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnModifySupplierActionPerformed
         int iValue;
         if((iValue = this.tblResultSupplier.getSelectedRow()) != -1){
             cleanSupplierSearch();
-            this.supplierCode = this.suppliers.send((CardLayout)this.pnlSupplierSlave.getLayout(), this.pnlSupplierSlave, this.suppliersSearch.get(iValue), this.lblNewSupplier, this.txtSupplierName, this.txtSupplierTr, this.txtSupplierPhone, this.txtSupplierAddress, this.btnSupplierRegister);
+            this.strSupplierCode = this.cSuppliers.send((CardLayout)this.pnlSupplierSlave.getLayout(), this.pnlSupplierSlave, this.aSuppliersSearch.get(iValue), this.lblNewSupplier, this.txtSupplierName, this.txtSupplierTr, this.txtSupplierPhone, this.txtSupplierAddress, this.btnSupplierRegister);
         } else
             JOptionPane.showMessageDialog(  null,
                                             "No ha seleccionado ningún registro.",
@@ -3625,17 +3621,17 @@ public class UIMain extends javax.swing.JFrame
     }//GEN-LAST:event_btnModifySupplierActionPerformed
 
     private void btnSearchSupplierActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSearchSupplierActionPerformed
-        DefaultTableModel model = (DefaultTableModel) this.tblResultSupplier.getModel();
-        model.getDataVector().removeAllElements();
+        DefaultTableModel cModel = (DefaultTableModel) this.tblResultSupplier.getModel();
+        cModel.getDataVector().removeAllElements();
         this.tblResultSupplier.removeAll();
         
-        this.suppliersSearch = this.suppliers.searchSupplier(this.txtNameSearchSupplier, this.tblResultSupplier);
+        this.aSuppliersSearch = this.cSuppliers.searchSupplier(this.txtNameSearchSupplier, this.tblResultSupplier);
     }//GEN-LAST:event_btnSearchSupplierActionPerformed
 
     private void btnSupplierRegisterActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSupplierRegisterActionPerformed
         if(!(this.txtSupplierName.getText().equals("*") || this.txtSupplierTr.getText().equals("*") || this.txtSupplierPhone.getText().equals("*") || this.txtSupplierAddress.getText().endsWith("*"))) {
-            this.suppliers.actSupplier(this.state, this.supplierCode, this.txtSupplierName, this.txtSupplierTr, this.txtSupplierPhone, this.txtSupplierAddress);
-            this.suppliers.changeSupplierShow((CardLayout)this.pnlSupplierSlave.getLayout(), this.pnlSupplierSlave, this.tblSupplierShow);
+            this.cSuppliers.actSupplier(this.iState, this.strSupplierCode, this.txtSupplierName, this.txtSupplierTr, this.txtSupplierPhone, this.txtSupplierAddress);
+            this.cSuppliers.changeSupplierShow((CardLayout)this.pnlSupplierSlave.getLayout(), this.pnlSupplierSlave, this.tblSupplierShow);
         } else 
             JOptionPane.showMessageDialog(  null,
                                             "Todos los campos obligatorios deber ser llenados.",
@@ -3645,23 +3641,23 @@ public class UIMain extends javax.swing.JFrame
 
     private void btnSupplierLinkActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSupplierLinkActionPerformed
         cleanLinkSupplier();
-        this.productsInd = this.suppliers.changeSupplierLink((CardLayout)this.pnlSupplierSlave.getLayout(), this.pnlSupplierSlave, this.tblLinkProducts);
+        this.aProductsIndexes = this.cSuppliers.changeSupplierLink((CardLayout)this.pnlSupplierSlave.getLayout(), this.pnlSupplierSlave, this.tblLinkProducts);
         
         this.btnSupplierAdd.setFont(new Font("Tahoma", Font.PLAIN, 12));
         this.btnSupplierSearch.setFont(new Font("Tahoma", Font.PLAIN, 12));
         this.btnSupplierShow.setFont(new Font("Tahoma", Font.PLAIN, 12));
         this.btnSupplierLink.setFont(new Font("Tahoma", Font.BOLD, 12));
         
-        this.btnSupplierAdd.setBackground(Color.getHSBColor(this.color[0],this.color[1],this.color[2]));
-        this.btnSupplierSearch.setBackground(Color.getHSBColor(this.color[0],this.color[1],this.color[2]));
-        this.btnSupplierShow.setBackground(Color.getHSBColor(this.color[0],this.color[1],this.color[2]));
+        this.btnSupplierAdd.setBackground(Color.getHSBColor(this.fColor[0],this.fColor[1],this.fColor[2]));
+        this.btnSupplierSearch.setBackground(Color.getHSBColor(this.fColor[0],this.fColor[1],this.fColor[2]));
+        this.btnSupplierShow.setBackground(Color.getHSBColor(this.fColor[0],this.fColor[1],this.fColor[2]));
         this.btnSupplierLink.setBackground(Color.ORANGE);
     }//GEN-LAST:event_btnSupplierLinkActionPerformed
 
     private void btnSupplierAddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSupplierAddActionPerformed
         cleanSupplierAdd();        
-        this.suppliers.changeSupplierAdd((CardLayout)this.pnlSupplierSlave.getLayout(), this.pnlSupplierSlave, this.lblNewSupplier, this.btnSupplierRegister);
-        this.state = 0;
+        this.cSuppliers.changeSupplierAdd((CardLayout)this.pnlSupplierSlave.getLayout(), this.pnlSupplierSlave, this.lblNewSupplier, this.btnSupplierRegister);
+        this.iState = 0;
         
         this.btnSupplierAdd.setFont(new Font("Tahoma", Font.BOLD, 12));
         this.btnSupplierSearch.setFont(new Font("Tahoma", Font.PLAIN, 12));
@@ -3669,47 +3665,47 @@ public class UIMain extends javax.swing.JFrame
         this.btnSupplierLink.setFont(new Font("Tahoma", Font.PLAIN, 12));
         
         this.btnSupplierAdd.setBackground(Color.ORANGE);
-        this.btnSupplierSearch.setBackground(Color.getHSBColor(this.color[0],this.color[1],this.color[2]));
-        this.btnSupplierShow.setBackground(Color.getHSBColor(this.color[0],this.color[1],this.color[2]));
-        this.btnSupplierLink.setBackground(Color.getHSBColor(this.color[0],this.color[1],this.color[2]));
+        this.btnSupplierSearch.setBackground(Color.getHSBColor(this.fColor[0],this.fColor[1],this.fColor[2]));
+        this.btnSupplierShow.setBackground(Color.getHSBColor(this.fColor[0],this.fColor[1],this.fColor[2]));
+        this.btnSupplierLink.setBackground(Color.getHSBColor(this.fColor[0],this.fColor[1],this.fColor[2]));
     }//GEN-LAST:event_btnSupplierAddActionPerformed
 
     private void btnSupplierSearchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSupplierSearchActionPerformed
         cleanSupplierSearch();
-        this.suppliers.changeSupplierSearch((CardLayout)this.pnlSupplierSlave.getLayout(), this.pnlSupplierSlave);
-        this.state = 1;
-        this.supplierCode = "";
+        this.cSuppliers.changeSupplierSearch((CardLayout)this.pnlSupplierSlave.getLayout(), this.pnlSupplierSlave);
+        this.iState = 1;
+        this.strSupplierCode = "";
         
         this.btnSupplierAdd.setFont(new Font("Tahoma", Font.PLAIN, 12));
         this.btnSupplierSearch.setFont(new Font("Tahoma", Font.BOLD, 12));
         this.btnSupplierShow.setFont(new Font("Tahoma", Font.PLAIN, 12));
         this.btnSupplierLink.setFont(new Font("Tahoma", Font.PLAIN, 12));
         
-        this.btnSupplierAdd.setBackground(Color.getHSBColor(this.color[0],this.color[1],this.color[2]));
+        this.btnSupplierAdd.setBackground(Color.getHSBColor(this.fColor[0],this.fColor[1],this.fColor[2]));
         this.btnSupplierSearch.setBackground(Color.ORANGE);
-        this.btnSupplierShow.setBackground(Color.getHSBColor(this.color[0],this.color[1],this.color[2]));
-        this.btnSupplierLink.setBackground(Color.getHSBColor(this.color[0],this.color[1],this.color[2]));
+        this.btnSupplierShow.setBackground(Color.getHSBColor(this.fColor[0],this.fColor[1],this.fColor[2]));
+        this.btnSupplierLink.setBackground(Color.getHSBColor(this.fColor[0],this.fColor[1],this.fColor[2]));
     }//GEN-LAST:event_btnSupplierSearchActionPerformed
 
     private void btnSupplierShowActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSupplierShowActionPerformed
-        this.suppliers.changeSupplierShow((CardLayout)this.pnlSupplierSlave.getLayout(), this.pnlSupplierSlave, this.tblSupplierShow);
+        this.cSuppliers.changeSupplierShow((CardLayout)this.pnlSupplierSlave.getLayout(), this.pnlSupplierSlave, this.tblSupplierShow);
         this.btnSupplierAdd.setFont(new Font("Tahoma", Font.PLAIN, 12));
         this.btnSupplierSearch.setFont(new Font("Tahoma", Font.PLAIN, 12));
         this.btnSupplierShow.setFont(new Font("Tahoma", Font.BOLD, 12));
         this.btnSupplierLink.setFont(new Font("Tahoma", Font.PLAIN, 12));
         
-        this.btnSupplierAdd.setBackground(Color.getHSBColor(this.color[0],this.color[1],this.color[2]));
-        this.btnSupplierSearch.setBackground(Color.getHSBColor(this.color[0],this.color[1],this.color[2]));
+        this.btnSupplierAdd.setBackground(Color.getHSBColor(this.fColor[0],this.fColor[1],this.fColor[2]));
+        this.btnSupplierSearch.setBackground(Color.getHSBColor(this.fColor[0],this.fColor[1],this.fColor[2]));
         this.btnSupplierShow.setBackground(Color.ORANGE);
-        this.btnSupplierLink.setBackground(Color.getHSBColor(this.color[0],this.color[1],this.color[2]));
+        this.btnSupplierLink.setBackground(Color.getHSBColor(this.fColor[0],this.fColor[1],this.fColor[2]));
     }//GEN-LAST:event_btnSupplierShowActionPerformed
 
     private void btnModifyUserActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnModifyUserActionPerformed
         int iValue;
         if((iValue = this.tblResultUser.getSelectedRow()) != -1){
-            if(!this.usersSearch.get(iValue).equals("001")) {
+            if(!this.aUsersSearch.get(iValue).equals("001")) {
                 cleanUserAdd();
-                this.userCode = this.users.send((CardLayout)this.pnlUserSlave.getLayout(), this.pnlUserSlave, this.usersSearch.get(iValue), this.lblNewSupplier, this.txtUserName, this.txtUserFatherLastName, this.txtUserMotherLastName, this.txtUserNi, this.cbxUserGender, this.txtUserAddress, this.cbxUserPosition, this.txtUserCellphone, this.txtUserEmail, this.txtUserEmergencyNumber, this.txaUserOthers, this.btnUserRegister);
+                this.strUserCode = this.cUsers.send((CardLayout)this.pnlUserSlave.getLayout(), this.pnlUserSlave, this.aUsersSearch.get(iValue), this.lblNewSupplier, this.txtUserName, this.txtUserFatherLastName, this.txtUserMotherLastName, this.txtUserNi, this.cbxUserGender, this.txtUserAddress, this.cbxUserPosition, this.txtUserCellphone, this.txtUserEmail, this.txtUserEmergencyNumber, this.txaUserOthers, this.btnUserRegister);
             } else
                 JOptionPane.showMessageDialog(  null,
                                                 "NO PUEDE MODIFICAR EL ACCESO GLOBAL AL SISTEMA.",
@@ -3723,16 +3719,16 @@ public class UIMain extends javax.swing.JFrame
     }//GEN-LAST:event_btnModifyUserActionPerformed
 
     private void btnSearchUserActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSearchUserActionPerformed
-        DefaultTableModel model = (DefaultTableModel) this.tblResultUser.getModel();
-        model.getDataVector().removeAllElements();
+        DefaultTableModel cModel = (DefaultTableModel) this.tblResultUser.getModel();
+        cModel.getDataVector().removeAllElements();
         this.tblResultUser.removeAll();
-        this.usersSearch = this.users.searchUser(this.txtNameSearchUser, this.tblResultUser);
+        this.aUsersSearch = this.cUsers.searchUser(this.txtNameSearchUser, this.tblResultUser);
     }//GEN-LAST:event_btnSearchUserActionPerformed
 
     private void btnUserRegisterActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUserRegisterActionPerformed
         if(!(this.txtUserName.getText().equals("*") || this.txtUserFatherLastName.getText().equals("*") || this.txtUserMotherLastName.getText().equals("*") || this.txtUserNi.getText().equals("*") || this.txtUserAddress.getText().equals("*") || this.txtUserCellphone.getText().equals("*") || this.txtUserEmail.getText().equals("*") || this.txtUserEmergencyNumber.getText().equals("*"))) {
-            this.users.actUser(this.state, this.userCode, this.txtUserName, this.txtUserFatherLastName, this.txtUserMotherLastName, this.txtUserNi, this.cbxUserGender, this.txtUserAddress, this.cbxUserPosition, this.txtUserCellphone, this.txtUserEmail, this.txtUserEmergencyNumber, this.txaUserOthers);
-            this.users.changeUserShow((CardLayout)this.pnlUserSlave.getLayout(), this.pnlUserSlave, this.tblUserShow);
+            this.cUsers.actUser(this.iState, this.strUserCode, this.txtUserName, this.txtUserFatherLastName, this.txtUserMotherLastName, this.txtUserNi, this.cbxUserGender, this.txtUserAddress, this.cbxUserPosition, this.txtUserCellphone, this.txtUserEmail, this.txtUserEmergencyNumber, this.txaUserOthers);
+            this.cUsers.changeUserShow((CardLayout)this.pnlUserSlave.getLayout(), this.pnlUserSlave, this.tblUserShow);
         } else
             JOptionPane.showMessageDialog(  null,
                                             "Todos los campos obligatorios deber ser llenados.",
@@ -3742,103 +3738,101 @@ public class UIMain extends javax.swing.JFrame
 
     private void btnUserAddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUserAddActionPerformed
         cleanUserAdd();
-        this.users.changeUserAdd((CardLayout)this.pnlUserSlave.getLayout(), this.pnlUserSlave, this.cbxUserGender, this.cbxUserPosition, this.lblNewUser, this.btnUserRegister);
-        this.state = 0;
+        this.cUsers.changeUserAdd((CardLayout)this.pnlUserSlave.getLayout(), this.pnlUserSlave, this.cbxUserGender, this.cbxUserPosition, this.lblNewUser, this.btnUserRegister);
+        this.iState = 0;
         
         this.btnUserAdd.setFont(new Font("Tahoma", Font.BOLD, 12));
         this.btnUserSearch.setFont(new Font("Tahoma", Font.PLAIN, 12));
         this.btnUserShow.setFont(new Font("Tahoma", Font.PLAIN, 12));
         
         this.btnUserAdd.setBackground(Color.ORANGE);
-        this.btnUserSearch.setBackground(Color.getHSBColor(this.color[0],this.color[1],this.color[2]));
-        this.btnUserShow.setBackground(Color.getHSBColor(this.color[0],this.color[1],this.color[2]));
+        this.btnUserSearch.setBackground(Color.getHSBColor(this.fColor[0],this.fColor[1],this.fColor[2]));
+        this.btnUserShow.setBackground(Color.getHSBColor(this.fColor[0],this.fColor[1],this.fColor[2]));
     }//GEN-LAST:event_btnUserAddActionPerformed
 
     private void btnUserSearchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUserSearchActionPerformed
         cleanUserSearch();
-        this.users.changeUserSearch((CardLayout)this.pnlUserSlave.getLayout(), this.pnlUserSlave);
-        this.state = 1;
-        this.userCode = "";
+        this.cUsers.changeUserSearch((CardLayout)this.pnlUserSlave.getLayout(), this.pnlUserSlave);
+        this.iState = 1;
+        this.strUserCode = "";
         
         this.btnUserAdd.setFont(new Font("Tahoma", Font.PLAIN, 12));
         this.btnUserSearch.setFont(new Font("Tahoma", Font.BOLD, 12));
         this.btnUserShow.setFont(new Font("Tahoma", Font.PLAIN, 12));
         
-        this.btnUserAdd.setBackground(Color.getHSBColor(this.color[0],this.color[1],this.color[2]));
+        this.btnUserAdd.setBackground(Color.getHSBColor(this.fColor[0],this.fColor[1],this.fColor[2]));
         this.btnUserSearch.setBackground(Color.ORANGE);
-        this.btnUserShow.setBackground(Color.getHSBColor(this.color[0],this.color[1],this.color[2]));
+        this.btnUserShow.setBackground(Color.getHSBColor(this.fColor[0],this.fColor[1],this.fColor[2]));
     }//GEN-LAST:event_btnUserSearchActionPerformed
 
     private void btnUserShowActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUserShowActionPerformed
-        this.users.changeUserShow((CardLayout)this.pnlUserSlave.getLayout(), this.pnlUserSlave, this.tblUserShow);
+        this.cUsers.changeUserShow((CardLayout)this.pnlUserSlave.getLayout(), this.pnlUserSlave, this.tblUserShow);
         
         this.btnUserAdd.setFont(new Font("Tahoma", Font.PLAIN, 12));
         this.btnUserSearch.setFont(new Font("Tahoma", Font.PLAIN, 12));
         this.btnUserShow.setFont(new Font("Tahoma", Font.BOLD, 12));
         
-        this.btnUserAdd.setBackground(Color.getHSBColor(this.color[0],this.color[1],this.color[2]));
-        this.btnUserSearch.setBackground(Color.getHSBColor(this.color[0],this.color[1],this.color[2]));
+        this.btnUserAdd.setBackground(Color.getHSBColor(this.fColor[0],this.fColor[1],this.fColor[2]));
+        this.btnUserSearch.setBackground(Color.getHSBColor(this.fColor[0],this.fColor[1],this.fColor[2]));
         this.btnUserShow.setBackground(Color.ORANGE);
     }//GEN-LAST:event_btnUserShowActionPerformed
 
     private void btnLogInActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLogInActionPerformed
-        if((this.user = this.home.logIn(this.txtId, this.txtPass)) != null)
-        {
-            //clean(1);
-            this.lblWelcome.setText("Bienvenid@ " + this.user.getName());
+        if((this.cUser = this.cHome.logIn(this.txtId, this.txtPass)) != null) {
+            this.lblWelcome.setText("Bienvenid@ " + this.cUser.getName());
             this.lblLogOut.setText("Cerrar Sesión");
-            this.home.activate(Integer.parseInt(this.user.getPositionCode()), this.btnHome, this.btnUsers, this.btnSuppliers, this.btnProducts, this.btnStore, this.btnSale);
+            this.cHome.activate(Integer.parseInt(this.cUser.getPositionCode()), this.btnHome, this.btnUsers, this.btnSuppliers, this.btnProducts, this.btnStore, this.btnSale);
             
-            switch(Integer.parseInt(this.user.getPositionCode())){
-                case 1: this.interfaz.changeUsers((CardLayout)this.pnlContent.getLayout(), this.pnlContent);
-                        this.interfaz.paint(1, this.menuBtn);
-                        this.users.changeUserShow((CardLayout)this.pnlUserSlave.getLayout(), this.pnlUserSlave, this.tblUserShow);
+            switch(Integer.parseInt(this.cUser.getPositionCode())){
+                case 1: this.iInterface.changeUsers((CardLayout)this.pnlContent.getLayout(), this.pnlContent);
+                        this.iInterface.paint(1, this.aMenuButtons);
+                        this.cUsers.changeUserShow((CardLayout)this.pnlUserSlave.getLayout(), this.pnlUserSlave, this.tblUserShow);
                         
                         this.btnUserAdd.setFont(new Font("Tahoma", Font.PLAIN, 12));
                         this.btnUserSearch.setFont(new Font("Tahoma", Font.PLAIN, 12));
                         this.btnUserShow.setFont(new Font("Tahoma", Font.BOLD, 12));
 
-                        this.btnUserAdd.setBackground(Color.getHSBColor(this.color[0],this.color[1],this.color[2]));
-                        this.btnUserSearch.setBackground(Color.getHSBColor(this.color[0],this.color[1],this.color[2]));
+                        this.btnUserAdd.setBackground(Color.getHSBColor(this.fColor[0],this.fColor[1],this.fColor[2]));
+                        this.btnUserSearch.setBackground(Color.getHSBColor(this.fColor[0],this.fColor[1],this.fColor[2]));
                         this.btnUserShow.setBackground(Color.ORANGE);
                         break;
                     
-                case 2: this.interfaz.changeSale((CardLayout)this.pnlContent.getLayout(), this.pnlContent);
-                        this.interfaz.paint(5, this.menuBtn);
+                case 2: this.iInterface.changeSale((CardLayout)this.pnlContent.getLayout(), this.pnlContent);
+                        this.iInterface.paint(5, this.aMenuButtons);
                         Date cDate = new Date();
                         DateFormat cFormat = new SimpleDateFormat("yyyy/MM/dd");
                         this.lblSaleOrderDateOn.setText(cFormat.format(cDate));
-                        this.interfaz.setOrderNumber(this.lblSaleOrderNumber);
-                        this.lblUserOnSale.setText("Usuario: " + this.user.getName() + " " + this.user.getFatherLastName());
+                        this.iInterface.setOrderNumber(this.lblSaleOrderNumber);
+                        this.lblUserOnSale.setText("Usuario: " + this.cUser.getName() + " " + this.cUser.getFatherLastName());
                         break;
             }
         }
     }//GEN-LAST:event_btnLogInActionPerformed
 
     private void lblLogOutMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblLogOutMouseClicked
-        this.interfaz.logOut();
+        this.iInterface.logOut();
     }//GEN-LAST:event_lblLogOutMouseClicked
 
     private void lblForgottenPassMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblForgottenPassMouseClicked
-        this.interfaz.forgottenPass(this.txtId);
+        this.iInterface.forgottenPass(this.txtId);
     }//GEN-LAST:event_lblForgottenPassMouseClicked
 
     private void btnSaleSearchProductActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSaleSearchProductActionPerformed
-        this.productsList = this.sale.search(this.cbxSaleSearchProduct, this.txtSaleSearchProduct, this.tblSaleSearchProduct);
+        this.aProductsList = this.cSale.search(this.cbxSaleSearchProduct, this.txtSaleSearchProduct, this.tblSaleSearchProduct);
     }//GEN-LAST:event_btnSaleSearchProductActionPerformed
 
     private void tblSaleSearchProductMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblSaleSearchProductMouseClicked
-        this.total = this.sale.addProduct(this.tblSaleOrderTable, this.tblSaleSearchProduct.getSelectedRow(), this.productsList, this.total);
+        this.dTtotal = this.cSale.addProduct(this.tblSaleOrderTable, this.tblSaleSearchProduct.getSelectedRow(), this.aProductsList, this.dTtotal);
         DecimalFormat cFormat = new DecimalFormat("#.##");
-        this.lblSaleOrderTotalOn.setText("S/. " + cFormat.format(total));
+        this.lblSaleOrderTotalOn.setText("S/. " + cFormat.format(dTtotal));
     }//GEN-LAST:event_tblSaleSearchProductMouseClicked
 
     private void tblSaleOrderTablePropertyChange(java.beans.PropertyChangeEvent evt) {//GEN-FIRST:event_tblSaleOrderTablePropertyChange
         int iRow;
         if((iRow = this.tblSaleOrderTable.getSelectedRow()) != -1){
-            this.total -= Double.parseDouble(String.valueOf(this.tblSaleOrderTable.getValueAt(iRow, 4)));
+            this.dTtotal -= Double.parseDouble(String.valueOf(this.tblSaleOrderTable.getValueAt(iRow, 4)));
             
-            if(!this.sale.verifyQuantity(String.valueOf(this.tblSaleOrderTable.getValueAt(iRow, 0)), String.valueOf(this.tblSaleOrderTable.getValueAt(iRow, 1)))){
+            if(!this.cSale.verifyQuantity(String.valueOf(this.tblSaleOrderTable.getValueAt(iRow, 0)), String.valueOf(this.tblSaleOrderTable.getValueAt(iRow, 1)))){
                 this.tblSaleOrderTable.setValueAt("1" , iRow, 1);
                 JOptionPane.showMessageDialog(  null,
                                                 "El stock del producto es menor al solicitado.",
@@ -3849,14 +3843,14 @@ public class UIMain extends javax.swing.JFrame
             int iAmount = Integer.parseInt(String.valueOf(this.tblSaleOrderTable.getValueAt(iRow, 1)));
             double dPrice = Double.parseDouble(String.valueOf(this.tblSaleOrderTable.getValueAt(iRow, 3)));
             this.tblSaleOrderTable.setValueAt(iAmount*dPrice, iRow, 4);
-            total += iAmount*dPrice;
+            dTtotal += iAmount*dPrice;
             DecimalFormat cFormat = new DecimalFormat("#.##");
-            this.lblSaleOrderTotalOn.setText("S/. " + cFormat.format(total));
+            this.lblSaleOrderTotalOn.setText("S/. " + cFormat.format(dTtotal));
         }
     }//GEN-LAST:event_tblSaleOrderTablePropertyChange
 
     private void btnSaleOrderPrintActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSaleOrderPrintActionPerformed
-        if(this.tblSaleOrderTable.getRowCount() != 0){
+        if(this.tblSaleOrderTable.getRowCount() != 0) {
             this.btnSaleOrderDelete.setVisible(false);
             
             try {
@@ -3868,9 +3862,9 @@ public class UIMain extends javax.swing.JFrame
             }         
             
             this.btnSaleOrderDelete.setVisible(true);
-            this.sale.safeSale(this.user, this.txtSaleOrderClient, this.lblSaleOrderTotalOn, this.lblSaleOrderDateOn, this.tblSaleOrderTable);
+            this.cSale.safeSale(this.cUser, this.txtSaleOrderClient, this.lblSaleOrderTotalOn, this.lblSaleOrderDateOn, this.tblSaleOrderTable);
             cleanSale();
-            this.interfaz.setOrderNumber(this.lblSaleOrderNumber);
+            this.iInterface.setOrderNumber(this.lblSaleOrderNumber);
         } else
             JOptionPane.showMessageDialog(  null,
                                             "No se ha ingresado algún registro a la Orden de Venta",
@@ -3879,21 +3873,20 @@ public class UIMain extends javax.swing.JFrame
     }//GEN-LAST:event_btnSaleOrderPrintActionPerformed
 
     private void btnProductUpdateStoreActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnProductUpdateStoreActionPerformed
-        this.store.actProduct(this.productCode, this.txtProductNameStore, this.txtProductBrandStore, this.txtProductPresentationStore, this.txtProductStockStore, this.cbxProductCategoryStore, this.txtProductPriceStore);
-        this.store.changeInventStore((CardLayout)this.pnlStoreSlave.getLayout(), this.pnlStoreSlave, this.tblProductShowStore);
+        this.cStore.actProduct(this.strProductCode, this.txtProductNameStore, this.txtProductBrandStore, this.txtProductPresentationStore, this.txtProductStockStore, this.cbxProductCategoryStore, this.txtProductPriceStore);
+        this.cStore.changeInventStore((CardLayout)this.pnlStoreSlave.getLayout(), this.pnlStoreSlave, this.tblProductShowStore);
     }//GEN-LAST:event_btnProductUpdateStoreActionPerformed
 
     private void btnSearchProductActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSearchProductActionPerformed
         ((DefaultTableModel) this.tblResultProduct.getModel()).getDataVector().clear();
-        this.productsSearch = this.store.searchProduct(this.txtNameSearchProduct, this.tblResultProduct);
+        this.aProductsSearch = this.cStore.searchProduct(this.txtNameSearchProduct, this.tblResultProduct);
     }//GEN-LAST:event_btnSearchProductActionPerformed
 
     private void btnModifyProductActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnModifyProductActionPerformed
         int iValue;
-        if((iValue = this.tblResultProduct.getSelectedRow()) != -1){
-            //clean(2);
-            this.store.changeModify((CardLayout)this.pnlStoreSlave.getLayout(), this.pnlStoreSlave);
-            this.productCode = this.store.send(this.productsSearch.get(iValue), this.txtProductNameStore, this.txtProductBrandStore, this.txtProductPresentationStore, this.txtProductStockStore, this.cbxProductCategoryStore, this.txtProductPriceStore);
+        if((iValue = this.tblResultProduct.getSelectedRow()) != -1) {
+            this.cStore.changeModify((CardLayout)this.pnlStoreSlave.getLayout(), this.pnlStoreSlave);
+            this.strProductCode = this.cStore.send(this.aProductsSearch.get(iValue), this.txtProductNameStore, this.txtProductBrandStore, this.txtProductPresentationStore, this.txtProductStockStore, this.cbxProductCategoryStore, this.txtProductPriceStore);
         } else
             JOptionPane.showMessageDialog(  null,
                                             "No ha seleccionado ningún registro.",
@@ -3902,14 +3895,14 @@ public class UIMain extends javax.swing.JFrame
     }//GEN-LAST:event_btnModifyProductActionPerformed
 
     private void btnSearchTicketActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSearchTicketActionPerformed
-        //Clean
-        this.ticketsSearch = this.store.searchTicket(this.txtNameSearchTicket, this.tblResultTicket);
+        // Here appeared "Clean" check it after
+        this.aTicketsSearch = this.cStore.searchTicket(this.txtNameSearchTicket, this.tblResultTicket);
     }//GEN-LAST:event_btnSearchTicketActionPerformed
 
     private void btnSeeTicketActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSeeTicketActionPerformed
         int iRow;
         if((iRow = this.tblResultTicket.getSelectedRow()) != -1){
-            CTicket cTicket = new CTicket(this.ticketsSearch.get(iRow));
+            CTicket cTicket = new CTicket(this.aTicketsSearch.get(iRow));
         } else
             JOptionPane.showMessageDialog(  null,
                                             "No ha seleccionado ningún registro.",
@@ -3919,22 +3912,22 @@ public class UIMain extends javax.swing.JFrame
 
     private void cbxSaleSearchProductStoreItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_cbxSaleSearchProductStoreItemStateChanged
          if (evt.getStateChange() == ItemEvent.SELECTED) {
-             this.store.chargeProduct(this.tblProductShowStore, this.cbxSaleSearchProductStore);
+             this.cStore.chargeProduct(this.tblProductShowStore, this.cbxSaleSearchProductStore);
          }
     }//GEN-LAST:event_cbxSaleSearchProductStoreItemStateChanged
 
     private void clrStartPropertyChange(java.beans.PropertyChangeEvent evt) {//GEN-FIRST:event_clrStartPropertyChange
-        SimpleDateFormat iFormat = new SimpleDateFormat("dd 'de' MMMM 'del' yyyy");
-        this.lblSelectDateStartReport.setText(iFormat.format(this.clrStart.getCalendar().getTime()));
+        SimpleDateFormat cFormat = new SimpleDateFormat("dd 'de' MMMM 'del' yyyy");
+        this.lblSelectDateStartReport.setText(cFormat.format(this.clrStart.getCalendar().getTime()));
     }//GEN-LAST:event_clrStartPropertyChange
 
     private void clrEndPropertyChange(java.beans.PropertyChangeEvent evt) {//GEN-FIRST:event_clrEndPropertyChange
-        SimpleDateFormat iFormat = new SimpleDateFormat("dd 'de' MMMM 'del' yyyy");
-        this.lblSelectDateEndReport.setText(iFormat.format(clrEnd.getCalendar().getTime()));
+        SimpleDateFormat cFormat = new SimpleDateFormat("dd 'de' MMMM 'del' yyyy");
+        this.lblSelectDateEndReport.setText(cFormat.format(clrEnd.getCalendar().getTime()));
     }//GEN-LAST:event_clrEndPropertyChange
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        if(this.store.saleReport(this.user,  this.clrStart, this.clrEnd))
+        if(this.cStore.saleReport(this.cUser,  this.clrStart, this.clrEnd))
             JOptionPane.showMessageDialog(  null,
                                             "El Reporte se ha generado correctamente. Se encuentra en la dirección consignada al crearlo",
                                             "Reporte Generado",
@@ -4293,7 +4286,7 @@ public class UIMain extends javax.swing.JFrame
         this.lstLinkedProducts.setEnabled(false);
         int iSupplierSelected;
         if((iSupplierSelected = this.lstLinkSupplier.getSelectedIndex()) != -1)
-            this.suppliers.linkedProducts(this.suppliersInd.get(iSupplierSelected), this.lstLinkedProducts, this.lblLinkedProducts);
+            this.cSuppliers.linkedProducts(this.aSuppliersIndexes.get(iSupplierSelected), this.lstLinkedProducts, this.lblLinkedProducts);
     }//GEN-LAST:event_lstLinkSupplierMouseClicked
 
     private void txtProductNameFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtProductNameFocusGained
@@ -4465,7 +4458,7 @@ public class UIMain extends javax.swing.JFrame
     }//GEN-LAST:event_txtNameSearchTicketFocusLost
 
     private void btnStoreReportProdFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_btnStoreReportProdFocusLost
-        // TODO add your handling code here:
+        // Check it after 
     }//GEN-LAST:event_btnStoreReportProdFocusLost
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -4733,8 +4726,8 @@ public class UIMain extends javax.swing.JFrame
         this.txtNameSearchUser.setText("Ingrese Nombre de Usuario");
         this.txtNameSearchUser.setFont(new Font("Tahoma", Font.ITALIC, 11));
                         
-        DefaultTableModel model = (DefaultTableModel) this.tblResultUser.getModel();
-        model.getDataVector().removeAllElements();
+        DefaultTableModel cModel = (DefaultTableModel) this.tblResultUser.getModel();
+        cModel.getDataVector().removeAllElements();
         this.tblResultUser.removeAll();
         this.tblResultUser.clearSelection();
     }
@@ -4754,8 +4747,8 @@ public class UIMain extends javax.swing.JFrame
         this.txtNameSearchSupplier.setText("Ingrese Nombre de Usuario");
         this.txtNameSearchSupplier.setFont(new Font("Tahoma", Font.ITALIC, 11));
                         
-        DefaultTableModel model = (DefaultTableModel) this.tblResultSupplier.getModel();
-        model.getDataVector().removeAllElements();
+        DefaultTableModel cModel = (DefaultTableModel) this.tblResultSupplier.getModel();
+        cModel.getDataVector().removeAllElements();
         this.tblResultSupplier.removeAll();
         this.tblResultSupplier.clearSelection();
     }
@@ -4785,8 +4778,8 @@ public class UIMain extends javax.swing.JFrame
         this.txtNameSearchProduct.setText("Ingrese Nombre de Producto");
         this.txtNameSearchProduct.setFont(new Font("Tahoma", Font.ITALIC, 11));
                         
-        DefaultTableModel model = (DefaultTableModel) this.tblResultProduct.getModel();
-        model.getDataVector().removeAllElements();
+        DefaultTableModel cModel = (DefaultTableModel) this.tblResultProduct.getModel();
+        cModel.getDataVector().removeAllElements();
         this.tblResultProduct.removeAll();
         this.tblResultProduct.clearSelection();
     }
@@ -4795,8 +4788,8 @@ public class UIMain extends javax.swing.JFrame
         this.txtNameSearchTicket.setText("Ingrese Número de la Boleta");
         this.txtNameSearchTicket.setFont(new Font("Tahoma", Font.ITALIC, 11));
                         
-        DefaultTableModel model = (DefaultTableModel) this.tblResultTicket.getModel();
-        model.getDataVector().removeAllElements();
+        DefaultTableModel cModel = (DefaultTableModel) this.tblResultTicket.getModel();
+        cModel.getDataVector().removeAllElements();
         this.tblResultTicket.removeAll();
         this.tblResultTicket.clearSelection();
     }
@@ -4806,8 +4799,8 @@ public class UIMain extends javax.swing.JFrame
         this.lblSaleOrderNumber.setText("");
         this.lblSaleOrderTotalOn.setText("S/. 0,00");
 
-        DefaultTableModel model = (DefaultTableModel) tblSaleOrderTable.getModel();
-        model.getDataVector().removeAllElements();
+        DefaultTableModel cModel = (DefaultTableModel) tblSaleOrderTable.getModel();
+        cModel.getDataVector().removeAllElements();
         this.tblSaleOrderTable.removeAll();
         this.tblSaleOrderTable.clearSelection();
     }
