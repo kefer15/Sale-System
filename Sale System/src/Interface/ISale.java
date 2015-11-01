@@ -2,7 +2,9 @@ package Interface;
 
 import Model.Products;
 import Model.Users;
+
 import java.util.ArrayList;
+
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JTable;
@@ -16,7 +18,7 @@ public interface ISale {
     double addProduct(JTable tblTable, int iIndex, ArrayList <Products> aryProducts, double dTotal);
     
     /* Returns true if there's more than an avaliable product in stock */
-    boolean verifyQuantity(String srtCode, String strQuantity);
+    String verifyQuantity(String srtCode, String strQuantity);
     
     /* Makes a ticket to print and saves it */
     void safeSale(Users cUser, JTextField txtClient, JLabel lblMount, JLabel lblDate, JTable tblProducts);

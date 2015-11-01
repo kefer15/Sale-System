@@ -2,6 +2,7 @@ package Model;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -129,6 +130,25 @@ public class Products
         return strError;
     }
     
+    public String updateStock(ArrayList <String> aryCodes, ArrayList <String> aryStock) {
+        Main.cConexion.conect();
+        String strError = "";  
+        
+        try {   
+            
+            ArrayList <String> aryStockOld = this.getStock(aryCodes);
+            
+            for(int i = 0;i < aryCodes.size();i++)                
+                Main.cConexion.send("UPDATE Producto SET ProdSto = " + (Integer.parseInt(aryStockOld.get(i))-Integer.parseInt(aryStock.get(i))) + " WHERE ProdCod = " + aryCodes.get(i));
+            
+            Main.cConexion.disconect();  
+        } catch (SQLException cException) {
+            strError = cException.getMessage();
+        }
+                
+        return strError;
+    }
+    
     public String remove(String strProductCode) {
         Main.cConexion.conect();
         String strError = "";
@@ -226,5 +246,23 @@ public class Products
         
         return aryProducts;
         
+    }
+    
+    public ArrayList <String> getStock(ArrayList <String> aryCodes) {
+        Main.cConexion.conect();
+        ArrayList <String> aryStock = new ArrayList <> ();
+        
+        try {
+            for (String aryCode : aryCodes) {
+                ResultSet cResult = Main.cConexion.receive("SELECT ProdSto FROM Producto WHERE ProdCod = " + aryCode);
+                while(cResult.next())   
+                    aryStock.add(cResult.getString("ProdSto"));
+            }            
+  
+        } catch (SQLException eException) {
+            Logger.getLogger(Products.class.getName()).log(Level.SEVERE, null, eException);
+        }
+        
+        return aryStock;        
     }
 }

@@ -1,11 +1,15 @@
 package Controlator;
 
 import Interface.IUsers;
+
 import Model.Gender;
 import Model.Position;
 import Model.Users;
+
 import java.awt.CardLayout;
+
 import java.util.ArrayList;
+
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
@@ -17,10 +21,10 @@ import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
 
 public class CUsers implements IUsers {
-    private final ArrayList <Gender> aryGenders;
-    private final ArrayList <Position> aryPositions;
-    private final ArrayList <String> aryGendersIndexes;
-    private final ArrayList <String> aryPositionsIndexes;
+    private final ArrayList <Gender> ARYGENDERS;
+    private final ArrayList <Position> ARYPOSITIONS;
+    private final ArrayList <String> ARYGENDERSINDEXES;
+    private final ArrayList <String> ARYPOSITIONSINDEXES;
     
     /*
         The constructor fills aryGenders with all Categorigies available, and
@@ -28,10 +32,10 @@ public class CUsers implements IUsers {
         Initializes aryGendersIndexes and aryPositionsIndexes.
     */
     public CUsers() {
-        aryGenders = (new Gender()).getList();
-        aryPositions = (new Position()).getList();
-        aryGendersIndexes = new ArrayList <> ();
-        aryPositionsIndexes = new ArrayList <> ();
+        ARYGENDERS = (new Gender()).getList();
+        ARYPOSITIONS = (new Position()).getList();
+        ARYGENDERSINDEXES = new ArrayList <> ();
+        ARYPOSITIONSINDEXES = new ArrayList <> ();
     }
     
     /*
@@ -41,18 +45,18 @@ public class CUsers implements IUsers {
         each index of aryPositionsIndexes.
     */
     private void fill(JComboBox cbxGender, JComboBox cbxPosition) {
-        aryGenders.stream().map((cGender) -> {
+        ARYGENDERS.stream().map((cGender) -> {
             cbxGender.addItem(cGender.getDescription());
             return cGender;
         }).forEach((cGender) -> {
-            aryGendersIndexes.add(cGender.getCode());
+            ARYGENDERSINDEXES.add(cGender.getCode());
         });
         
-        aryPositions.stream().map((cPosition) -> {
+        ARYPOSITIONS.stream().map((cPosition) -> {
             cbxPosition.addItem(cPosition.getDescription());
             return cPosition;
         }).forEach((cPosition) -> {
-            aryPositionsIndexes.add(cPosition.getCode());
+            ARYPOSITIONSINDEXES.add(cPosition.getCode());
         });
     }
     
@@ -83,7 +87,7 @@ public class CUsers implements IUsers {
         cModel.getDataVector().removeAllElements();
         
         aryUsers.stream().forEach((cUser) -> {
-            cModel.addRow(new Object[]{cUser.getCode(), cUser.getName(), cUser.getFatherLastName(), cUser.getMotherLastName(), cUser.getPositionCode(), cUser.getNi(), cUser.getCellphone(), cUser.geteMail(), cUser.getGenderCode()});
+            cModel.addRow(new Object[]{cUser.getName(), cUser.getFatherLastName(), cUser.getMotherLastName(), cUser.getPositionCode(), cUser.getNi(), cUser.getCellphone(), cUser.geteMail()});
         });
     }
     
@@ -98,9 +102,9 @@ public class CUsers implements IUsers {
         cUser.setFatherLastName(txtFatherLastName.getText());
         cUser.setMotherLastName(txtMotherLastName.getText());
         cUser.setNi(txtNi.getText());
-        cUser.setGenderCode(aryGendersIndexes.get(cbxGender.getSelectedIndex()));
+        cUser.setGenderCode(ARYGENDERSINDEXES.get(cbxGender.getSelectedIndex()));
         cUser.setAddress(txtAddress.getText());
-        cUser.setPositionCode(aryPositionsIndexes.get(cbxPosition.getSelectedIndex()));
+        cUser.setPositionCode(ARYPOSITIONSINDEXES.get(cbxPosition.getSelectedIndex()));
         cUser.setCellphone(txtCellphone.getText());
         cUser.seteMail(txtEmail.getText());
         cUser.setEmergencyCell(txtEmergencyNumber.getText());
@@ -110,13 +114,14 @@ public class CUsers implements IUsers {
         
         switch(iOption){
             case 0: String id, password;
-                    try {
-                        id = txtName.getText().substring(0,2) + txtFatherLastName.getText().substring(0,2) + txtNi.getText().substring(3,5) + txtEmail.getText().substring(0,2) + txtNi.getText().substring(3,5);
-                        password = id.substring(0,2) + txtCellphone.getText().substring(5,6) + id.substring(7,9);
+                    id = txtName.getText().toUpperCase() + txtNi.getText().substring(0,2) + txtMotherLastName.getText().toUpperCase().substring(0, 2);
+                    password = txtFatherLastName.getText().toUpperCase().substring(0,2) + txtCellphone.getText().substring(4,7) + id.substring(0,3);
+            /*try {
+                        
                     } catch(StringIndexOutOfBoundsException cException) {
                         id = txtName.getText() + txtFatherLastName.getText();
                         password = txtCellphone.getText();
-                    }
+                    }*/
                     
                     cUser.setId(id);
                     cUser.setPassword(password);
@@ -200,8 +205,8 @@ public class CUsers implements IUsers {
         
         fill(cbxGender, cbxPosition);
                 
-        cbxGender.setSelectedIndex(aryGendersIndexes.indexOf(user.get(0).getGenderCode()));
-        cbxPosition.setSelectedIndex(aryPositionsIndexes.indexOf(user.get(0).getPositionCode()));
+        cbxGender.setSelectedIndex(ARYGENDERSINDEXES.indexOf(user.get(0).getGenderCode()));
+        cbxPosition.setSelectedIndex(ARYPOSITIONSINDEXES.indexOf(user.get(0).getPositionCode()));
         
         return user.get(0).getCode();
     }

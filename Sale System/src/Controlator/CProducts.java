@@ -1,10 +1,14 @@
 package Controlator;
 
 import Interface.IProducts;
+
 import Model.Category;
 import Model.Products;
+
 import java.awt.CardLayout;
+
 import java.util.ArrayList;
+
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;

@@ -1,12 +1,16 @@
 package Controlator;
 
 import Interface.IMain;
+
 import Model.ProofOfPayment;
+
 import View.UIMain;
+
 import java.awt.CardLayout;
-import java.awt.Color;
 import java.text.DecimalFormat;
+
 import java.util.ArrayList;
+
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;

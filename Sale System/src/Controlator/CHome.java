@@ -1,12 +1,15 @@
 package Controlator;
 
 import Interface.IHome;
+
+import Model.Users;
+
+import java.util.ArrayList;
+
 import javax.swing.JButton;
 import javax.swing.JOptionPane;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
-import Model.Users;
-import java.util.ArrayList;
 
 public class CHome implements IHome
 {

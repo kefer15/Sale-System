@@ -1,10 +1,12 @@
 package Controlator;
 
 import Interface.IStore;
+
 import Model.Category;
 import Model.Products;
 import Model.ProofOfPayment;
 import Model.Users;
+
 import com.itextpdf.text.BaseColor;
 import com.itextpdf.text.Document;
 import com.itextpdf.text.DocumentException;
@@ -14,15 +16,23 @@ import com.itextpdf.text.Paragraph;
 import com.itextpdf.text.pdf.PdfPCell;
 import com.itextpdf.text.pdf.PdfPTable;
 import com.itextpdf.text.pdf.PdfWriter;
+
 import com.toedter.calendar.JCalendar;
+
 import java.awt.CardLayout;
+import java.awt.Desktop;
 import java.awt.Font;
+
+import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
+
 import java.util.ArrayList;
 import java.util.Calendar;
+
 import javax.swing.JComboBox;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
@@ -77,7 +87,7 @@ public class CStore implements IStore {
         cModel.getDataVector().removeAllElements();
         
         aryProducts.stream().forEach((cProduct) -> {
-            cModel.addRow(new Object[]{cProduct.getCode(), cProduct.getName(), cProduct.getBrand(), cProduct.getPresentation(), cProduct.getCategory(), cProduct.getStock(), cProduct.getPrice()});
+            cModel.addRow(new Object[]{cProduct.getName(), cProduct.getBrand(), cProduct.getPresentation(), cProduct.getCategory(), cProduct.getStock(), cProduct.getPrice()});
         });
     }
     
@@ -88,7 +98,8 @@ public class CStore implements IStore {
     
     @Override
     public ArrayList <String> searchProduct(JTextField txtName, JTable tblTable) {
-        ArrayList <Products> aryProducts = (new Products()).getList(2, null, txtName.getText());
+        String strName = (txtName.getText().equals("Ingrese Nombre de Producto"))?"":txtName.getText();     
+        ArrayList <Products> aryProducts = (new Products()).getList(2, null, strName);
         ArrayList <String> aryProductsIndexes = new ArrayList <>();
         
         if(!aryProducts.isEmpty()) {            
@@ -103,7 +114,7 @@ public class CStore implements IStore {
             });
         } else
             JOptionPane.showMessageDialog(  null,
-                                            "No hay usuarios para mostrar.", 
+                                            "No hay productos para mostrar.", 
                                             "Resultado Vacío", 
                                             JOptionPane.INFORMATION_MESSAGE);
         
@@ -174,14 +185,15 @@ public class CStore implements IStore {
         cModel.getDataVector().removeAllElements();
         
         for (Products cProduct : aryProducts) {
-            cModel.addRow(new Object[]{cProduct.getCode(), cProduct.getName(), cProduct.getBrand(), cProduct.getPresentation(), cProduct.getCategory(), cProduct.getStock(), cProduct.getPrice()});
+            cModel.addRow(new Object[]{cProduct.getName(), cProduct.getBrand(), cProduct.getPresentation(), cProduct.getCategory(), cProduct.getStock(), cProduct.getPrice()});
         }
     }
     
     @Override
     public ArrayList <String> searchTicket(JTextField txtNumber, JTable tblTable) {
+        String strName = (txtNumber.getText().equals("Ingrese Número de la Boleta"))?"":txtNumber.getText();        
         ArrayList <String> aryTicketsIndexes = new ArrayList <>();
-        ArrayList <ProofOfPayment> aryTickets = (new ProofOfPayment()).getList(txtNumber.getText());
+        ArrayList <ProofOfPayment> aryTickets = (new ProofOfPayment()).getList(strName);
         DecimalFormat cFormat = new DecimalFormat("00000000000");
         
         if(!aryTickets.isEmpty()) {            
@@ -438,6 +450,8 @@ public class CStore implements IStore {
                 cDocument.add(cTable);                
                 cDocument.close();
                 
+                Desktop.getDesktop().open((new File(strPath)));
+                
                 return true;                
             } catch (DocumentException | IOException cException) {
                 return false;
@@ -462,12 +476,12 @@ public class CStore implements IStore {
         {
             try {
                 Document cDocument = new Document();
-                String cPath = "" + fcsSave.getSelectedFile().getAbsoluteFile()+ "";
+                String strPath = "" + fcsSave.getSelectedFile().getAbsoluteFile()+ "";
                 
-                if(!cPath.substring(cPath.length() - 3, cPath.length()).equals("pdf"))
-                    cPath = cPath +".pdf";
+                if(!strPath.substring(strPath.length() - 3, strPath.length()).equals("pdf"))
+                    strPath = strPath +".pdf";
                 
-                PdfWriter.getInstance(cDocument, new FileOutputStream(cPath));
+                PdfWriter.getInstance(cDocument, new FileOutputStream(strPath));
                 cDocument.open();
 
                 Paragraph cParagraph = new Paragraph("SISTEMA DE VENTAS PARA UNA TIENDA DE ABARROTES\n\n",FontFactory.getFont(FontFactory.COURIER,10,BaseColor.BLACK));
@@ -669,6 +683,9 @@ public class CStore implements IStore {
                 }
                 cDocument.add(cTable);                
                 cDocument.close();
+                
+                Desktop.getDesktop().open((new File(strPath)));
+                
                 return true;                
             } catch (DocumentException | IOException cException) {
                 return false;

@@ -1,7 +1,9 @@
 package View;
 
 import Interface.IForgottenPass;
+
 import java.awt.Toolkit;
+
 import javax.swing.JOptionPane;
 
 public class UIForgottenPass extends javax.swing.JFrame {
@@ -31,6 +33,7 @@ public class UIForgottenPass extends javax.swing.JFrame {
         btnReturn = new javax.swing.JButton();
         txtEmail = new javax.swing.JTextField();
         btnSend = new javax.swing.JButton();
+        lblSending = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setAutoRequestFocus(false);
@@ -98,9 +101,8 @@ public class UIForgottenPass extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(pnlDataAccessLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(btnReturn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addGroup(pnlDataAccessLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                        .addComponent(lblId, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(lblEmail, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                    .addComponent(lblId, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(lblEmail, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addGroup(pnlDataAccessLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(pnlDataAccessLayout.createSequentialGroup()
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -127,18 +129,28 @@ public class UIForgottenPass extends javax.swing.JFrame {
                 .addGroup(pnlDataAccessLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnReturn, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btnSend, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap())
+                .addGap(45, 45, 45))
         );
+
+        lblSending.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        lblSending.setForeground(new java.awt.Color(250, 0, 0));
+        lblSending.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        lblSending.setText(" ");
 
         javax.swing.GroupLayout pnlAccessLayout = new javax.swing.GroupLayout(pnlAccess);
         pnlAccess.setLayout(pnlAccessLayout);
         pnlAccessLayout.setHorizontalGroup(
             pnlAccessLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(pnlAccessLayout.createSequentialGroup()
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlAccessLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(lblImgLog, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(pnlDataAccess, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(pnlAccessLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(pnlAccessLayout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(lblSending, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(pnlAccessLayout.createSequentialGroup()
+                        .addComponent(lblImgLog, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(pnlDataAccess, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         pnlAccessLayout.setVerticalGroup(
@@ -148,7 +160,9 @@ public class UIForgottenPass extends javax.swing.JFrame {
                 .addGroup(pnlAccessLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(lblImgLog, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(pnlDataAccess, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(lblSending)
+                .addContainerGap())
         );
 
         javax.swing.GroupLayout pnlGeneralForgottenPassLayout = new javax.swing.GroupLayout(pnlGeneralForgottenPass);
@@ -167,7 +181,7 @@ public class UIForgottenPass extends javax.swing.JFrame {
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlGeneralForgottenPassLayout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(lblHome)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 26, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(pnlAccess, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
@@ -197,7 +211,8 @@ public class UIForgottenPass extends javax.swing.JFrame {
     }//GEN-LAST:event_btnReturnActionPerformed
 
     private void btnSendActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSendActionPerformed
-        if(this.iForgottenPass.Send(this.txtId, this.txtEmail)){
+        lblSending.setText("Procesando ...");
+        if(this.iForgottenPass.Send(this.txtId, this.txtEmail, this.lblSending)){
             JOptionPane.showMessageDialog(  null,
                                             "El mensaje ha sido enviado. Revise su correo electrónico.",
                                             "Mensaje Enviado",
@@ -213,6 +228,7 @@ public class UIForgottenPass extends javax.swing.JFrame {
     private javax.swing.JLabel lblHome;
     private javax.swing.JLabel lblId;
     private javax.swing.JLabel lblImgLog;
+    private javax.swing.JLabel lblSending;
     private javax.swing.JPanel pnlAccess;
     private javax.swing.JPanel pnlDataAccess;
     private javax.swing.JPanel pnlGeneralForgottenPass;

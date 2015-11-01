@@ -7,12 +7,20 @@ import javax.swing.ImageIcon;
 public class UITicket extends javax.swing.JFrame {
     private ITicket iTicket;
     
-    public UITicket(ITicket iTicket, String strCode) {
+    public UITicket(ITicket iTicket, String strCode, int iOption) {
         initComponents();
         this.setVisible(true);
         this.setTitle("Detalle de Compra");
         setLocationRelativeTo(null);        
         this.iTicket = iTicket;
+        
+        switch(iOption){
+            case 0: this.lblMessage.setText("Comprobante Guardado");
+                    break;
+            
+            case 1: this.lblMessage.setText("Venta Exitosa. Comprobante Generado");
+                    break;
+        }
         
         ImageIcon cIcono = new ImageIcon("Boletas/" + strCode + ".png");  
         this.lblTicket.setIcon(cIcono);
@@ -24,6 +32,7 @@ public class UITicket extends javax.swing.JFrame {
 
         btnAcept = new javax.swing.JButton();
         lblTicket = new javax.swing.JLabel();
+        lblMessage = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setIconImage(Toolkit.getDefaultToolkit().getImage(ClassLoader.getSystemResource("Sources/icon.png")));
@@ -35,6 +44,8 @@ public class UITicket extends javax.swing.JFrame {
             }
         });
 
+        lblMessage.setText("Mensaje:");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -44,14 +55,17 @@ public class UITicket extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(lblTicket, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addGap(0, 394, Short.MAX_VALUE)
-                        .addComponent(btnAcept)))
+                        .addGap(0, 418, Short.MAX_VALUE)
+                        .addComponent(btnAcept))
+                    .addComponent(lblMessage, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
+                .addComponent(lblMessage)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(lblTicket, javax.swing.GroupLayout.PREFERRED_SIZE, 494, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(btnAcept)
@@ -67,6 +81,7 @@ public class UITicket extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAcept;
+    private javax.swing.JLabel lblMessage;
     private javax.swing.JLabel lblTicket;
     // End of variables declaration//GEN-END:variables
 }

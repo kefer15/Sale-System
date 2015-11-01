@@ -1,8 +1,10 @@
 package Model;
 
-import javax.swing.UIManager;
 import Controlator.CMain;
+
 import javax.swing.UnsupportedLookAndFeelException;
+import javax.swing.UIManager;
+
 
 public class Main
 {

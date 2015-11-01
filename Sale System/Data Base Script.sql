@@ -58,7 +58,7 @@ CREATE TABLE Proveedor
 (
   ProCod Int(3) ZEROFILL NOT NULL AUTO_INCREMENT,
   ProNom Char(50) NOT NULL,
-  ProRuc Char(12) NOT NULL,
+  ProRuc Char(11) NOT NULL,
   ProTel Char(9) NOT NULL,
   ProDir Char(100),
   EstCod Int(2) ZEROFILL,

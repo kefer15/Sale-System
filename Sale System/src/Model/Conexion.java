@@ -2,10 +2,12 @@ package Model;
 
 import com.mysql.jdbc.Connection;
 import com.mysql.jdbc.Statement;
+
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+
 import javax.swing.JOptionPane;
 
 public class Conexion

@@ -1,10 +1,14 @@
 package Controlator;
 
 import Interface.ISuppliers;
+
 import Model.Products;
 import Model.Suppliers;
+
 import java.awt.CardLayout;
+
 import java.util.ArrayList;
+
 import javax.swing.DefaultListModel;
 import javax.swing.JButton;
 import javax.swing.JLabel;
@@ -57,7 +61,7 @@ public class CSuppliers implements ISuppliers{
         }).forEach((cProduct) -> {
             aryProductsIndexes.add(cProduct.getCode());
         });
-        
+                
         return aryProductsIndexes;
     }
     
@@ -123,7 +127,6 @@ public class CSuppliers implements ISuppliers{
     @Override
     public ArrayList <String> searchSupplier(JTextField txtName, JTable tblTable) {
         String strName = (txtName.getText().equals("Ingrese Nombre de Proveedor"))?"":txtName.getText();
-        
         ArrayList <Suppliers> arySuppliers = (new Suppliers()).getList(2, null, strName);
         ArrayList <String> arySuppliersIndexes = new ArrayList <>();
         
@@ -165,7 +168,8 @@ public class CSuppliers implements ISuppliers{
     
     @Override
     public ArrayList <String> searchSupplierLink(JTextField txtName, JList lstList){
-        ArrayList <Suppliers> arySuppliers = (new Suppliers()).getList(2, null, txtName.getText());
+        String strName = (txtName.getText().equals("Ingrese Nombre de Proveedor"))?"":txtName.getText();
+        ArrayList <Suppliers> arySuppliers = (new Suppliers()).getList(2, null, strName);
         ArrayList <String> arySuppliersIndexes = new ArrayList <>();
         
         if(!arySuppliers.isEmpty()) {        

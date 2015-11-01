@@ -1,13 +1,14 @@
 package Controlator;
 
 import Interface.ITicket;
+
 import View.UITicket;
 
 public class CTicket implements ITicket{
      private final UITicket wdWindow;
     
-    public CTicket(String strCode) {        
-        wdWindow = new UITicket(this, strCode);
+    public CTicket(String strCode, int iOption) {        
+        wdWindow = new UITicket(this, strCode, iOption);
     }
     
     @Override

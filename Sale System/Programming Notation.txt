@@ -19,6 +19,7 @@ btn	JButton object
 c	Class created object
 
 txt	JTextField object
+tjp	JPasswordField object
 lbl	JLabel object
 cbx	JComboBox object
 tbl	JTable object
