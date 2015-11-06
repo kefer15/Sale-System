@@ -45,8 +45,8 @@ public class CForgottenPass implements IForgottenPass{
             if(!aryUser.get(0).geteMail().equals(txtEmail.getText())){
                 lblSending.setText("");
                 JOptionPane.showMessageDialog(  null,
-                                                "El e-mail ingresado no corresponde al Usuario registrado, inténtelo de nuevo.",
-                                                "E-Mail Incorrecto",
+                                                "El correo electrónico ingresado no corresponde al Usuario registrado, inténtelo de nuevo.",
+                                                "Correo Electrónico Incorrecto",
                                                 JOptionPane.ERROR_MESSAGE);
             } else {
                 lblSending.setText("Enviando ...");
@@ -86,7 +86,7 @@ public class CForgottenPass implements IForgottenPass{
                 } catch (MessagingException cException) {
                     lblSending.setText("");
                     JOptionPane.showMessageDialog(  null,
-                                                    "Revise su conexión a Internet, hubo problemas al envia el mensaje. Inténtelo de nuevo.",
+                                                    "Revise su conexión a Internet, hubo problemas al enviar el mensaje. Inténtelo de nuevo.",
                                                     "Mensaje No Enviado",
                                                     JOptionPane.WARNING_MESSAGE);
                 } catch (InterruptedException cException) {

@@ -114,15 +114,16 @@ public class CUsers implements IUsers {
         
         switch(iOption){
             case 0: String id, password;
-                    id = txtName.getText().toUpperCase() + txtNi.getText().substring(0,2) + txtMotherLastName.getText().toUpperCase().substring(0, 2);
-                    password = txtFatherLastName.getText().toUpperCase().substring(0,2) + txtCellphone.getText().substring(4,7) + id.substring(0,3);
-            /*try {
-                        
-                    } catch(StringIndexOutOfBoundsException cException) {
-                        id = txtName.getText() + txtFatherLastName.getText();
-                        password = txtCellphone.getText();
-                    }*/
-                    
+                    id =    txtName.getText().toUpperCase().substring(0,2) + 
+                            txtNi.getText().substring(0, 2) + 
+                            txtFatherLastName.getText().toUpperCase().substring(0, 2) +
+                            txtCellphone.getText().substring(0, 2) +
+                            txtMotherLastName.getText().toUpperCase().substring(0, 2);
+                    password =  txtName.getText().toUpperCase().substring(0,1) + 
+                                txtNi.getText().toUpperCase().substring(2,6) + 
+                                txtCellphone.getText().substring(3, 7) + 
+                                txtFatherLastName.getText().toUpperCase().substring(0, 1);
+                    System.out.println(id + " " + password);
                     cUser.setId(id);
                     cUser.setPassword(password);
                     cUser.setState("1");

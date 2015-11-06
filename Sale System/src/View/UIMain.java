@@ -16,6 +16,7 @@ import Model.Users;
 
 import java.awt.CardLayout;
 import java.awt.Color;
+import java.awt.Desktop;
 import java.awt.Font;
 import java.awt.Toolkit;
 import java.awt.event.ItemEvent;
@@ -3039,7 +3040,7 @@ public class UIMain extends javax.swing.JFrame {
         lblProductStore.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
         lblProductStore.setForeground(new java.awt.Color(102, 0, 102));
         lblProductStore.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        lblProductStore.setText("REGISTRO DE NUEVO USUARIO");
+        lblProductStore.setText("MODIFICACIÓN PRODUCTO");
 
         pnlProductStore.setBackground(new java.awt.Color(255, 244, 225));
         pnlProductStore.setBorder(javax.swing.BorderFactory.createEtchedBorder(javax.swing.border.EtchedBorder.RAISED));
@@ -3656,11 +3657,18 @@ public class UIMain extends javax.swing.JFrame {
         this.lblSaleOrderDateOn.setText(cFormat.format(CDate));
         this.iInterface.setOrderNumber(this.lblSaleOrderNumber);
         this.lblUserOnSale.setText("Usuario: " + cUser.getName() + " " + this.cUser.getFatherLastName());
+        this.aProductsList = this.cSale.search(this.cbxSaleSearchProduct, this.txtSaleSearchProduct, this.tblSaleSearchProduct);
+        this.txtSaleOrderClient.setText("");
+        this.txtSaleSearchProduct.setText("");               
     }//GEN-LAST:event_btnSaleActionPerformed
 
     private void btnHelpActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_btnHelpActionPerformed
     {//GEN-HEADEREND:event_btnHelpActionPerformed
-        /* Here has to be Help Menu*/
+        try {
+            Desktop.getDesktop().open((new File("Ayuda.pdf")));
+        } catch (IOException cExcepotion) {
+            Logger.getLogger(UIMain.class.getName()).log(Level.SEVERE, null, cExcepotion);
+        }
     }//GEN-LAST:event_btnHelpActionPerformed
 
     private void btnSaleOrderDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSaleOrderDeleteActionPerformed
@@ -3765,7 +3773,7 @@ public class UIMain extends javax.swing.JFrame {
                                                 JOptionPane.INFORMATION_MESSAGE);
         else
             JOptionPane.showMessageDialog(  null,
-                                            "Hubieron problemas al generar el resporte. Revise los datos y vuelva a generarlo",
+                                            "Hubieron problemas al generar el reporte. Revise los datos y vuelva a generarlo",
                                             "Reporte No Generado",
                                             JOptionPane.ERROR_MESSAGE);
         
@@ -3781,7 +3789,7 @@ public class UIMain extends javax.swing.JFrame {
         } else 
             JOptionPane.showMessageDialog(  null,
                                             "Todos los campos obligatorios deber ser llenados.",
-                                            "Cantidad Incorrecta",
+                                            "Datos Incompletos",
                                             JOptionPane.ERROR_MESSAGE);
     }//GEN-LAST:event_btnProductRegisterActionPerformed
 
@@ -4067,12 +4075,16 @@ public class UIMain extends javax.swing.JFrame {
                         break;
                     
                 case 2: this.iInterface.changeSale((CardLayout)this.pnlContent.getLayout(), this.pnlContent);
+                
                         this.iInterface.paint(5, this.aMenuButtons);
                         Date cDate = new Date();
                         DateFormat cFormat = new SimpleDateFormat("yyyy/MM/dd");
                         this.lblSaleOrderDateOn.setText(cFormat.format(cDate));
                         this.iInterface.setOrderNumber(this.lblSaleOrderNumber);
                         this.lblUserOnSale.setText("Usuario: " + this.cUser.getName() + " " + this.cUser.getFatherLastName());
+                        this.aProductsList = this.cSale.search(this.cbxSaleSearchProduct, this.txtSaleSearchProduct, this.tblSaleSearchProduct);
+                        this.txtSaleOrderClient.setText("");
+                        this.txtSaleSearchProduct.setText(""); 
                         break;
             }
         }
@@ -4234,7 +4246,7 @@ public class UIMain extends javax.swing.JFrame {
                                             JOptionPane.INFORMATION_MESSAGE);
         else
             JOptionPane.showMessageDialog(  null,
-                                            "Hubieron problemas al generar el resporte. Revise los datos y vuelva a generarlo",
+                                            "Hubieron problemas al generar el reporte. Revise los datos y vuelva a generarlo",
                                             "Reporte No Generado",
                                             JOptionPane.ERROR_MESSAGE);
     }//GEN-LAST:event_btnGenerateReportActionPerformed
