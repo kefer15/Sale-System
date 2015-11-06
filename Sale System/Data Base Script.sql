@@ -13,10 +13,10 @@ CREATE TABLE Usuario
 (
   UsuCod Int(3) ZEROFILL NOT NULL AUTO_INCREMENT,
   UsuIde Char(10) NOT NULL,
-  UsuCon Char(20) NOT NULL,
+  UsuCon Char(10) NOT NULL,
   UsuNom Char(40) NOT NULL,
-  UsuApePat Char(20) NOT NULL,
-  UsuApeMat Char(20) NOT NULL,
+  UsuApePat Char(30) NOT NULL,
+  UsuApeMat Char(30) NOT NULL,
   UsuDni Char(8) NOT NULL,
   GenCod Int(1) ZEROFILL,
   UsuDir Char(100),

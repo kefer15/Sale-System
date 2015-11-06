@@ -4252,7 +4252,7 @@ public class UIMain extends javax.swing.JFrame {
     }//GEN-LAST:event_btnGenerateReportActionPerformed
 
     private void txtUserNameFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtUserNameFocusLost
-        if(this.txtUserName.getText().isEmpty()){
+        if(this.txtUserName.getText().isEmpty() || this.txtUserName.getText().length() < 2 || this.txtUserName.getText().length() > 40){
             this.txtUserName.setText("*");
             this.txtUserName.setForeground(Color.RED);
         } else {
@@ -4287,7 +4287,7 @@ public class UIMain extends javax.swing.JFrame {
     }//GEN-LAST:event_txtUserFatherLastNameFocusGained
 
     private void txtUserFatherLastNameFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtUserFatherLastNameFocusLost
-        if(this.txtUserFatherLastName.getText().isEmpty()){
+        if(this.txtUserFatherLastName.getText().isEmpty() || this.txtUserFatherLastName.getText().length() < 2 || this.txtUserFatherLastName.getText().length() > 30){
             this.txtUserFatherLastName.setText("*");
             this.txtUserFatherLastName.setForeground(Color.RED);
         } else {
@@ -4315,7 +4315,7 @@ public class UIMain extends javax.swing.JFrame {
     }//GEN-LAST:event_txtUserMotherLastNameFocusGained
 
     private void txtUserMotherLastNameFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtUserMotherLastNameFocusLost
-        if(this.txtUserMotherLastName.getText().isEmpty()){
+        if(this.txtUserMotherLastName.getText().isEmpty() || this.txtUserMotherLastName.getText().length() < 2 || this.txtUserMotherLastName.getText().length() > 30){
             this.txtUserMotherLastName.setText("*");
             this.txtUserMotherLastName.setForeground(Color.RED);
         } else {
@@ -4475,14 +4475,14 @@ public class UIMain extends javax.swing.JFrame {
     }//GEN-LAST:event_txtSupplierNameFocusGained
 
     private void txtSupplierNameFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtSupplierNameFocusLost
-        if(this.txtSupplierName.getText().isEmpty()){
+        if(this.txtSupplierName.getText().isEmpty() || this.txtSupplierName.getText().length() < 3 || this.txtSupplierName.getText().length() > 50){
             this.txtSupplierName.setText("*");
             this.txtSupplierName.setForeground(Color.RED);
         } else {
             String strName = this.txtSupplierName.getText().toLowerCase();
             boolean bState = true;
             for(int i = 0;i < strName.length();i++){
-                if(!(strName.charAt(i) >= 'a' && strName.charAt(i) <= 'z' || strName.charAt(i) == ' ')){
+                if(!(strName.charAt(i) >= 'a' && strName.charAt(i) <= 'z' || strName.charAt(i) == ' ' || strName.charAt(i) == '.' || strName.charAt(i) == '-')){
                     bState = false;
                     break;
                 }
@@ -4609,7 +4609,7 @@ public class UIMain extends javax.swing.JFrame {
     }//GEN-LAST:event_txtProductNameFocusGained
 
     private void txtProductNameFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtProductNameFocusLost
-        if(this.txtProductName.getText().isEmpty()){
+        if(this.txtProductName.getText().isEmpty() || this.txtProductName.getText().length() < 3 || this.txtProductName.getText().length() > 30){
             this.txtProductName.setText("*");
             this.txtProductName.setForeground(Color.RED);
         } else {
@@ -4637,7 +4637,7 @@ public class UIMain extends javax.swing.JFrame {
     }//GEN-LAST:event_txtProductBrandFocusGained
 
     private void txtProductBrandFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtProductBrandFocusLost
-        if(this.txtProductBrand.getText().isEmpty()){
+        if(this.txtProductBrand.getText().isEmpty() || this.txtProductBrand.getText().length() < 5 || this.txtProductBrand.getText().length() > 50){
             this.txtProductBrand.setText("*");
             this.txtProductBrand.setForeground(Color.RED);
         } else {
@@ -4665,7 +4665,7 @@ public class UIMain extends javax.swing.JFrame {
     }//GEN-LAST:event_txtProductPresentationFocusGained
 
     private void txtProductPresentationFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtProductPresentationFocusLost
-        if(this.txtProductPresentation.getText().isEmpty()){
+        if(this.txtProductPresentation.getText().isEmpty() || this.txtProductPresentation.getText().length() < 2 || this.txtProductPresentation.getText().length() > 20){
             this.txtProductPresentation.setText("*");
             this.txtProductPresentation.setForeground(Color.RED);
         } else {
@@ -4706,6 +4706,13 @@ public class UIMain extends javax.swing.JFrame {
                 }
             }
             
+            try { 
+                if(Integer.parseInt(strName) < 0 || Integer.parseInt(strName) > 1000)
+                    bState = false;
+            } catch(NumberFormatException cException) { 
+                bState = false;
+            } 
+            
             if(!bState){
                 this.txtProductStock.setText("*");
                 this.txtProductStock.setForeground(Color.RED);
@@ -4729,7 +4736,8 @@ public class UIMain extends javax.swing.JFrame {
             boolean bState = true;
             
             try { 
-                Double.parseDouble(strName); 
+                if(Double.parseDouble(strName) < 0.1 || Double.parseDouble(strName) > 100)
+                    bState = false;
             } catch(NumberFormatException cException) { 
                 bState = false;
             } 
