@@ -1,12 +1,24 @@
 package View;
 
 import Interface.ITicket;
+
 import java.awt.Toolkit;
+
 import javax.swing.ImageIcon;
+import javax.swing.JOptionPane;
+
+/**
+ * @version 2.3
+ * @author Miguel Fernández
+ */
 
 public class UITicket extends javax.swing.JFrame {
     private ITicket iTicket;
     
+    /** Between this method starts the UI
+     * @param iTicket
+     * @param strCode
+     * @param iOption */
     public UITicket(ITicket iTicket, String strCode, int iOption) {
         initComponents();
         this.setVisible(true);
@@ -20,6 +32,9 @@ public class UITicket extends javax.swing.JFrame {
             
             case 1: this.lblMessage.setText("Venta Exitosa. Comprobante Generado");
                     break;
+            
+            default:    JOptionPane.showMessageDialog(null, "Default Option");
+                        break;
         }
         
         ImageIcon cIcono = new ImageIcon("Boletas/" + strCode + ".png");  

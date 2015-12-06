@@ -15,10 +15,16 @@ import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
 
+/**
+ * @version 2.3
+ * @author Miguel Fernández
+ */
+
 public class CSale implements ISale {
-    @Override    
+    @Override  
+    /** Between this method we get an array of Products  */
     public ArrayList <Products> search(JComboBox cbxCombo, JTextField txtText, JTable tblTable) {
-        ArrayList <Products> aryProducts = null;
+        ArrayList <Products> aryProducts = new ArrayList <Products> ();
         
         DefaultTableModel cModel = (DefaultTableModel) tblTable.getModel();
         cModel.getDataVector().removeAllElements();
@@ -27,8 +33,8 @@ public class CSale implements ISale {
             case 0: aryProducts = (new Products()).getList(2, null, txtText.getText());
                     cModel.setColumnIdentifiers(new Object[]{"Nombre","Presentación","Marca","Precio"});
                     
-                    for (Products product : aryProducts) {
-                        cModel.addRow(new Object[]{product.getName(), product.getPresentation(), product.getBrand(), product.getPrice()});
+                    for (Products cProduct : aryProducts) {
+                        cModel.addRow(new Object[]{cProduct.getName(), cProduct.getPresentation(), cProduct.getBrand(), cProduct.getPrice()});
                     }
                     
                     break;
@@ -36,8 +42,8 @@ public class CSale implements ISale {
             case 1: aryProducts = (new Products()).getList(4, null, txtText.getText());
                     cModel.setColumnIdentifiers(new Object[]{"Nombre","Presentación","Precio","Categoría"});
                     
-                    for (Products product : aryProducts) {
-                        cModel.addRow(new Object[]{product.getName(), product.getPresentation(), product.getPrice(), product.getCategory()});
+                    for (Products cProduct : aryProducts) {
+                        cModel.addRow(new Object[]{cProduct.getName(), cProduct.getPresentation(), cProduct.getPrice(), cProduct.getCategory()});
                     }
                     
                     break;
@@ -50,6 +56,9 @@ public class CSale implements ISale {
                     }
                     
                     break;
+            
+            default:    JOptionPane.showMessageDialog(null, "Default Option");
+                        break;
         }
         
         return aryProducts;
@@ -57,15 +66,15 @@ public class CSale implements ISale {
     
     @Override
     public double addProduct(JTable tblTable, int iIndex, ArrayList <Products> aryProducts, double dTotal) {
-       
-        for(int i = 0;i < tblTable.getRowCount();i++) { 
+        int iRowCount = tblTable.getRowCount();
+        for(int i = 0;i < iRowCount;i++) { 
            if(tblTable.getValueAt(i,0).equals(aryProducts.get(iIndex).getCode())) {
                 tblTable.setRowSelectionInterval(i,i);
                 return dTotal;
             }
         }
         
-        if(Integer.parseInt(aryProducts.get(iIndex).getStock()) >= 1) {
+        if(!(1 > Integer.parseInt(aryProducts.get(iIndex).getStock()))) {
             DefaultTableModel cModel = (DefaultTableModel) tblTable.getModel();
             
             cModel.addRow(new Object[]{ aryProducts.get(iIndex).getCode(),
@@ -88,12 +97,14 @@ public class CSale implements ISale {
     
     @Override
     public String verifyQuantity(String srtCode, String strQuantity) {
-        ArrayList <Products> aryProduct = (new Products()).getList(0, srtCode, null);      
+        ArrayList <Products> aryProduct = new ArrayList <Products> ();
+        aryProduct = (new Products()).getList(0, srtCode, null);      
         String strResult = "";
         
         try {
-            if(!(Integer.parseInt(strQuantity) <= Integer.parseInt(aryProduct.get(0).getStock())))
+            if(!(Integer.parseInt(strQuantity) <= Integer.parseInt(aryProduct.get(0).getStock()))) {
                 strResult = "En este momento no se dispone de la cantidad solicitada.";
+            }
         } catch (NumberFormatException cException){
             strResult = "Ingrese una cantidad numérica entera.";
         }
@@ -112,13 +123,15 @@ public class CSale implements ISale {
         
         String error = payment.insertCab();
                 
-        if(error.equals("")) {            
+        if("".equals(error)) {            
+            
             /* Discounting stock of the products*/
             DefaultTableModel cModel = (DefaultTableModel) tblProducts.getModel();
-            ArrayList <String> aryCodes = new ArrayList <>();
-            ArrayList <String> aryStock = new ArrayList <>();
+            ArrayList <String> aryCodes = new ArrayList <String>();
+            ArrayList <String> aryStock = new ArrayList <String>();
             
-            for(int i = 0; i < cModel.getRowCount();i++) {
+            int iRowCount = cModel.getRowCount();
+            for(int i = 0; i < iRowCount;i++) {
                 aryCodes.add(String.valueOf(cModel.getValueAt(i, 0)));
                 aryStock.add(String.valueOf(cModel.getValueAt(i, 1)));
             }
@@ -132,10 +145,11 @@ public class CSale implements ISale {
                                             "Venta exitosa", 
                                             JOptionPane.INFORMATION_MESSAGE); */
             
-        } else
+        } else {
             JOptionPane.showMessageDialog(  null, 
                                             error, 
                                             "Error en la Venta", 
                                             JOptionPane.WARNING_MESSAGE);
+        }
     }
 }

@@ -7,6 +7,13 @@ import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import javax.swing.JOptionPane;
+
+/**
+ * @version 2.3
+ * @author Miguel Fernández
+ */
+
 public class Users {
     private String strCode;
     private String strId;
@@ -45,7 +52,9 @@ public class Users {
         this.strOther = strOther;
         this.strState = strState;
     }
-
+    
+    /** Between this method we get the User's code
+     * @return  */
     public String getCode() {
         return strCode;
     }
@@ -167,16 +176,16 @@ public class Users {
     }
     
     public String insert() {
-        Main.cConexion.conect();
+        Principal.cConexion.conect();
         String strError = "";
         
         try {
-            Main.cConexion.send("INSERT INTO Usuario VALUES( DEFAULT , '" + strId + "' , '" + strPassword + "' , '" +
+            Principal.cConexion.send("INSERT INTO Usuario VALUES( DEFAULT , '" + strId + "' , '" + strPassword + "' , '" +
                     strName + "' , '" + strFatherLastName + "' , '" + strMotherLastName + "' , '" + strNi + "' , " + 
                     strGenderCode + " , '" + strAddress + "' , " + strPositionCode + " , '" + strCellphone + "' , '" +
                     strEmail + "' , '" + strEmergencyCell + "' , '" + strOther + "' , " + strState + " )");
             
-            Main.cConexion.disconect();
+            Principal.cConexion.disconect();
         } catch (SQLException cException) {
             strError = cException.getMessage();
         }
@@ -185,11 +194,11 @@ public class Users {
     }
     
     public String update() {
-        Main.cConexion.conect();
+        Principal.cConexion.conect();
         String strError = "";  
         
         try {            
-            Main.cConexion.send("UPDATE Usuario SET UsuNom = '" + strName + 
+            Principal.cConexion.send("UPDATE Usuario SET UsuNom = '" + strName + 
                     "' , UsuApePat = '" + strFatherLastName + "' , UsuApeMat = '" + strMotherLastName +  
                     "' , UsuDni = '" + strNi + "' , GenCod = " + strGenderCode  + 
                     " , UsuDir = '" + strAddress + "' , CarCod = " + strPositionCode + 
@@ -197,7 +206,7 @@ public class Users {
                     "' , UsuNumEme = '" + strEmergencyCell + "' , UsuOtr = '" + strOther + 
                     "' WHERE UsuCod = " + strCode);
             
-            Main.cConexion.disconect();  
+            Principal.cConexion.disconect();  
         } catch (SQLException cException) {
             strError = cException.getMessage();
         }
@@ -205,13 +214,18 @@ public class Users {
         return strError;
     }
     
-    public String remove(String strUserCode) {
-        Main.cConexion.conect();
+    /**
+     *
+     * @param strUserCode
+     * @return
+     */
+    public static String remove(String strUserCode) {
+        Principal.cConexion.conect();
         String strError = "";
         
         try {
-            Main.cConexion.send("UPDATE Usuario SET EstCod = '2' WHERE UsuCod = " + strUserCode);
-            Main.cConexion.disconect();
+            Principal.cConexion.send("UPDATE Usuario SET EstCod = '2' WHERE UsuCod = " + strUserCode);
+            Principal.cConexion.disconect();
         } catch (SQLException cException) {
              strError = cException.getMessage();
         }
@@ -219,33 +233,36 @@ public class Users {
         return strError;
     }
     
-    public ArrayList <Users> getList(int iOption, String strIdentification, String strCode, String strName) {
-        Main.cConexion.conect();
-        ArrayList <Users> aryUsers = new ArrayList <> ();
+    public ArrayList <Users> getList(int iOption, String strIdentification, String strCodeReceived, String strNameReceived) {
+        Principal.cConexion.conect();
+        ArrayList <Users> aryUsers = new ArrayList <Users> ();
         
         try {
             ResultSet cResult = null;
             boolean bAccess = false;
             
             switch(iOption){              
-                case 0: cResult = Main.cConexion.receive("SELECT * FROM Usuario WHERE EstCod = 1 AND UsuIde = '" + strIdentification + "' COLLATE utf8_bin");
+                case 0: cResult = Principal.cConexion.receive("SELECT UsuCod, UsuIde, UsuCon, UsuNom, UsuApePat, UsuApeMat, UsuDni, UsuDir, UsuCel, UsuCorEle, UsuNumEme, UsuOtr, GenCod, CarCod, EstCod FROM Usuario WHERE EstCod = 1 AND UsuIde = '" + strIdentification + "' COLLATE utf8_bin");
                         break;
                     
-                case 1: cResult = Main.cConexion.receive("SELECT * FROM Usuario WHERE UsuCod = " + strCode);
+                case 1: cResult = Principal.cConexion.receive("SELECT UsuCod, UsuIde, UsuCon, UsuNom, UsuApePat, UsuApeMat, UsuDni, UsuDir, UsuCel, UsuCorEle, UsuNumEme, UsuOtr, GenCod, CarCod, EstCod FROM Usuario WHERE UsuCod = " + strCodeReceived);
                         break;
                         
-                case 2: cResult = Main.cConexion.receive("SELECT * FROM Usuario_Cargo");
+                case 2: cResult = Principal.cConexion.receive("SELECT UsuCod, UsuIde, UsuCon, UsuNom, UsuApePat, UsuApeMat, UsuDni, UsuDir, UsuCel, UsuCorEle, UsuNumEme, UsuOtr, GenNom, CarNom, EstNom FROM Usuario_Cargo");
                         bAccess = true;
                         break;
                     
-                case 3: cResult = Main.cConexion.receive("SELECT * FROM Usuario_Cargo WHERE EstNom = 'Activo' AND UsuNom LIKE '" + strName + "%'");
+                case 3: cResult = Principal.cConexion.receive("SELECT UsuCod, UsuIde, UsuCon, UsuNom, UsuApePat, UsuApeMat, UsuDni, UsuDir, UsuCel, UsuCorEle, UsuNumEme, UsuOtr, GenNom, CarNom, EstNom FROM Usuario_Cargo WHERE EstNom = 'Activo' AND UsuNom LIKE '" + strNameReceived + "%'");
                         bAccess = true;
                         break;
+                    
+                default:    JOptionPane.showMessageDialog(null, "Default Option");
+                            break;
             }
+            Users cUser = null;
             
-            while(cResult.next())
-            {                
-                Users cUser = new Users();
+            while(cResult.next()) {                
+                cUser = new Users();
                 
                 cUser.setCode(cResult.getString("UsuCod"));
                 cUser.setId(cResult.getString("UsuIde"));
@@ -270,9 +287,11 @@ public class Users {
                     cUser.setPositionCode(cResult.getString("CarCod"));
                     cUser.setState(cResult.getString("EstCod"));
                 }
-                
+                        
                 aryUsers.add(cUser);
             }
+            
+            Principal.cConexion.disconect();
         } catch (SQLException cException) {
             Logger.getLogger(Users.class.getName()).log(Level.SEVERE, null, cException);
         }

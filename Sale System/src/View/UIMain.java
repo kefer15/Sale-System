@@ -1,6 +1,5 @@
 package View;
 
-import Controlator.CHelp;
 import Controlator.CHome;
 import Controlator.CProducts;
 import Controlator.CSale;
@@ -41,6 +40,11 @@ import javax.swing.JButton;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
+/**
+ * @version 2.3
+ * @author Miguel Fernández
+ */
+
 public class UIMain extends javax.swing.JFrame {
     private IMain iInterface;
     private CHome cHome;
@@ -49,23 +53,25 @@ public class UIMain extends javax.swing.JFrame {
     private CProducts cProducts;
     private CStore cStore;
     private CSale cSale;    
-    private CHelp CHelp;
-    private ArrayList <JButton> aMenuButtons;
+    private ArrayList <JButton> aMenuButtons = new ArrayList <JButton> ();
     private Users cUser;
     private int iState;
-    private ArrayList <String> aUsersSearch;
-    private ArrayList <String> aProductsSearch;
+    private ArrayList <String> aUsersSearch = new ArrayList <String> ();
+    private ArrayList <String> aProductsSearch = new ArrayList <String> ();
     private String strUserCode;
-    private ArrayList <String> aSuppliersSearch;
-    private ArrayList <String> aTicketsSearch;
+    private ArrayList <String> aSuppliersSearch = new ArrayList <String> ();
+    private ArrayList <String> aTicketsSearch = new ArrayList <String> ();
     private String strSupplierCode;
     private String strProductCode;
-    private ArrayList <String> aProductsIndexes;
-    private ArrayList <String> aSuppliersIndexes;
-    private ArrayList <Products> aProductsList;
+    private ArrayList <String> aProductsIndexes = new ArrayList <String> ();
+    private ArrayList <String> aSuppliersIndexes = new ArrayList <String> ();
+    private ArrayList <Products> aProductsList = new ArrayList <Products> ();
     private double dTtotal;
-    private float fColor[];
+    private float []fColor;
     
+    /** Between this method start the UI
+     * @param iMain
+     * @param iWindowNumber */
     public UIMain(IMain iMain, int iWindowNumber) {
         initComponents();
         this.setVisible(true);
@@ -107,36 +113,30 @@ public class UIMain extends javax.swing.JFrame {
         switch(iWindowNumber) {
             case 0:
                 this.iInterface.changeHome((CardLayout)this.pnlContent.getLayout(), this.pnlContent);
-                this.iInterface.paint(0, this.aMenuButtons);
             break;
                 
             case 1:
                 this.iInterface.changeUsers((CardLayout)this.pnlContent.getLayout(), this.pnlContent);
-                this.iInterface.paint(1, this.aMenuButtons);
                 this.cUsers.changeUserShow((CardLayout)this.pnlUserSlave.getLayout(), this.pnlUserSlave, this.tblUserShow);
             break;
             
             case 2:
                 this.iInterface.changeSuppliers((CardLayout)this.pnlContent.getLayout(), this.pnlContent);
-                this.iInterface.paint(2, this.aMenuButtons);
                 this.cSuppliers.changeSupplierShow((CardLayout)this.pnlSupplierSlave.getLayout(), this.pnlSupplierSlave, this.tblSupplierShow);
             break;
             
             case 3:
                 this.iInterface.changeProducts((CardLayout)this.pnlContent.getLayout(), this.pnlContent);
-                this.iInterface.paint(3, this.aMenuButtons);
                 this.cProducts.changeProductShow((CardLayout)this.pnlProductSlave.getLayout(), this.pnlProductSlave, this.tblProductShow);
             break;
             
             case 4:
                 this.iInterface.changeStore((CardLayout)this.pnlContent.getLayout(), this.pnlContent);
-                this.iInterface.paint(4, this.aMenuButtons);
                 this.cStore.changeInventStore((CardLayout)this.pnlStoreSlave.getLayout(), this.pnlStoreSlave, this.tblProductShowStore);
             break;
             
             case 5:
                 this.iInterface.changeSale((CardLayout)this.pnlContent.getLayout(), this.pnlContent);
-                this.iInterface.paint(5, this.aMenuButtons);
                 
                 Date cDate = new Date();
                 DateFormat cFormat = new SimpleDateFormat("yyyy/MM/dd");
@@ -144,10 +144,14 @@ public class UIMain extends javax.swing.JFrame {
                 this.iInterface.setOrderNumber(this.lblSaleOrderNumber);
                 this.lblUserOnSale.setText("Usuario: " + this.cUser.getName() + " " + this.cUser.getFatherLastName());
             break;
+                
+            default:    JOptionPane.showMessageDialog(null, "Default Option");
+                        break;
         }
     }
     
     @SuppressWarnings("unchecked")
+    
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
@@ -3583,7 +3587,6 @@ public class UIMain extends javax.swing.JFrame {
     private void btnUsersActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_btnUsersActionPerformed
     {//GEN-HEADEREND:event_btnUsersActionPerformed
         this.iInterface.changeUsers((CardLayout)this.pnlContent.getLayout(), this.pnlContent);
-        this.iInterface.paint(1, this.aMenuButtons);
         this.btnUserAdd.setFont(new Font("Tahoma", Font.PLAIN, 12));
         this.btnUserSearch.setFont(new Font("Tahoma", Font.PLAIN, 12));
         this.btnUserShow.setFont(new Font("Tahoma", Font.BOLD, 12));
@@ -3596,13 +3599,11 @@ public class UIMain extends javax.swing.JFrame {
     private void btnHomeActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_btnHomeActionPerformed
     {//GEN-HEADEREND:event_btnHomeActionPerformed
         this.iInterface.changeHome((CardLayout)this.pnlContent.getLayout(), this.pnlContent);
-        this.iInterface.paint(0, this.aMenuButtons);
     }//GEN-LAST:event_btnHomeActionPerformed
 
     private void btnSuppliersActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_btnSuppliersActionPerformed
     {//GEN-HEADEREND:event_btnSuppliersActionPerformed
         this.iInterface.changeSuppliers((CardLayout)this.pnlContent.getLayout(), this.pnlContent);
-        this.iInterface.paint(2, this.aMenuButtons);
         this.btnSupplierAdd.setFont(new Font("Tahoma", Font.PLAIN, 12));
         this.btnSupplierSearch.setFont(new Font("Tahoma", Font.PLAIN, 12));
         this.btnSupplierShow.setFont(new Font("Tahoma", Font.PLAIN, 12));
@@ -3617,7 +3618,6 @@ public class UIMain extends javax.swing.JFrame {
     private void btnProductsActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_btnProductsActionPerformed
     {//GEN-HEADEREND:event_btnProductsActionPerformed
         this.iInterface.changeProducts((CardLayout)this.pnlContent.getLayout(), this.pnlContent);
-        this.iInterface.paint(3, this.aMenuButtons);
         
         this.btnProductAdd.setFont(new Font("Tahoma", Font.PLAIN, 12));
         this.btnProductShow.setFont(new Font("Tahoma", Font.BOLD, 12));
@@ -3630,7 +3630,6 @@ public class UIMain extends javax.swing.JFrame {
     private void btnStoreActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_btnStoreActionPerformed
     {//GEN-HEADEREND:event_btnStoreActionPerformed
         this.iInterface.changeStore((CardLayout)this.pnlContent.getLayout(), this.pnlContent);
-        this.iInterface.paint(4, this.aMenuButtons);
         
         this.btnStoreSearchPro.setFont(new Font("Tahoma", Font.PLAIN, 12));
         this.btnStoreSearchTic.setFont(new Font("Tahoma", Font.PLAIN, 12));
@@ -3650,11 +3649,10 @@ public class UIMain extends javax.swing.JFrame {
     private void btnSaleActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_btnSaleActionPerformed
     {//GEN-HEADEREND:event_btnSaleActionPerformed
         this.iInterface.changeSale((CardLayout)this.pnlContent.getLayout(), this.pnlContent);
-        this.iInterface.paint(5, this.aMenuButtons);
         
-        Date CDate = new Date();
+        Date cDate = new Date();
         DateFormat cFormat = new SimpleDateFormat("yyyy/MM/dd");
-        this.lblSaleOrderDateOn.setText(cFormat.format(CDate));
+        this.lblSaleOrderDateOn.setText(cFormat.format(cDate));
         this.iInterface.setOrderNumber(this.lblSaleOrderNumber);
         this.lblUserOnSale.setText("Usuario: " + cUser.getName() + " " + this.cUser.getFatherLastName());
         this.aProductsList = this.cSale.search(this.cbxSaleSearchProduct, this.txtSaleSearchProduct, this.tblSaleSearchProduct);
@@ -3672,8 +3670,8 @@ public class UIMain extends javax.swing.JFrame {
     }//GEN-LAST:event_btnHelpActionPerformed
 
     private void btnSaleOrderDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSaleOrderDeleteActionPerformed
-        int iRow;
-        if((iRow = this.tblSaleOrderTable.getSelectedRow()) != -1){
+        int iRow = this.tblSaleOrderTable.getSelectedRow();
+        if(iRow != -1){
             this.dTtotal -= Double.parseDouble(String.valueOf(this.tblSaleOrderTable.getValueAt(iRow, 4)));
             
             DefaultTableModel cModel = (DefaultTableModel)this.tblSaleOrderTable.getModel();
@@ -3681,12 +3679,12 @@ public class UIMain extends javax.swing.JFrame {
             
             DecimalFormat cFormat = new DecimalFormat("#.##");
             this.lblSaleOrderTotalOn.setText("S/. " + cFormat.format(this.dTtotal));
-        }
-        else
+        } else {
             JOptionPane.showMessageDialog(  null,
                                             "No ha seleccionado ningún registro de la Orden de Venta",
                                             "Dato no Seleccionado",
                                             JOptionPane.ERROR_MESSAGE);
+        }
     }//GEN-LAST:event_btnSaleOrderDeleteActionPerformed
 
     private void btnStoreInventActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnStoreInventActionPerformed
@@ -3766,16 +3764,17 @@ public class UIMain extends javax.swing.JFrame {
         this.btnStoreReportSale.setBackground(Color.getHSBColor(this.fColor[0],this.fColor[1],this.fColor[2]));
         this.btnStoreInvent.setBackground(Color.getHSBColor(this.fColor[0],this.fColor[1],this.fColor[2]));
         
-        if(this.cStore.productReport(this.cUser))
+        if(this.cStore.productReport(this.cUser)) {
                 JOptionPane.showMessageDialog(  null,
                                                 "El Reporte se ha generado correctamente. Se encuentra en la dirección consignada al crearlo",
                                                 "Reporte Generado",
                                                 JOptionPane.INFORMATION_MESSAGE);
-        else
+        } else {
             JOptionPane.showMessageDialog(  null,
                                             "Hubieron problemas al generar el reporte. Revise los datos y vuelva a generarlo",
                                             "Reporte No Generado",
                                             JOptionPane.ERROR_MESSAGE);
+        }
         
         this.btnStoreReportProd.setFocusPainted(false);
         this.btnStoreInventActionPerformed(null);
@@ -3783,14 +3782,15 @@ public class UIMain extends javax.swing.JFrame {
     }//GEN-LAST:event_btnStoreReportProdActionPerformed
 
     private void btnProductRegisterActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnProductRegisterActionPerformed
-        if(!(this.txtProductName.getText().equals("*") || this.txtProductBrand.getText().equals("*") || this.txtProductPresentation.getText().equals("*") || this.txtProductPrice.getText().equals("*") || this.txtProductStock.getText().equals("*"))) {
+        if(!("*".equals(this.txtProductName.getText()) || "*".equals(this.txtProductBrand.getText()) || "*".equals(this.txtProductPresentation.getText()) || "*".equals(this.txtProductPrice.getText()) || "*".equals(this.txtProductStock.getText()))) {
             this.cProducts.actProduct(this.txtProductName, this.txtProductBrand, this.txtProductPresentation, this.txtProductPrice, this.txtProductStock, this.cbxProductCategory);
             this.cProducts.changeProductShow((CardLayout)this.pnlProductSlave.getLayout(), this.pnlProductSlave, this.tblProductShow);
-        } else 
+        } else {
             JOptionPane.showMessageDialog(  null,
                                             "Todos los campos obligatorios deber ser llenados.",
                                             "Datos Incompletos",
                                             JOptionPane.ERROR_MESSAGE);
+        }
     }//GEN-LAST:event_btnProductRegisterActionPerformed
 
     private void btnProductAddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnProductAddActionPerformed
@@ -3813,26 +3813,29 @@ public class UIMain extends javax.swing.JFrame {
     }//GEN-LAST:event_btnProductShowActionPerformed
 
     private void btnLinkSupplierActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLinkSupplierActionPerformed
-        int iSupplierSelected;
+        int iSupplierSelected = this.lstLinkSupplier.getSelectedIndex();
         boolean []bProductsSelected = new boolean[this.tblLinkProducts.getRowCount()];
 
-        if((iSupplierSelected = this.lstLinkSupplier.getSelectedIndex()) != -1) {
-            for(int i = 0;i < this.tblLinkProducts.getRowCount();i++)
+        if(iSupplierSelected != -1) {
+            for(int i = 0;i < this.tblLinkProducts.getRowCount();i++) {
                 bProductsSelected[i] = (Boolean) this.tblLinkProducts.getValueAt(i, 0);
-
+            }
+            
             if(bProductsSelected.length != 0) {
                 cSuppliers.link(bProductsSelected, this.aProductsIndexes, this.aSuppliersIndexes.get(iSupplierSelected));
                 cSuppliers.changeSupplierShow((CardLayout)this.pnlSupplierSlave.getLayout(), this.pnlSupplierSlave, this.tblSupplierShow);
-            } else
+            } else {
                 JOptionPane.showMessageDialog(  null,
                                                 "No ha seleccionado ningún registro de productos.",
                                                 "Dato no Seleccionado",
                                                 JOptionPane.WARNING_MESSAGE);
-        } else
+            }
+        } else {
             JOptionPane.showMessageDialog(  null,
                                             "No ha seleccionado ningún registro de proveedores.",
                                             "Dato no Seleccionado",
                                             JOptionPane.WARNING_MESSAGE);
+        }
 
     }//GEN-LAST:event_btnLinkSupplierActionPerformed
 
@@ -3845,15 +3848,16 @@ public class UIMain extends javax.swing.JFrame {
     }//GEN-LAST:event_btnLinkSupplierSearchActionPerformed
 
     private void btnModifySupplierActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnModifySupplierActionPerformed
-        int iValue;
-        if((iValue = this.tblResultSupplier.getSelectedRow()) != -1){
+        int iValue = this.tblResultSupplier.getSelectedRow();
+        if(iValue != -1){
             cleanSupplierSearch();
             this.strSupplierCode = this.cSuppliers.send((CardLayout)this.pnlSupplierSlave.getLayout(), this.pnlSupplierSlave, this.aSuppliersSearch.get(iValue), this.lblNewSupplier, this.txtSupplierName, this.txtSupplierTr, this.txtSupplierPhone, this.txtSupplierAddress, this.btnSupplierRegister);
-        } else
+        } else {
             JOptionPane.showMessageDialog(  null,
                                             "No ha seleccionado ningún registro.",
                                             "Dato no Seleccionado",
                                             JOptionPane.WARNING_MESSAGE);
+        }
     }//GEN-LAST:event_btnModifySupplierActionPerformed
 
     private void btnSearchSupplierActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSearchSupplierActionPerformed
@@ -3867,26 +3871,31 @@ public class UIMain extends javax.swing.JFrame {
     private void btnSupplierRegisterActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSupplierRegisterActionPerformed
         String strMessage = "";
         
-        if(this.txtSupplierName.getText().equals("*"))
+        if("*".equals(this.txtSupplierName.getText())) {
             strMessage += "\n  * Campo Nombre";
+        }
     
-        if(this.txtSupplierTr.getText().equals("*"))
+        if("*".equals(this.txtSupplierTr.getText())) {
             strMessage += "\n  * Campo RUC";
+        }
         
-        if(this.txtSupplierPhone.getText().equals("*"))
+        if("*".equals(this.txtSupplierPhone.getText())) {
             strMessage += "\n  * Campo Teléfono";
+        }
         
-        if(this.txtSupplierAddress.getText().endsWith("*"))
+        if("*".equals(this.txtSupplierAddress.getText())) {
             strMessage += "\n  * Campo Dirección";        
+        }
         
         if(strMessage.isEmpty()) {
             this.cSuppliers.actSupplier(this.iState, this.strSupplierCode, this.txtSupplierName, this.txtSupplierTr, this.txtSupplierPhone, this.txtSupplierAddress);
             this.cSuppliers.changeSupplierShow((CardLayout)this.pnlSupplierSlave.getLayout(), this.pnlSupplierSlave, this.tblSupplierShow);
-        } else 
+        } else {
             JOptionPane.showMessageDialog(  null,
                                             "Todos los campos obligatorios deber ser llenados.\n Completar:" + strMessage,
                                             "Datos Incompletos",
                                             JOptionPane.ERROR_MESSAGE);
+        }
     }//GEN-LAST:event_btnSupplierRegisterActionPerformed
 
     private void btnSupplierLinkActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSupplierLinkActionPerformed
@@ -3951,21 +3960,23 @@ public class UIMain extends javax.swing.JFrame {
     }//GEN-LAST:event_btnSupplierShowActionPerformed
 
     private void btnModifyUserActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnModifyUserActionPerformed
-        int iValue;
-        if((iValue = this.tblResultUser.getSelectedRow()) != -1){
-            if(!this.aUsersSearch.get(iValue).equals("001")) {
+        int iValue = this.tblResultUser.getSelectedRow();
+        if(iValue != -1){
+            if(!"001".equals(this.aUsersSearch.get(iValue))) {
                 cleanUserAdd();
                 this.strUserCode = this.cUsers.send((CardLayout)this.pnlUserSlave.getLayout(), this.pnlUserSlave, this.aUsersSearch.get(iValue), this.lblNewSupplier, this.txtUserName, this.txtUserFatherLastName, this.txtUserMotherLastName, this.txtUserNi, this.cbxUserGender, this.txtUserAddress, this.cbxUserPosition, this.txtUserCellphone, this.txtUserEmail, this.txtUserEmergencyNumber, this.txaUserOthers, this.btnUserRegister);
-            } else
+            } else {
                 JOptionPane.showMessageDialog(  null,
                                                 "NO PUEDE MODIFICAR EL ACCESO GLOBAL AL SISTEMA.",
                                                 "Protección",
                                                 JOptionPane.WARNING_MESSAGE);
-        } else
+            }
+        } else {
             JOptionPane.showMessageDialog(  null,
                                             "No ha seleccionado ningún registro.",
                                             "Dato no Seleccionado",
                                             JOptionPane.WARNING_MESSAGE);
+        }
     }//GEN-LAST:event_btnModifyUserActionPerformed
 
     private void btnSearchUserActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSearchUserActionPerformed
@@ -3978,38 +3989,47 @@ public class UIMain extends javax.swing.JFrame {
     private void btnUserRegisterActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUserRegisterActionPerformed
         String strMessage = "";
         
-        if(this.txtUserName.getText().equals("*"))
+        if("*".equals(this.txtUserName.getText())) {
             strMessage += "\n  * Campo Nombre";
+        }
     
-        if(this.txtUserFatherLastName.getText().equals("*"))
+        if("*".equals(this.txtUserFatherLastName.getText())) {
             strMessage += "\n  * Campo Apellido Paterno";
+        }
         
-        if(this.txtUserMotherLastName.getText().equals("*"))
+        if("*".equals(this.txtUserMotherLastName.getText())) {
             strMessage += "\n  * Campo Apellido Materno";
+        }
         
-        if(this.txtUserNi.getText().equals("*"))
+        if("*".equals(this.txtUserNi.getText())) {
             strMessage += "\n  * Campo DNI";
+        }
         
-        if(this.txtUserAddress.getText().equals("*"))
+        if("*".equals(this.txtUserAddress.getText())) {
             strMessage += "\n  * Campo Dirección";
+        }
         
-        if(this.txtUserCellphone.getText().equals("*"))
+        if("*".equals(this.txtUserCellphone.getText())) {
             strMessage += "\n  * Campo Celular";
+        }
         
-        if(this.txtUserEmail.getText().equals("*"))
+        if("*".equals(this.txtUserEmail.getText())) {
             strMessage += "\n  * Campo Correo Electrónico";
+        }
         
-        if(this.txtUserEmergencyNumber.getText().equals("*"))
+        if("*".equals(this.txtUserEmergencyNumber.getText())) {
             strMessage += "\n  * Campo Numero de Emergencia";
+        }
         
         if(strMessage.isEmpty()) {
             this.cUsers.actUser(this.iState, this.strUserCode, this.txtUserName, this.txtUserFatherLastName, this.txtUserMotherLastName, this.txtUserNi, this.cbxUserGender, this.txtUserAddress, this.cbxUserPosition, this.txtUserCellphone, this.txtUserEmail, this.txtUserEmergencyNumber, this.txaUserOthers);
             this.cUsers.changeUserShow((CardLayout)this.pnlUserSlave.getLayout(), this.pnlUserSlave, this.tblUserShow);
-        } else
+        } else {
             JOptionPane.showMessageDialog(  null,
                                             "Todos los campos obligatorios deber ser llenados.\n Completar:" + strMessage,
                                             "Datos Incompletos",
                                             JOptionPane.ERROR_MESSAGE);
+        }
     }//GEN-LAST:event_btnUserRegisterActionPerformed
 
     private void btnUserAddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUserAddActionPerformed
@@ -4054,7 +4074,8 @@ public class UIMain extends javax.swing.JFrame {
     }//GEN-LAST:event_btnUserShowActionPerformed
 
     private void btnLogInActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLogInActionPerformed
-        if((this.cUser = this.cHome.logIn(this.txtId, this.tfpPass)) != null) {
+        this.cUser = this.cHome.logIn(this.txtId, this.tfpPass);
+        if(this.cUser != null) {
             this.lblWelcome.setText("Bienvenid@ " + this.cUser.getName());
             this.lblLogOut.setText("Cerrar Sesión");
             this.lblGeneral.setText("X & G Centeno");
@@ -4062,7 +4083,6 @@ public class UIMain extends javax.swing.JFrame {
             
             switch(Integer.parseInt(this.cUser.getPositionCode())){
                 case 1: this.iInterface.changeUsers((CardLayout)this.pnlContent.getLayout(), this.pnlContent);
-                        this.iInterface.paint(1, this.aMenuButtons);
                         this.cUsers.changeUserShow((CardLayout)this.pnlUserSlave.getLayout(), this.pnlUserSlave, this.tblUserShow);
                         
                         this.btnUserAdd.setFont(new Font("Tahoma", Font.PLAIN, 12));
@@ -4075,8 +4095,6 @@ public class UIMain extends javax.swing.JFrame {
                         break;
                     
                 case 2: this.iInterface.changeSale((CardLayout)this.pnlContent.getLayout(), this.pnlContent);
-                
-                        this.iInterface.paint(5, this.aMenuButtons);
                         Date cDate = new Date();
                         DateFormat cFormat = new SimpleDateFormat("yyyy/MM/dd");
                         this.lblSaleOrderDateOn.setText(cFormat.format(cDate));
@@ -4086,6 +4104,9 @@ public class UIMain extends javax.swing.JFrame {
                         this.txtSaleOrderClient.setText("");
                         this.txtSaleSearchProduct.setText(""); 
                         break;
+                    
+                default:    JOptionPane.showMessageDialog(null, "Default Option");
+                            break;
             }
         }
     }//GEN-LAST:event_btnLogInActionPerformed
@@ -4108,8 +4129,8 @@ public class UIMain extends javax.swing.JFrame {
     }//GEN-LAST:event_tblSaleSearchProductMouseClicked
 
     private void tblSaleOrderTablePropertyChange(java.beans.PropertyChangeEvent evt) {//GEN-FIRST:event_tblSaleOrderTablePropertyChange
-        int iRow;
-        if((iRow = this.tblSaleOrderTable.getSelectedRow()) != -1){
+        int iRow = this.tblSaleOrderTable.getSelectedRow();
+        if(iRow != -1){
             this.dTtotal -= Double.parseDouble(String.valueOf(this.tblSaleOrderTable.getValueAt(iRow, 4)));
             
             String strResult = this.cSale.verifyQuantity(String.valueOf(this.tblSaleOrderTable.getValueAt(iRow, 0)), String.valueOf(this.tblSaleOrderTable.getValueAt(iRow, 1))); 
@@ -4137,50 +4158,57 @@ public class UIMain extends javax.swing.JFrame {
             try {
                 BufferedImage cImage = new BufferedImage(this.pnlSaleOrder.getWidth(), this.pnlSaleOrder.getHeight(), BufferedImage.TYPE_INT_ARGB);
                 this.pnlSaleOrder.paint(cImage.getGraphics());
-                ImageIO.write(cImage, "png", new File("Boletas/" + lblSaleOrderNumber.getText() + ".png"));
+                ImageIO.write(cImage, "png", new File("Boletas" + File.separator + lblSaleOrderNumber.getText() + ".png"));
             } catch (IOException cException) {
                 Logger.getLogger(UIMain.class.getName()).log(Level.SEVERE, null, cException);
             }         
             
-            CTicket cTicket = new CTicket(lblSaleOrderNumber.getText(), 1);
+            new CTicket(lblSaleOrderNumber.getText(), 1);
             
             this.btnSaleOrderDelete.setVisible(true);
             this.cSale.safeSale(this.cUser, this.txtSaleOrderClient, this.lblSaleOrderTotalOn, this.lblSaleOrderDateOn, this.tblSaleOrderTable);
             cleanSale();
             this.iInterface.setOrderNumber(this.lblSaleOrderNumber);
-        } else
+        } else {
             JOptionPane.showMessageDialog(  null,
                                             "No se ha ingresado algún registro a la Orden de Venta",
                                             "Datos No Ingresados",
                                             JOptionPane.ERROR_MESSAGE);
+        }
     }//GEN-LAST:event_btnSaleOrderPrintActionPerformed
 
     private void btnProductUpdateStoreActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnProductUpdateStoreActionPerformed
         String strMessage = "";
         
-        if(this.txtProductNameStore.getText().equals("*"))
+        if("*".equals(this.txtProductNameStore.getText())) {
             strMessage += "\n  * Campo Nombre";
+        }
     
-        if(this.txtProductBrandStore.getText().equals("*"))
+        if("*".equals(this.txtProductBrandStore.getText())) {
             strMessage += "\n  * Campo Marca";
+        }
         
-        if(this.txtProductPresentationStore.getText().equals("*"))
+        if("*".equals(this.txtProductPresentationStore.getText())) {
             strMessage += "\n  * Campo Presentación";
+        }
         
-        if(this.txtProductStockStore.getText().equals("*"))
+        if("*".equals(this.txtProductStockStore.getText())) {
             strMessage += "\n  * Campo Stock";
+        }
         
-        if(this.txtProductPriceStore.getText().equals("*"))
+        if("*".equals(this.txtProductPriceStore.getText())) {
             strMessage += "\n  * Campo Precio";
+        }
         
         if(strMessage.isEmpty()) {
             this.cStore.actProduct(this.strProductCode, this.txtProductNameStore, this.txtProductBrandStore, this.txtProductPresentationStore, this.txtProductStockStore, this.cbxProductCategoryStore, this.txtProductPriceStore);
             this.cStore.changeInventStore((CardLayout)this.pnlStoreSlave.getLayout(), this.pnlStoreSlave, this.tblProductShowStore);
-        } else
+        } else {
             JOptionPane.showMessageDialog(  null,
                                             "Todos los campos obligatorios deber ser llenados.\n Completar:" + strMessage,
                                             "Datos Incompletos",
                                             JOptionPane.ERROR_MESSAGE);
+        }
     }//GEN-LAST:event_btnProductUpdateStoreActionPerformed
 
     private void btnSearchProductActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSearchProductActionPerformed
@@ -4192,15 +4220,16 @@ public class UIMain extends javax.swing.JFrame {
     }//GEN-LAST:event_btnSearchProductActionPerformed
 
     private void btnModifyProductActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnModifyProductActionPerformed
-        int iValue;
-        if((iValue = this.tblResultProduct.getSelectedRow()) != -1) {
+        int iValue = this.tblResultProduct.getSelectedRow();
+        if(iValue != -1) {
             this.cStore.changeModify((CardLayout)this.pnlStoreSlave.getLayout(), this.pnlStoreSlave);
             this.strProductCode = this.cStore.send(this.aProductsSearch.get(iValue), this.txtProductNameStore, this.txtProductBrandStore, this.txtProductPresentationStore, this.txtProductStockStore, this.cbxProductCategoryStore, this.txtProductPriceStore);
-        } else
+        } else {
             JOptionPane.showMessageDialog(  null,
                                             "No ha seleccionado ningún registro.",
                                             "Dato no Seleccionado",
                                             JOptionPane.WARNING_MESSAGE);
+        }
     }//GEN-LAST:event_btnModifyProductActionPerformed
 
     private void btnSearchTicketActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSearchTicketActionPerformed
@@ -4212,14 +4241,15 @@ public class UIMain extends javax.swing.JFrame {
     }//GEN-LAST:event_btnSearchTicketActionPerformed
 
     private void btnSeeTicketActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSeeTicketActionPerformed
-        int iRow;
-        if((iRow = this.tblResultTicket.getSelectedRow()) != -1){
-            CTicket cTicket = new CTicket(this.aTicketsSearch.get(iRow), 0);
-        } else
+        int iRow = this.tblResultTicket.getSelectedRow();
+        if(iRow != -1){
+            new CTicket(this.aTicketsSearch.get(iRow), 0);
+        } else {
             JOptionPane.showMessageDialog(  null,
                                             "No ha seleccionado ningún registro.",
                                             "Dato no Seleccionado",
                                             JOptionPane.WARNING_MESSAGE);
+        }
     }//GEN-LAST:event_btnSeeTicketActionPerformed
 
     private void cbxSaleSearchProductStoreItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_cbxSaleSearchProductStoreItemStateChanged
@@ -4239,16 +4269,17 @@ public class UIMain extends javax.swing.JFrame {
     }//GEN-LAST:event_clrEndPropertyChange
 
     private void btnGenerateReportActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGenerateReportActionPerformed
-        if(this.cStore.saleReport(this.cUser,  this.clrStart, this.clrEnd))
+        if(this.cStore.saleReport(this.cUser,  this.clrStart, this.clrEnd)) {
             JOptionPane.showMessageDialog(  null,
                                             "El Reporte se ha generado correctamente. Se encuentra en la dirección consignada al crearlo",
                                             "Reporte Generado",
                                             JOptionPane.INFORMATION_MESSAGE);
-        else
+        } else {
             JOptionPane.showMessageDialog(  null,
                                             "Hubieron problemas al generar el reporte. Revise los datos y vuelva a generarlo",
                                             "Reporte No Generado",
                                             JOptionPane.ERROR_MESSAGE);
+        }
     }//GEN-LAST:event_btnGenerateReportActionPerformed
 
     private void txtUserNameFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtUserNameFocusLost
@@ -4258,8 +4289,17 @@ public class UIMain extends javax.swing.JFrame {
         } else {
             String strName = this.txtUserName.getText().toLowerCase();
             boolean bState = true;
-            for(int i = 0;i < strName.length();i++){
-                if(!(strName.charAt(i) >= 'a' && strName.charAt(i) <= 'z' || strName.charAt(i) == ' ')){
+            int iLength = strName.length();
+            boolean bValue1 = false;
+            boolean bValue2 = false;
+            boolean bValue3 = false;
+            
+            for(int i = 0;i < iLength;i++){
+                bValue1 = strName.charAt(i) >= 'a';
+                bValue2 = strName.charAt(i) <= 'z';
+                bValue3 = strName.charAt(i) == ' ';
+                                
+                if(!(bValue1 && bValue2 || bValue3)) {
                     bState = false;
                     break;
                 }
@@ -4273,14 +4313,14 @@ public class UIMain extends javax.swing.JFrame {
     }//GEN-LAST:event_txtUserNameFocusLost
 
     private void txtUserNameFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtUserNameFocusGained
-        if(this.txtUserName.getText().equals("*")){
+        if("*".equals(this.txtUserName.getText())){
             this.txtUserName.setText("");
             this.txtUserName.setForeground(Color.BLACK);
         }     
     }//GEN-LAST:event_txtUserNameFocusGained
 
     private void txtUserFatherLastNameFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtUserFatherLastNameFocusGained
-        if(this.txtUserFatherLastName.getText().equals("*")){
+        if("*".equals(this.txtUserFatherLastName.getText())){
             this.txtUserFatherLastName.setText("");
             this.txtUserFatherLastName.setForeground(Color.BLACK);
         }
@@ -4293,8 +4333,17 @@ public class UIMain extends javax.swing.JFrame {
         } else {
             String strName = this.txtUserFatherLastName.getText().toLowerCase();
             boolean bState = true;
-            for(int i = 0;i < strName.length();i++){
-                if(!(strName.charAt(i) >= 'a' && strName.charAt(i) <= 'z' || strName.charAt(i) == ' ')){
+            int iLength = strName.length();
+            boolean bValue1 = false;
+            boolean bValue2 = false;
+            boolean bValue3 = false;
+            
+            for(int i = 0;i < iLength;i++){
+                bValue1 = strName.charAt(i) >= 'a';
+                bValue2 = strName.charAt(i) <= 'z';
+                bValue3 = strName.charAt(i) == ' ';
+                                
+                if(!(bValue1 && bValue2 || bValue3)) {
                     bState = false;
                     break;
                 }
@@ -4308,7 +4357,7 @@ public class UIMain extends javax.swing.JFrame {
     }//GEN-LAST:event_txtUserFatherLastNameFocusLost
 
     private void txtUserMotherLastNameFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtUserMotherLastNameFocusGained
-        if(this.txtUserMotherLastName.getText().equals("*")){
+        if("*".equals(this.txtUserMotherLastName.getText())){
             this.txtUserMotherLastName.setText("");
             this.txtUserMotherLastName.setForeground(Color.BLACK);
         }
@@ -4321,8 +4370,17 @@ public class UIMain extends javax.swing.JFrame {
         } else {
             String strName = this.txtUserMotherLastName.getText().toLowerCase();
             boolean bState = true;
-            for(int i = 0;i < strName.length();i++){
-                if(!(strName.charAt(i) >= 'a' && strName.charAt(i) <= 'z' || strName.charAt(i) == ' ')){
+            int iLength = strName.length();
+            boolean bValue1 = false;
+            boolean bValue2 = false;
+            boolean bValue3 = false;
+            
+            for(int i = 0;i < iLength;i++){
+                bValue1 = strName.charAt(i) >= 'a';
+                bValue2 = strName.charAt(i) <= 'z';
+                bValue3 = strName.charAt(i) == ' ';
+                                
+                if(!(bValue1 && bValue2 || bValue3)) {
                     bState = false;
                     break;
                 }
@@ -4336,7 +4394,7 @@ public class UIMain extends javax.swing.JFrame {
     }//GEN-LAST:event_txtUserMotherLastNameFocusLost
 
     private void txtUserNiFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtUserNiFocusGained
-        if(this.txtUserNi.getText().equals("*")){
+        if("*".equals(this.txtUserNi.getText())){
             this.txtUserNi.setText("");
             this.txtUserNi.setForeground(Color.BLACK);
         }
@@ -4349,7 +4407,8 @@ public class UIMain extends javax.swing.JFrame {
         } else {
             String strName = this.txtUserNi.getText().toLowerCase();
             boolean bState = true;
-            for(int i = 0;i < strName.length();i++){
+            int iLength = strName.length();
+            for(int i = 0;i < iLength;i++){
                 if(!(strName.charAt(i) >= '0' && strName.charAt(i) <= '9')){
                     bState = false;
                     break;
@@ -4364,7 +4423,7 @@ public class UIMain extends javax.swing.JFrame {
     }//GEN-LAST:event_txtUserNiFocusLost
 
     private void txtUserAddressFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtUserAddressFocusGained
-        if(this.txtUserAddress.getText().equals("*")){
+        if("*".equals(this.txtUserAddress.getText())){
             this.txtUserAddress.setText("");
             this.txtUserAddress.setForeground(Color.BLACK);
         }
@@ -4378,7 +4437,7 @@ public class UIMain extends javax.swing.JFrame {
     }//GEN-LAST:event_txtUserAddressFocusLost
 
     private void txtUserCellphoneFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtUserCellphoneFocusGained
-        if(this.txtUserCellphone.getText().equals("*")){
+        if("*".equals(this.txtUserCellphone.getText())){
             this.txtUserCellphone.setText("");
             this.txtUserCellphone.setForeground(Color.BLACK);
         }
@@ -4391,7 +4450,8 @@ public class UIMain extends javax.swing.JFrame {
         } else {
             String strName = this.txtUserCellphone.getText().toLowerCase();
             boolean bState = true;
-            for(int i = 0;i < strName.length();i++){
+            int iLength = strName.length();
+            for(int i = 0;i < iLength;i++){
                 if(!(strName.charAt(i) >= '0' && strName.charAt(i) <= '9')){
                     bState = false;
                     break;
@@ -4406,7 +4466,7 @@ public class UIMain extends javax.swing.JFrame {
     }//GEN-LAST:event_txtUserCellphoneFocusLost
 
     private void txtUserEmailFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtUserEmailFocusGained
-        if(this.txtUserEmail.getText().equals("*")){
+        if("*".equals(this.txtUserEmail.getText())){
             this.txtUserEmail.setText("");
             this.txtUserEmail.setForeground(Color.BLACK);
         }
@@ -4426,7 +4486,7 @@ public class UIMain extends javax.swing.JFrame {
     }//GEN-LAST:event_txtUserEmailFocusLost
 
     private void txtUserEmergencyNumberFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtUserEmergencyNumberFocusGained
-        if(this.txtUserEmergencyNumber.getText().equals("*")){
+        if("*".equals(this.txtUserEmergencyNumber.getText())){
             this.txtUserEmergencyNumber.setText("");
             this.txtUserEmergencyNumber.setForeground(Color.BLACK);
         }
@@ -4439,7 +4499,8 @@ public class UIMain extends javax.swing.JFrame {
         } else {
             String strName = this.txtUserEmergencyNumber.getText().toLowerCase();
             boolean bState = true;
-            for(int i = 0;i < strName.length();i++){
+            int iLength = strName.length();
+            for(int i = 0;i < iLength;i++){
                 if(!(strName.charAt(i) >= '0' && strName.charAt(i) <= '9')){
                     bState = false;
                     break;
@@ -4454,7 +4515,7 @@ public class UIMain extends javax.swing.JFrame {
     }//GEN-LAST:event_txtUserEmergencyNumberFocusLost
 
     private void txtNameSearchUserFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtNameSearchUserFocusGained
-        if(this.txtNameSearchUser.getText().equals("Ingrese Nombre de Usuario")){
+        if("Ingrese Nombre de Usuario".equals(this.txtNameSearchUser.getText())){
             this.txtNameSearchUser.setText("");
             this.txtNameSearchUser.setFont(new Font("Tahoma", Font.PLAIN, 11));
         }
@@ -4468,7 +4529,7 @@ public class UIMain extends javax.swing.JFrame {
     }//GEN-LAST:event_txtNameSearchUserFocusLost
 
     private void txtSupplierNameFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtSupplierNameFocusGained
-        if(this.txtSupplierName.getText().equals("*")){
+        if("*".equals(this.txtSupplierName.getText())){
             this.txtSupplierName.setText("");
             this.txtSupplierName.setForeground(Color.BLACK);
         }
@@ -4481,8 +4542,21 @@ public class UIMain extends javax.swing.JFrame {
         } else {
             String strName = this.txtSupplierName.getText().toLowerCase();
             boolean bState = true;
-            for(int i = 0;i < strName.length();i++){
-                if(!(strName.charAt(i) >= 'a' && strName.charAt(i) <= 'z' || strName.charAt(i) == ' ' || strName.charAt(i) == '.' || strName.charAt(i) == '-')){
+            int iLength = strName.length();
+            boolean bValue1 = false;
+            boolean bValue2 = false;
+            boolean bValue3 = false;
+            boolean bValue4 = false;
+            boolean bValue5 = false;
+            
+            for(int i = 0;i < iLength;i++){
+                bValue1 = strName.charAt(i) >= 'a';
+                bValue2 = strName.charAt(i) <= 'z';
+                bValue3 = strName.charAt(i) == ' ';
+                bValue4 = strName.charAt(i) == '.';
+                bValue5 = strName.charAt(i) == '-';
+                
+                if(!(bValue1 && bValue2 || bValue3 || bValue4 || bValue5)){
                     bState = false;
                     break;
                 }
@@ -4496,7 +4570,7 @@ public class UIMain extends javax.swing.JFrame {
     }//GEN-LAST:event_txtSupplierNameFocusLost
 
     private void txtSupplierTrFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtSupplierTrFocusGained
-        if(this.txtSupplierTr.getText().equals("*")){
+        if("*".equals(this.txtSupplierTr.getText())){
             this.txtSupplierTr.setText("");
             this.txtSupplierTr.setForeground(Color.BLACK);
         }
@@ -4509,7 +4583,8 @@ public class UIMain extends javax.swing.JFrame {
         } else {
             String strName = this.txtSupplierTr.getText().toLowerCase();
             boolean bState = true;
-            for(int i = 0;i < strName.length();i++){
+            int iLength = strName.length();
+            for(int i = 0;i < iLength;i++){
                 if(!(strName.charAt(i) >= '0' && strName.charAt(i) <= '9')){
                     bState = false;
                     break;
@@ -4524,7 +4599,7 @@ public class UIMain extends javax.swing.JFrame {
     }//GEN-LAST:event_txtSupplierTrFocusLost
 
     private void txtSupplierAddressFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtSupplierAddressFocusGained
-        if(this.txtSupplierAddress.getText().equals("*")){
+        if("*".equals(this.txtSupplierAddress.getText())){
             this.txtSupplierAddress.setText("");
             this.txtSupplierAddress.setForeground(Color.BLACK);
         }
@@ -4538,7 +4613,7 @@ public class UIMain extends javax.swing.JFrame {
     }//GEN-LAST:event_txtSupplierAddressFocusLost
 
     private void txtSupplierPhoneFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtSupplierPhoneFocusGained
-        if(this.txtSupplierPhone.getText().equals("*")){
+        if("*".equals(this.txtSupplierPhone.getText())){
             this.txtSupplierPhone.setText("");
             this.txtSupplierPhone.setForeground(Color.BLACK);
         }
@@ -4551,7 +4626,8 @@ public class UIMain extends javax.swing.JFrame {
         } else {
             String strName = this.txtSupplierPhone.getText().toLowerCase();
             boolean bState = true;
-            for(int i = 0;i < strName.length();i++){
+            int iLength = strName.length();
+            for(int i = 0;i < iLength;i++){
                 if(!(strName.charAt(i) >= '0' && strName.charAt(i) <= '9')){
                     bState = false;
                     break;
@@ -4566,7 +4642,7 @@ public class UIMain extends javax.swing.JFrame {
     }//GEN-LAST:event_txtSupplierPhoneFocusLost
 
     private void txtNameSearchSupplierFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtNameSearchSupplierFocusGained
-        if(this.txtNameSearchSupplier.getText().equals("Ingrese Nombre de Usuario")){
+        if("Ingrese Nombre de Usuario".equals(this.txtNameSearchSupplier.getText())){
             this.txtNameSearchSupplier.setText("");
             this.txtNameSearchSupplier.setFont(new Font("Tahoma", Font.PLAIN, 11));
         }
@@ -4580,7 +4656,7 @@ public class UIMain extends javax.swing.JFrame {
     }//GEN-LAST:event_txtNameSearchSupplierFocusLost
 
     private void txtLinkSupplierFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtLinkSupplierFocusGained
-        if(this.txtLinkSupplier.getText().equals("Ingrese Nombre de Proveedor")){
+        if("Ingrese Nombre de Proveedor".equals(this.txtLinkSupplier.getText())){
             this.txtLinkSupplier.setText("");
             this.txtLinkSupplier.setFont(new Font("Tahoma", Font.PLAIN, 11));
         }
@@ -4596,13 +4672,14 @@ public class UIMain extends javax.swing.JFrame {
     private void lstLinkSupplierMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lstLinkSupplierMouseClicked
         this.lblLinkedProducts.setEnabled(false);
         this.lstLinkedProducts.setEnabled(false);
-        int iSupplierSelected;
-        if((iSupplierSelected = this.lstLinkSupplier.getSelectedIndex()) != -1)
+        int iSupplierSelected = this.lstLinkSupplier.getSelectedIndex();
+        if(iSupplierSelected != -1) {
             this.cSuppliers.linkedProducts(this.aSuppliersIndexes.get(iSupplierSelected), this.lstLinkedProducts, this.lblLinkedProducts);
+        }
     }//GEN-LAST:event_lstLinkSupplierMouseClicked
 
     private void txtProductNameFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtProductNameFocusGained
-        if(this.txtProductName.getText().equals("*")){
+        if("*".equals(this.txtProductName.getText())){
             this.txtProductName.setText("");
             this.txtProductName.setForeground(Color.BLACK);
         }
@@ -4615,8 +4692,17 @@ public class UIMain extends javax.swing.JFrame {
         } else {
             String strName = this.txtProductName.getText().toLowerCase();
             boolean bState = true;
-            for(int i = 0;i < strName.length();i++){
-                if(!(strName.charAt(i) >= 'a' && strName.charAt(i) <= 'z' || strName.charAt(i) == ' ')){
+            int iLength = strName.length();
+            boolean bValue1 = false;
+            boolean bValue2 = false;
+            boolean bValue3 = false;
+            
+            for(int i = 0;i < iLength;i++){
+                bValue1 = strName.charAt(i) >= 'a';
+                bValue2 = strName.charAt(i) <= 'z';
+                bValue3 = strName.charAt(i) == ' ';
+                                
+                if(!(bValue1 && bValue2 || bValue3)) {
                     bState = false;
                     break;
                 }
@@ -4630,7 +4716,7 @@ public class UIMain extends javax.swing.JFrame {
     }//GEN-LAST:event_txtProductNameFocusLost
 
     private void txtProductBrandFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtProductBrandFocusGained
-        if(this.txtProductBrand.getText().equals("*")){
+        if("*".equals(this.txtProductBrand.getText())){
             this.txtProductBrand.setText("");
             this.txtProductBrand.setForeground(Color.BLACK);
         }
@@ -4643,8 +4729,17 @@ public class UIMain extends javax.swing.JFrame {
         } else {
             String strName = this.txtProductBrand.getText().toLowerCase();
             boolean bState = true;
-            for(int i = 0;i < strName.length();i++){
-                if(!(strName.charAt(i) >= 'a' && strName.charAt(i) <= 'z' || strName.charAt(i) == ' ')){
+            int iLength = strName.length();
+            boolean bValue1 = false;
+            boolean bValue2 = false;
+            boolean bValue3 = false;
+            
+            for(int i = 0;i < iLength;i++){
+                bValue1 = strName.charAt(i) >= 'a';
+                bValue2 = strName.charAt(i) <= 'z';
+                bValue3 = strName.charAt(i) == ' ';
+                                
+                if(!(bValue1 && bValue2 || bValue3)) {
                     bState = false;
                     break;
                 }
@@ -4658,7 +4753,7 @@ public class UIMain extends javax.swing.JFrame {
     }//GEN-LAST:event_txtProductBrandFocusLost
 
     private void txtProductPresentationFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtProductPresentationFocusGained
-        if(this.txtProductPresentation.getText().equals("*")){
+        if("*".equals(this.txtProductPresentation.getText())){
             this.txtProductPresentation.setText("");
             this.txtProductPresentation.setForeground(Color.BLACK);
         }
@@ -4671,8 +4766,23 @@ public class UIMain extends javax.swing.JFrame {
         } else {
             String strName = this.txtProductPresentation.getText().toLowerCase();
             boolean bState = true;
-            for(int i = 0;i < strName.length();i++){
-                if(!((strName.charAt(i) >= 'a' && strName.charAt(i) <= 'z') || strName.charAt(i) == ' ' || strName.charAt(i) == '.'  || (strName.charAt(i) >= '0' && strName.charAt(i) <= '9'))){
+            int iLength = strName.length();
+            boolean bValue1 = false;
+            boolean bValue2 = false;
+            boolean bValue3 = false;
+            boolean bValue4 = false;
+            boolean bValue5 = false;
+            boolean bValue6 = false;
+            
+            for(int i = 0;i < iLength;i++){
+                bValue1 = strName.charAt(i) >= 'a';
+                bValue2 = strName.charAt(i) <= 'z';
+                bValue3 = strName.charAt(i) == ' ';
+                bValue4 = strName.charAt(i) == '.';
+                bValue5 = strName.charAt(i) >= '0';
+                bValue6 = strName.charAt(i) <= '9';
+                
+                if(!((bValue1 && bValue2) || bValue3 || bValue4 || (bValue5 && bValue6))){
                     bState = false;
                     break;
                 }
@@ -4686,7 +4796,7 @@ public class UIMain extends javax.swing.JFrame {
     }//GEN-LAST:event_txtProductPresentationFocusLost
 
     private void txtProductStockFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtProductStockFocusGained
-        if(this.txtProductStock.getText().equals("*")){
+        if("*".equals(this.txtProductStock.getText())){
             this.txtProductStock.setText("");
             this.txtProductStock.setForeground(Color.BLACK);
         }
@@ -4699,7 +4809,8 @@ public class UIMain extends javax.swing.JFrame {
         } else {
             String strName = this.txtProductStock.getText().toLowerCase();
             boolean bState = true;
-            for(int i = 0;i < strName.length();i++){
+            int iLength = strName.length();
+            for(int i = 0;i < iLength;i++){
                 if(!(strName.charAt(i) >= '0' && strName.charAt(i) <= '9')){
                     bState = false;
                     break;
@@ -4707,8 +4818,9 @@ public class UIMain extends javax.swing.JFrame {
             }
             
             try { 
-                if(Integer.parseInt(strName) < 0 || Integer.parseInt(strName) > 1000)
+                if(Integer.parseInt(strName) < 0 || Integer.parseInt(strName) > 1000) {
                     bState = false;
+                }
             } catch(NumberFormatException cException) { 
                 bState = false;
             } 
@@ -4721,7 +4833,7 @@ public class UIMain extends javax.swing.JFrame {
     }//GEN-LAST:event_txtProductStockFocusLost
 
     private void txtProductPriceFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtProductPriceFocusGained
-        if(this.txtProductPrice.getText().equals("*")){
+        if("*".equals(this.txtProductPrice.getText())){
             this.txtProductPrice.setText("");
             this.txtProductPrice.setForeground(Color.BLACK);
         }
@@ -4736,8 +4848,9 @@ public class UIMain extends javax.swing.JFrame {
             boolean bState = true;
             
             try { 
-                if(Double.parseDouble(strName) < 0.1 || Double.parseDouble(strName) > 100)
+                if(Double.parseDouble(strName) < 0.1 || Double.parseDouble(strName) > 100) {
                     bState = false;
+                }
             } catch(NumberFormatException cException) { 
                 bState = false;
             } 
@@ -4750,7 +4863,7 @@ public class UIMain extends javax.swing.JFrame {
     }//GEN-LAST:event_txtProductPriceFocusLost
 
     private void txtNameSearchProductFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtNameSearchProductFocusGained
-        if(this.txtNameSearchProduct.getText().equals("Ingrese Nombre de Producto")){
+        if("Ingrese Nombre de Producto".equals(this.txtNameSearchProduct.getText())){
             this.txtNameSearchProduct.setText("");
             this.txtNameSearchProduct.setFont(new Font("Tahoma", Font.PLAIN, 11));
         }
@@ -4764,7 +4877,7 @@ public class UIMain extends javax.swing.JFrame {
     }//GEN-LAST:event_txtNameSearchProductFocusLost
 
     private void txtNameSearchTicketFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtNameSearchTicketFocusGained
-        if(this.txtNameSearchTicket.getText().equals("Ingrese Número de la Boleta")){
+        if("Ingrese Número de la Boleta".equals(this.txtNameSearchTicket.getText())){
             this.txtNameSearchTicket.setText("");
             this.txtNameSearchTicket.setFont(new Font("Tahoma", Font.PLAIN, 11));
         }
@@ -4778,6 +4891,7 @@ public class UIMain extends javax.swing.JFrame {
     }//GEN-LAST:event_txtNameSearchTicketFocusLost
 
     private void btnStoreReportProdFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_btnStoreReportProdFocusLost
+        
         // Check it after 
     }//GEN-LAST:event_btnStoreReportProdFocusLost
 
@@ -4838,7 +4952,7 @@ public class UIMain extends javax.swing.JFrame {
     }//GEN-LAST:event_btnSaleMouseExited
 
     private void txtProductNameStoreFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtProductNameStoreFocusGained
-        if(this.txtProductName.getText().equals("*")){
+        if("*".equals(this.txtProductName.getText())){
             this.txtProductName.setText("");
             this.txtProductName.setForeground(Color.BLACK);
         }        
@@ -4851,8 +4965,17 @@ public class UIMain extends javax.swing.JFrame {
         } else {
             String strName = this.txtProductNameStore.getText().toLowerCase();
             boolean bState = true;
-            for(int i = 0;i < strName.length();i++){
-                if(!(strName.charAt(i) >= 'a' && strName.charAt(i) <= 'z' || strName.charAt(i) == ' ')){
+            int iLength = strName.length();
+            boolean bValue1 = false;
+            boolean bValue2 = false;
+            boolean bValue3 = false;
+            
+            for(int i = 0;i < iLength;i++){
+                bValue1 = strName.charAt(i) >= 'a';
+                bValue2 = strName.charAt(i) <= 'z';
+                bValue3 = strName.charAt(i) == ' ';
+                                
+                if(!(bValue1 && bValue2 || bValue3)) {
                     bState = false;
                     break;
                 }
@@ -4866,7 +4989,7 @@ public class UIMain extends javax.swing.JFrame {
     }//GEN-LAST:event_txtProductNameStoreFocusLost
 
     private void txtProductBrandStoreFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtProductBrandStoreFocusGained
-        if(this.txtProductBrandStore.getText().equals("*")){
+        if("*".equals(this.txtProductBrandStore.getText())){
             this.txtProductBrandStore.setText("");
             this.txtProductBrandStore.setForeground(Color.BLACK);
         }
@@ -4879,8 +5002,17 @@ public class UIMain extends javax.swing.JFrame {
         } else {
             String strName = this.txtProductBrandStore.getText().toLowerCase();
             boolean bState = true;
-            for(int i = 0;i < strName.length();i++){
-                if(!(strName.charAt(i) >= 'a' && strName.charAt(i) <= 'z' || strName.charAt(i) == ' ')){
+            int iLength = strName.length();
+            boolean bValue1 = false;
+            boolean bValue2 = false;
+            boolean bValue3 = false;
+            
+            for(int i = 0;i < iLength;i++){
+                bValue1 = strName.charAt(i) >= 'a';
+                bValue2 = strName.charAt(i) <= 'z';
+                bValue3 = strName.charAt(i) == ' ';
+                                
+                if(!(bValue1 && bValue2 || bValue3)) {
                     bState = false;
                     break;
                 }
@@ -4894,7 +5026,7 @@ public class UIMain extends javax.swing.JFrame {
     }//GEN-LAST:event_txtProductBrandStoreFocusLost
 
     private void txtProductPresentationStoreFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtProductPresentationStoreFocusGained
-        if(this.txtProductPresentationStore.getText().equals("*")){
+        if("*".equals(this.txtProductPresentationStore.getText())){
             this.txtProductPresentationStore.setText("");
             this.txtProductPresentationStore.setForeground(Color.BLACK);
         }
@@ -4907,8 +5039,23 @@ public class UIMain extends javax.swing.JFrame {
         } else {
             String strName = this.txtProductPresentationStore.getText().toLowerCase();
             boolean bState = true;
-            for(int i = 0;i < strName.length();i++){
-                if(!((strName.charAt(i) >= 'a' && strName.charAt(i) <= 'z') || strName.charAt(i) == ' ' || strName.charAt(i) == '.'  || (strName.charAt(i) >= '0' && strName.charAt(i) <= '9'))){
+            int iLength = strName.length();
+            boolean bValue1 = false;
+            boolean bValue2 = false;
+            boolean bValue3 = false;
+            boolean bValue4 = false;
+            boolean bValue5 = false;
+            boolean bValue6 = false;
+            
+            for(int i = 0;i < iLength;i++){
+                bValue1 = strName.charAt(i) >= 'a';
+                bValue2 = strName.charAt(i) <= 'z';
+                bValue3 = strName.charAt(i) == ' ';
+                bValue4 = strName.charAt(i) == '.';
+                bValue5 = strName.charAt(i) >= '0';
+                bValue6 = strName.charAt(i) <= '9';
+                
+                if(!((bValue1 && bValue2) || bValue3 || bValue4 || (bValue5 && bValue6))){
                     bState = false;
                     break;
                 }
@@ -4922,7 +5069,7 @@ public class UIMain extends javax.swing.JFrame {
     }//GEN-LAST:event_txtProductPresentationStoreFocusLost
 
     private void txtProductStockStoreFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtProductStockStoreFocusGained
-        if(this.txtProductStockStore.getText().equals("*")){
+        if("*".equals(this.txtProductStockStore.getText())){
             this.txtProductStockStore.setText("");
             this.txtProductStockStore.setForeground(Color.BLACK);
         }
@@ -4935,7 +5082,8 @@ public class UIMain extends javax.swing.JFrame {
         } else {
             String strName = this.txtProductStockStore.getText().toLowerCase();
             boolean bState = true;
-            for(int i = 0;i < strName.length();i++){
+            int iLength = strName.length();
+            for(int i = 0;i < iLength;i++){
                 if(!(strName.charAt(i) >= '0' && strName.charAt(i) <= '9')){
                     bState = false;
                     break;
@@ -4950,7 +5098,7 @@ public class UIMain extends javax.swing.JFrame {
     }//GEN-LAST:event_txtProductStockStoreFocusLost
 
     private void txtProductPriceStoreFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtProductPriceStoreFocusGained
-        if(this.txtProductPriceStore.getText().equals("*")){
+        if("*".equals(this.txtProductPriceStore.getText())){
             this.txtProductPriceStore.setText("");
             this.txtProductPriceStore.setForeground(Color.BLACK);
         }
@@ -4990,15 +5138,25 @@ public class UIMain extends javax.swing.JFrame {
         if(!this.txtSaleOrderClient.getText().isEmpty()){
             String strName = this.txtSaleOrderClient.getText().toLowerCase();
             boolean bState = true;
-            for(int i = 0;i < strName.length();i++){
-                if(!(strName.charAt(i) >= 'a' && strName.charAt(i) <= 'z' || strName.charAt(i) == ' ')){
+            int iLength = strName.length();
+            boolean bValue1 = false;
+            boolean bValue2 = false;
+            boolean bValue3 = false;
+                
+            for(int i = 0;i < iLength;i++){
+                bValue1 = strName.charAt(i) >= 'a';
+                bValue2 = strName.charAt(i) <= 'z';
+                bValue3 = strName.charAt(i) == ' ';
+                                
+                if(!(bValue1 && bValue2 || bValue3)) {
                     bState = false;
                     break;
                 }
             }
             
-            if(!bState)
+            if(!bState) {
                 this.txtProductNameStore.setText("");
+            }
         }
     }//GEN-LAST:event_txtSaleOrderClientFocusLost
 

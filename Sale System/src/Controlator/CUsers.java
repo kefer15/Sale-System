@@ -20,11 +20,16 @@ import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
 
+/**
+ * @version 2.3
+ * @author Miguel Fernández
+ */
+
 public class CUsers implements IUsers {
-    private final ArrayList <Gender> ARYGENDERS;
-    private final ArrayList <Position> ARYPOSITIONS;
-    private final ArrayList <String> ARYGENDERSINDEXES;
-    private final ArrayList <String> ARYPOSITIONSINDEXES;
+    private ArrayList <Gender> aryGenders = new ArrayList <Gender> ();
+    private ArrayList <Position> aryPositions = new ArrayList <Position> ();
+    private ArrayList <String> aryGendersIndexes = new ArrayList <String> ();
+    private ArrayList <String> aryPositionsIndexes = new ArrayList <String> ();
     
     /*
         The constructor fills aryGenders with all Categorigies available, and
@@ -32,35 +37,36 @@ public class CUsers implements IUsers {
         Initializes aryGendersIndexes and aryPositionsIndexes.
     */
     public CUsers() {
-        ARYGENDERS = (new Gender()).getList();
-        ARYPOSITIONS = (new Position()).getList();
-        ARYGENDERSINDEXES = new ArrayList <> ();
-        ARYPOSITIONSINDEXES = new ArrayList <> ();
+        aryGenders = (new Gender()).getList();
+        aryPositions = (new Position()).getList();
+        aryGendersIndexes = new ArrayList <> ();
+        aryPositionsIndexes = new ArrayList <> ();
     }
     
     /*
-        Fills all Genders into cbxGender and links the información of each register with 
+        Fills all Genders into cbxGender and links the information of each register with 
         each index of aryGendersIndexes.
-        Fills all Positions into cbxPosition and links the información of each register with 
+        Fills all Positions into cbxPosition and links the information of each register with 
         each index of aryPositionsIndexes.
     */
     private void fill(JComboBox cbxGender, JComboBox cbxPosition) {
-        ARYGENDERS.stream().map((cGender) -> {
+        aryGenders.stream().map((cGender) -> {
             cbxGender.addItem(cGender.getDescription());
             return cGender;
         }).forEach((cGender) -> {
-            ARYGENDERSINDEXES.add(cGender.getCode());
+            aryGendersIndexes.add(cGender.getCode());
         });
         
-        ARYPOSITIONS.stream().map((cPosition) -> {
+        aryPositions.stream().map((cPosition) -> {
             cbxPosition.addItem(cPosition.getDescription());
             return cPosition;
         }).forEach((cPosition) -> {
-            ARYPOSITIONSINDEXES.add(cPosition.getCode());
+            aryPositionsIndexes.add(cPosition.getCode());
         });
     }
     
     @Override
+    /** Between this method we can show the panel for checking a new user in */
     public void changeUserAdd(CardLayout crdCard, JPanel pnlPanel, JComboBox cbxGender, JComboBox cbxPosition, JLabel lblTitle, JButton btnRegister) {
         crdCard.show(pnlPanel, "pnlUserAdd");        
         lblTitle.setText("REGISTRO DE NUEVO USUARIO");
@@ -81,7 +87,8 @@ public class CUsers implements IUsers {
     public void changeUserShow(CardLayout crdCard, JPanel pnlPanel, JTable tblTable) {
         crdCard.show(pnlPanel, "pnlUserShow");
         
-        ArrayList <Users> aryUsers = (new Users()).getList(2, null, null, null);
+        ArrayList <Users> aryUsers = new ArrayList <Users> ();
+        aryUsers = (new Users()).getList(2, null, null, null);
         
         DefaultTableModel cModel = (DefaultTableModel) tblTable.getModel();
         cModel.getDataVector().removeAllElements();
@@ -102,18 +109,19 @@ public class CUsers implements IUsers {
         cUser.setFatherLastName(txtFatherLastName.getText());
         cUser.setMotherLastName(txtMotherLastName.getText());
         cUser.setNi(txtNi.getText());
-        cUser.setGenderCode(ARYGENDERSINDEXES.get(cbxGender.getSelectedIndex()));
+        cUser.setGenderCode(aryGendersIndexes.get(cbxGender.getSelectedIndex()));
         cUser.setAddress(txtAddress.getText());
-        cUser.setPositionCode(ARYPOSITIONSINDEXES.get(cbxPosition.getSelectedIndex()));
+        cUser.setPositionCode(aryPositionsIndexes.get(cbxPosition.getSelectedIndex()));
         cUser.setCellphone(txtCellphone.getText());
         cUser.seteMail(txtEmail.getText());
         cUser.setEmergencyCell(txtEmergencyNumber.getText());
         cUser.setOther(txaOthers.getText());
         
-        String strError;
+        String strError = "";
         
         switch(iOption){
-            case 0: String id, password;
+            case 0: String id = "";
+                    String password = "";
                     id =    txtName.getText().toUpperCase().substring(0,2) + 
                             txtNi.getText().substring(0, 2) + 
                             txtFatherLastName.getText().toUpperCase().substring(0, 2) +
@@ -123,44 +131,52 @@ public class CUsers implements IUsers {
                                 txtNi.getText().toUpperCase().substring(2,6) + 
                                 txtCellphone.getText().substring(3, 7) + 
                                 txtFatherLastName.getText().toUpperCase().substring(0, 1);
-                    System.out.println(id + " " + password);
                     cUser.setId(id);
                     cUser.setPassword(password);
                     cUser.setState("1");
                     
                     strError = cUser.insert();
-                    if(strError.equals(""))
+                    if("".equals(strError)) {
                         JOptionPane.showMessageDialog(  null, 
                                                         "Se ha generado su Id y su Contraseña para \npoder ingresar al Sistema de Ventas: "
                                                                 + "\n\n  Id de Usuario: " + id + "\n  Contraseña: " + password, 
                                                         "Nuevo Usuario", 
                                                         JOptionPane.INFORMATION_MESSAGE);
-                    else
+                    } else {
                         JOptionPane.showMessageDialog(  null, 
                                                         strError, 
                                                         "Nuevo Usuario", 
                                                         JOptionPane.WARNING_MESSAGE);
+                    }
                     break;
             case 1: strError = cUser.update();
-                    if(strError.equals(""))
+                    if("".equals(strError)) {
                         JOptionPane.showMessageDialog(  null, 
                                                         "Los datos han sido modificados correctamente.", 
                                                         "Modificar Usuario", 
                                                         JOptionPane.INFORMATION_MESSAGE);
-                    else
+                    } else {
                         JOptionPane.showMessageDialog(  null, 
                                                         strError, 
                                                         "Nuevo Usuario", 
                                                         JOptionPane.WARNING_MESSAGE);
+                    }
                     break;
+            
+            default: JOptionPane.showMessageDialog(null, "Default Option");
         }             
     }
     
     @Override
     public ArrayList <String> searchUser(JTextField txtName, JTable tblTable) {
-        String strName = (txtName.getText().equals("Ingrese Nombre de Usuario"))?"":txtName.getText();
-        ArrayList <Users> aryUsers = (new Users()).getList(3, null, null, strName);
-        ArrayList <String> aryUsersIndexes = new ArrayList <>();
+        String strName = txtName.getText();
+        
+        if("Ingrese Nombre de Usuario".equals(txtName.getText()))
+            strName = "";
+        
+        ArrayList <Users> aryUsers = new ArrayList <Users> ();
+        aryUsers = (new Users()).getList(3, null, null, strName);
+        ArrayList <String> aryUsersIndexes = new ArrayList <String>();
         
         if(!aryUsers.isEmpty()) {            
             DefaultTableModel cModel = (DefaultTableModel) tblTable.getModel();
@@ -172,11 +188,12 @@ public class CUsers implements IUsers {
             }).forEach((cUser) -> {
                 aryUsersIndexes.add(cUser.getCode());
             });
-        } else
+        } else {
             JOptionPane.showMessageDialog(  null,
                                             "No hay usuarios registrados con el Nombre: " + txtName.getText(), 
                                             "Resultado Vacío", 
                                             JOptionPane.INFORMATION_MESSAGE);
+        }
         
         return aryUsersIndexes;
     }
@@ -189,26 +206,27 @@ public class CUsers implements IUsers {
         lblTitle.setText("MODIFICACIÓN DE USUARIO");
         btnModify.setText("Actualizar");
         
-        ArrayList <Users> user = (new Users()).getList(1, null, strCode, null);
+        ArrayList <Users> aryUser = new ArrayList <Users> ();
+        aryUser = (new Users()).getList(1, null, strCode, null);
         
-        txtName.setText(user.get(0).getName());
-        txtFatherLastName.setText(user.get(0).getFatherLastName());
-        txtMotherLastName.setText(user.get(0).getMotherLastName());
-        txtNi.setText(user.get(0).getNi());
-        txtAddress.setText(user.get(0).getAddress());
-        txtCellphone.setText(user.get(0).getCellphone());
-        txtEmail.setText(user.get(0).geteMail());
-        txtEmergencyNumber.setText(user.get(0).getEmergencyCell());
-        txaOthers.setText(user.get(0).getOther());
+        txtName.setText(aryUser.get(0).getName());
+        txtFatherLastName.setText(aryUser.get(0).getFatherLastName());
+        txtMotherLastName.setText(aryUser.get(0).getMotherLastName());
+        txtNi.setText(aryUser.get(0).getNi());
+        txtAddress.setText(aryUser.get(0).getAddress());
+        txtCellphone.setText(aryUser.get(0).getCellphone());
+        txtEmail.setText(aryUser.get(0).geteMail());
+        txtEmergencyNumber.setText(aryUser.get(0).getEmergencyCell());
+        txaOthers.setText(aryUser.get(0).getOther());
         
         cbxGender.removeAllItems();
         cbxPosition.removeAllItems();
         
         fill(cbxGender, cbxPosition);
                 
-        cbxGender.setSelectedIndex(ARYGENDERSINDEXES.indexOf(user.get(0).getGenderCode()));
-        cbxPosition.setSelectedIndex(ARYPOSITIONSINDEXES.indexOf(user.get(0).getPositionCode()));
+        cbxGender.setSelectedIndex(aryGendersIndexes.indexOf(aryUser.get(0).getGenderCode()));
+        cbxPosition.setSelectedIndex(aryPositionsIndexes.indexOf(aryUser.get(0).getPositionCode()));
         
-        return user.get(0).getCode();
+        return aryUser.get(0).getCode();
     }
 }

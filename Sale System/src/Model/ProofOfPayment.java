@@ -7,12 +7,18 @@ import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+/**
+ * @version 2.3
+ * @author Miguel Fernández
+ */
+
 public class ProofOfPayment {
-    String strCode;
-    String strClientName;
-    String strDate;
-    String strAmount;
-    String strUser;
+    /** This is the code of a proof of payment */
+    private String strCode;
+    private String strClientName;
+    private String strDate;
+    private String strAmount;
+    private String strUser;
     
     public ProofOfPayment(){
         this("-1","NULL","0000-00-00","0.0","-1");
@@ -25,7 +31,9 @@ public class ProofOfPayment {
         this.strAmount = strAmount;
         this.strUser = strUser;
     }
-
+    
+    /** Between this method the Proof of Payment's code
+     * @return  */
     public String getCode() {
         return strCode;
     }
@@ -67,14 +75,14 @@ public class ProofOfPayment {
     }
     
     public String insertCab() {
-        Main.cConexion.conect();
+        Principal.cConexion.conect();
         String strError = "";
         
         try {
-            Main.cConexion.send("INSERT INTO Comprobante_Cab VALUES( DEFAULT , '" + strClientName + "' , " + strAmount + " , '" + 
+            Principal.cConexion.send("INSERT INTO Comprobante_Cab VALUES( DEFAULT , '" + strClientName + "' , " + strAmount + " , '" + 
                     strDate + "' , " + strUser + " )");
             
-            Main.cConexion.disconect();
+            Principal.cConexion.disconect();
         } catch (SQLException cException) {
             strError = cException.getMessage();
         }
@@ -82,15 +90,24 @@ public class ProofOfPayment {
         return strError;
     }
     
-    public String insertDet(ArrayList <String> aryProducts, ArrayList <Integer> aryQuantities, String strNumber) {
-        Main.cConexion.conect();
+    /**
+     *
+     * @param aryProducts
+     * @param aryQuantities
+     * @param strNumber
+     * @return
+     */
+    public static String insertDet(ArrayList <String> aryProducts, ArrayList <Integer> aryQuantities, String strNumber) {
+        Principal.cConexion.conect();
         String strError = "";
         
         try {
-            for(int i = 0;i < aryProducts.size();i++)
-                Main.cConexion.send("INSERT INTO Comprobante_Det VALUES( " + strNumber + " , " + aryProducts.get(i) + " , " + aryQuantities.get(i) + " )");
+            int iSize = aryProducts.size();
+            for(int i = 0;i < iSize;i++) {
+                Principal.cConexion.send("INSERT INTO Comprobante_Det VALUES( " + strNumber + " , " + aryProducts.get(i) + " , " + aryQuantities.get(i) + " )");
+            }
             
-            Main.cConexion.disconect();
+            Principal.cConexion.disconect();
         } catch (SQLException cException) {
             strError = cException.getMessage();
         }
@@ -98,15 +115,15 @@ public class ProofOfPayment {
         return strError;
     }
     
-    public ArrayList <ProofOfPayment> getList(String strCode) {
-        Main.cConexion.conect();
-        ArrayList <ProofOfPayment> aryPayments = new ArrayList <> ();
+    public ArrayList <ProofOfPayment> getListProofs(String strCodeReceived) {
+        Principal.cConexion.conect();
+        ArrayList <ProofOfPayment> aryPayments = new ArrayList <ProofOfPayment> ();
         
         try {
-            ResultSet cResult = Main.cConexion.receive("SELECT * FROM Comprobante_Cab WHERE ComCod LIKE '" + strCode + "%'");
-            
+            ResultSet cResult = Principal.cConexion.receive("SELECT ComCod, CabNomCli, ComMon, ComFec, UsuCod FROM Comprobante_Cab WHERE ComCod LIKE '" + strCodeReceived + "%'");
+            ProofOfPayment cPayment = null;
             while(cResult.next()) {                
-                ProofOfPayment cPayment = new ProofOfPayment();
+                cPayment = new ProofOfPayment();
                 cPayment.setCode(cResult.getString("ComCod"));
                 cPayment.setClientName(cResult.getString("CabNomCli"));
                 cPayment.setAmount(cResult.getString("ComMon"));
@@ -115,6 +132,8 @@ public class ProofOfPayment {
                 
                 aryPayments.add(cPayment);
             }
+            
+            Principal.cConexion.disconect();
         } catch (SQLException cException) {
             Logger.getLogger(ProofOfPayment.class.getName()).log(Level.SEVERE, null, cException);
         }
@@ -122,14 +141,21 @@ public class ProofOfPayment {
         return aryPayments;
     }
     
-    public String getNextCode() {
-        Main.cConexion.conect();
+    /**
+     *
+     * @return
+     */
+    public static String getNextCode() {
+        Principal.cConexion.conect();
         
         try {
-            ResultSet cResult = Main.cConexion.receive("SELECT MAX(ComCod) FROM Comprobante_Cab");
+            ResultSet cResult = Principal.cConexion.receive("SELECT MAX(ComCod) FROM Comprobante_Cab");
                         
-            while(cResult.next())
+            while(cResult.next()) {
                 return cResult.getString("MAX(ComCod)");
+            }
+            
+            Principal.cConexion.disconect();
         } catch (SQLException cException) {
             Logger.getLogger(ProofOfPayment.class.getName()).log(Level.SEVERE, null, cException);
         }
@@ -138,14 +164,15 @@ public class ProofOfPayment {
     }    
     
     public ArrayList <ProofOfPayment> getList(String strDateStart, String strDateEnd) {
-        Main.cConexion.conect();
-        ArrayList <ProofOfPayment> aryPayments = new ArrayList <> ();
+        Principal.cConexion.conect();
+        ArrayList <ProofOfPayment> aryPayments = new ArrayList <ProofOfPayment> ();
         
         try {
-            ResultSet cResult = Main.cConexion.receive("SELECT * FROM Comprobante WHERE ComFec >= '" + strDateStart + "' AND ComFec <= '" + strDateEnd + "'");
+            ResultSet cResult = Principal.cConexion.receive("SELECT ComCod, ComMon, ComFec, UsuNom FROM Comprobante WHERE ComFec >= '" + strDateStart + "' AND ComFec <= '" + strDateEnd + "'");
+            ProofOfPayment cPayment = null;
             
             while(cResult.next()) {                
-                ProofOfPayment cPayment = new ProofOfPayment();
+                cPayment = new ProofOfPayment();
                 cPayment.setCode(cResult.getString("ComCod"));
                 cPayment.setClientName("");
                 cPayment.setAmount(cResult.getString("ComMon"));
@@ -154,6 +181,8 @@ public class ProofOfPayment {
                 
                 aryPayments.add(cPayment);
             }
+            
+            Principal.cConexion.disconect();
         } catch (SQLException cException) {
             Logger.getLogger(ProofOfPayment.class.getName()).log(Level.SEVERE, null, cException);
         }
@@ -162,14 +191,15 @@ public class ProofOfPayment {
     }
     
     public ArrayList <ProofOfPayment> getUsersMount(String strDateStart, String strDateEnd) {
-        Main.cConexion.conect();
-        ArrayList <ProofOfPayment> aryPayments = new ArrayList <> ();
+        Principal.cConexion.conect();
+        ArrayList <ProofOfPayment> aryPayments = new ArrayList <ProofOfPayment> ();
         
         try {
-            ResultSet cResult = Main.cConexion.receive("SELECT UsuNom, SUM(ComMon) FROM Comprobante WHERE ComFec >= '" + strDateStart + "' AND ComFec <= '" + strDateEnd + "' GROUP By UsuNom");
+            ResultSet cResult = Principal.cConexion.receive("SELECT UsuNom, SUM(ComMon) FROM Comprobante WHERE ComFec >= '" + strDateStart + "' AND ComFec <= '" + strDateEnd + "' GROUP By UsuNom");
+            ProofOfPayment cPayment = null;
             
             while(cResult.next()) {                
-                ProofOfPayment cPayment = new ProofOfPayment();
+                cPayment = new ProofOfPayment();
                 cPayment.setCode("");
                 cPayment.setClientName("");
                 cPayment.setAmount(cResult.getString("SUM(ComMon)"));
@@ -178,6 +208,8 @@ public class ProofOfPayment {
                 
                 aryPayments.add(cPayment);
             }
+            
+            Principal.cConexion.disconect();
         } catch (SQLException cException) {
             Logger.getLogger(ProofOfPayment.class.getName()).log(Level.SEVERE, null, cException);
         }

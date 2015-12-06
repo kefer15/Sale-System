@@ -11,46 +11,46 @@ import javax.swing.JOptionPane;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 
+/**
+ * @version 2.3
+ * @author Miguel Fernández
+ */
+
 public class CHome implements IHome
 {
     @Override
+    /** Between this method we can validate and give access to users */ 
     public Users logIn(JTextField txtId, JPasswordField txtPass) {              
-        if(txtId.getText().equals("") || txtPass.getPassword().length == 0)
+        Users cUser = null;
+        if("".equals(txtId.getText()) || 0 == txtPass.getPassword().length)
         {
             JOptionPane.showMessageDialog(  null,
                                             "Ingrese su 'Id de Usuario' y su 'Contraseña'",
                                             "Campos Vacíos",
                                             JOptionPane.ERROR_MESSAGE);
-            return null;
-        }
-        else
-        {
-            char[] aVar = txtPass.getPassword();
-            String password = "";
-            
-            for(int i = 0;i < txtPass.getPassword().length;i++)
-                password += aVar[i];
-            
-            ArrayList <Users> aryUserLoged = (new Users()).getList(0, txtId.getText(), null, null);
+        } else {
+            String password = String.valueOf(txtPass.getPassword());
+            ArrayList <Users> aryUserLoged = new ArrayList <Users> ();
+            aryUserLoged = (new Users()).getList(0, txtId.getText(), null, null);
            
-            if(!aryUserLoged.isEmpty())
-                if(aryUserLoged.get(0).getPassword().equals(password))
-                    return aryUserLoged.get(0);
-                else {
+            if(!aryUserLoged.isEmpty()) {
+                if(aryUserLoged.get(0).getPassword().equals(password)) {
+                    cUser = aryUserLoged.get(0);
+                } else {
                         JOptionPane.showMessageDialog(  null,
                                                         "Contraseña ingresada incorrecta, inténtelo de nuevo",
                                                         "Valores Incorrectos",
                                                         JOptionPane.ERROR_MESSAGE);
-                            return null;
                 }
-            else
+            } else {
                 JOptionPane.showMessageDialog(  null,
                                                 "Id de Usuario '" + txtId.getText() + "' no existe, inténtelo de nuevo",
                                                 "Valores Incorrectos",
                                                 JOptionPane.ERROR_MESSAGE);
+            }
         }
         
-        return null;
+        return cUser;
     }
     
     @Override
@@ -66,6 +66,7 @@ public class CHome implements IHome
                 btnSuppliers.setEnabled(true);
                 btnProducts.setEnabled(true);
                 btnStore.setEnabled(true);
+                break;
         }
     }
 }

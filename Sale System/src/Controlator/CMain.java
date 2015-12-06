@@ -16,6 +16,11 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
+/**
+ * @version 2.3
+ * @author Miguel Fernández
+ */
+
 public class CMain implements IMain {
     private final UIMain wdWindow;
     
@@ -28,6 +33,7 @@ public class CMain implements IMain {
     }
     
     @Override
+    /** Between this method we can move for all windows, basically Home Window */
     public void changeHome(CardLayout crdCard, JPanel pnlPanel) {
         crdCard.show(pnlPanel, "pnlHome");
     }
@@ -56,32 +62,17 @@ public class CMain implements IMain {
     public void changeSale(CardLayout crdCard, JPanel pnlPanel) {
         crdCard.show(pnlPanel, "pnlSale");
     }
-    
-    @Override
-    public void paint(int iNumber, ArrayList <JButton> aryMenu) {
-        // Depends if client likes or not 
-        /*
-            for (JButton cButton : aryMenu)
-            {
-                cButton.setBackground(new Color(224, 224, 224));
-                cButton.setForeground(new Color(0, 0, 0));
-            }
-
-            aryMenu.get(iNumber).setBackground(new Color(170, 170, 170));
-            aryMenu.get(iNumber).setForeground(new Color(255, 255, 255));
-        */
-    }
-    
+   
     @Override
     public void logOut() {
         wdWindow.dispose();
-        CMain cMain = new CMain(0);
+        new CMain(0);
     }
     
     @Override
     public void forgottenPass(JTextField txtUser) {
         wdWindow.dispose();
-        CForgottenPass cPass = new CForgottenPass(txtUser.getText());    
+        new CForgottenPass(txtUser.getText());    
     }    
     
     @Override

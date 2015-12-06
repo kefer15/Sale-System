@@ -10,6 +10,11 @@ import java.sql.SQLException;
 
 import javax.swing.JOptionPane;
 
+/**
+ * @version 2.3
+ * @author Miguel Fernández
+ */
+
 public class Conexion
 {
     private Connection cCon;
@@ -22,7 +27,9 @@ public class Conexion
         this.cUser = strUser;
         this.strPassword = strPassword;
     }
-
+    
+    /** Between this method we get DataBase's name
+     * @return  */
     public String getDatabase() {
         return strDatabase;
     }

@@ -7,6 +7,13 @@ import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import javax.swing.JOptionPane;
+
+/**
+ * @version 2.3
+ * @author Miguel Fernández
+ */
+
 public class Suppliers {
     private String strCode;
     private String strName;
@@ -27,7 +34,9 @@ public class Suppliers {
         this.strAddress = strAddress;
         this.strState = strState;
     }
-
+    
+    /** Between this method we get the Supplier's code
+     * @return  */
     public String getCode() {
         return strCode;
     }
@@ -77,14 +86,14 @@ public class Suppliers {
     }
     
     public String insert() {
-        Main.cConexion.conect();
+        Principal.cConexion.conect();
         String strError = "";
         
         try {
-            Main.cConexion.send("INSERT INTO Proveedor VALUES( DEFAULT , '" + strName + "' , '" +
+            Principal.cConexion.send("INSERT INTO Proveedor VALUES( DEFAULT , '" + strName + "' , '" +
                     strTr + "' , '" + strPhone + "' , '" + strAddress + "' , " + strState + " )");
             
-            Main.cConexion.disconect();
+            Principal.cConexion.disconect();
         } catch (SQLException cException) {
             strError = cException.getMessage();
         }
@@ -93,15 +102,15 @@ public class Suppliers {
     }
     
     public String update() {
-        Main.cConexion.conect();
+        Principal.cConexion.conect();
         String strError = "";  
         
         try {
-            Main.cConexion.send("UPDATE Proveedor SET ProNom = '" + strName + 
+            Principal.cConexion.send("UPDATE Proveedor SET ProNom = '" + strName + 
                     "' , ProRuc = '" + strTr + "' , ProTel = '" + strPhone +  
                     "' , ProDir = '" + strAddress + "' WHERE ProCod = " + strCode);
             
-            Main.cConexion.disconect();  
+            Principal.cConexion.disconect();  
         } catch (SQLException cException) {
             strError = cException.getMessage();
         }
@@ -109,13 +118,18 @@ public class Suppliers {
         return strError;
     }
     
-    public String remove(String strSupplierCode) {
-        Main.cConexion.conect();
+    /**
+     *
+     * @param strSupplierCodeReceived
+     * @return
+     */
+    public static String remove(String strSupplierCodeReceived) {
+        Principal.cConexion.conect();
         String strError = "";
         
         try {
-            Main.cConexion.send("UPDATE Proveedor SET EstCod = '2' WHERE ProCod = " + strSupplierCode);
-            Main.cConexion.disconect();
+            Principal.cConexion.send("UPDATE Proveedor SET EstCod = '2' WHERE ProCod = " + strSupplierCodeReceived);
+            Principal.cConexion.disconect();
         } catch (SQLException cException) {
              strError = cException.getMessage();
         }
@@ -124,26 +138,30 @@ public class Suppliers {
     }
     
     public ArrayList <Suppliers> getList(int iOption, String strCode, String strName) {
-        Main.cConexion.conect();
-        ArrayList <Suppliers> arySuppliers = new ArrayList <> ();
+        Principal.cConexion.conect();
+        ArrayList <Suppliers> arySuppliers = new ArrayList <Suppliers> ();
         
         try {
             ResultSet cResult = null;
             
             switch(iOption){                    
-                case 0: cResult = Main.cConexion.receive("SELECT * FROM Proveedor");
+                case 0: cResult = Principal.cConexion.receive("SELECT ProCod, ProNom, ProRuc, ProTel, ProDir, EstCod FROM Proveedor");
                         break;
                         
-                case 1: cResult = Main.cConexion.receive("SELECT * FROM Proveedor WHERE ProCod = " + strCode);
+                case 1: cResult = Principal.cConexion.receive("SELECT ProCod, ProNom, ProRuc, ProTel, ProDir, EstCod FROM Proveedor WHERE ProCod = " + strCode);
                         break;
                     
-                case 2: cResult = Main.cConexion.receive("SELECT * FROM Proveedor WHERE EstCod = 1 AND ProNom LIKE '" + strName + "%'");
+                case 2: cResult = Principal.cConexion.receive("SELECT ProCod, ProNom, ProRuc, ProTel, ProDir, EstCod FROM Proveedor WHERE EstCod = 1 AND ProNom LIKE '" + strName + "%'");
                         break;
+                
+                default:    JOptionPane.showMessageDialog(null, "Default Option");
+                            break;
             }
+            Suppliers cSupplier = null;
             
             while(cResult.next())
             {                
-                Suppliers cSupplier = new Suppliers();
+                cSupplier = new Suppliers();
                 
                 cSupplier.setCode(cResult.getString("ProCod"));
                 cSupplier.setName(cResult.getString("ProNom"));
@@ -151,7 +169,7 @@ public class Suppliers {
                 cSupplier.setPhone(cResult.getString("ProTel"));
                 cSupplier.setAddress(cResult.getString("ProDir"));
                 cSupplier.setState(cResult.getString("EstCod"));
-                
+
                 arySuppliers.add(cSupplier);
             }
         } catch (SQLException cException) {
@@ -161,15 +179,26 @@ public class Suppliers {
         return arySuppliers;
     }    
     
-    public String link(boolean []bState, ArrayList <String> aryProducts, String strSupplier) {
-        Main.cConexion.conect();
+    /**
+     *
+     * @param bState
+     * @param aryProducts
+     * @param strSupplier
+     * @return
+     */
+    public static String link(boolean []bState, ArrayList <String> aryProducts, String strSupplier) {
+        Principal.cConexion.conect();
         String strError = "";
         
         try {
-            for(int i = 0;i < aryProducts.size();i++)
-                if(bState[i])
-                    Main.cConexion.send("INSERT INTO ProProd VALUES( " + aryProducts.get(i) + " , " + strSupplier + " )");
-            Main.cConexion.disconect();
+            int iSize = aryProducts.size();
+            for(int i = 0;i < iSize;i++){
+                if(bState[i]) {
+                    Principal.cConexion.send("INSERT INTO ProProd VALUES( " + aryProducts.get(i) + " , " + strSupplier + " )");
+                }
+            }
+            
+            Principal.cConexion.disconect();
         } catch (SQLException cException) {
              strError = cException.getMessage();
         }

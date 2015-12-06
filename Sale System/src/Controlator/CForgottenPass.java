@@ -23,6 +23,11 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 
+/**
+ * @version 2.3
+ * @author Miguel Fernández
+ */
+
 public class CForgottenPass implements IForgottenPass{
 
     private final UIForgottenPass wdForgottenPass;
@@ -32,8 +37,10 @@ public class CForgottenPass implements IForgottenPass{
     }
     
     @Override
-    public boolean Send(JTextField txtIdentifier, JTextField txtEmail, JLabel lblSending) {
-        ArrayList <Users> aryUser = (new Users()).getList(0, txtIdentifier.getText(), null, null);
+    /** Between this method we can sent an e-mail to the user who forgets his password */
+    public boolean send(JTextField txtIdentifier, JTextField txtEmail, JLabel lblSending) {
+        ArrayList <Users> aryUser = new ArrayList <Users> ();
+        aryUser = (new Users()).getList(0, txtIdentifier.getText(), null, null);
         
         if(aryUser.isEmpty()){
             lblSending.setText("");
@@ -102,6 +109,6 @@ public class CForgottenPass implements IForgottenPass{
     @Override
     public void comeBack() {
         wdForgottenPass.dispose();
-        CMain cMain = new CMain(0);
+        new CMain(0);
     }
 }

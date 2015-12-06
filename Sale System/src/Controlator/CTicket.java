@@ -4,6 +4,11 @@ import Interface.ITicket;
 
 import View.UITicket;
 
+/**
+ * @version 2.3
+ * @author Miguel Fernández
+ */
+
 public class CTicket implements ITicket{
      private final UITicket wdWindow;
     
@@ -12,6 +17,7 @@ public class CTicket implements ITicket{
     }
     
     @Override
+    /** Between this method we close the UITicket  */
     public void close() {
         wdWindow.dispose();
     }

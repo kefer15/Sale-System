@@ -7,6 +7,11 @@ import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+/**
+ * @version 2.3
+ * @author Miguel Fernández
+ */
+
 public class Position {
     private String strCode;
     private String strDescription;
@@ -19,7 +24,9 @@ public class Position {
         this.strCode = strCode;
         this.strDescription = strDescription;
     }
-
+    
+    /** Between this method we get the Position's code
+     * @return  */
     public String getCode() {
         return strCode;
     }
@@ -36,19 +43,26 @@ public class Position {
         this.strDescription = strDescription;
     }
     
-    public ArrayList <Position> getList() {
-        Main.cConexion.conect();
-        ArrayList <Position> aryPositions = new ArrayList <> ();
+    /**
+     *
+     * @return
+     */
+    public static ArrayList <Position> getList() {
+        Principal.cConexion.conect();
+        ArrayList <Position> aryPositions = new ArrayList <Position> ();
         
         try {
-            ResultSet cResult = Main.cConexion.receive("SELECT * FROM Cargo");
-            
+            ResultSet cResult = Principal.cConexion.receive("SELECT CarCod, CarNom FROM Cargo");
+            Position cPosition = null;
+                    
             while(cResult.next()) {    
-                Position cPosition = new Position(
-                        cResult.getString("CarCod"),
-                        cResult.getString("CarNom"));
+                cPosition = new Position(
+                cResult.getString("CarCod"),
+                cResult.getString("CarNom"));
                 aryPositions.add(cPosition);
             }
+            
+            Principal.cConexion.disconect();
         } catch (SQLException cException) {
             Logger.getLogger(Position.class.getName()).log(Level.SEVERE, null, cException);
         }

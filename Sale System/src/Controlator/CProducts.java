@@ -18,9 +18,14 @@ import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
 
+/**
+ * @version 2.3
+ * @author Miguel Fernández
+ */
+
 public class CProducts implements IProducts {
-    private final ArrayList <Category> aryCategories;
-    private final ArrayList <String> aryCategoriesIndexes;
+    private ArrayList <Category> aryCategories = new ArrayList <Category> ();
+    private ArrayList <String> aryCategoriesIndexes = new ArrayList <String> ();
     
     /*
         The constructor fills aryCategories with all Categorigies available.
@@ -32,7 +37,7 @@ public class CProducts implements IProducts {
     }
     
     /*
-        Fills all Categories into cbxCategory and links the información of each register with 
+        Fills all Categories into cbxCategory and links the information of each register with 
         each index of aryCategoriesIndexes.
     */
     private void fill(JComboBox cbxCategory) {
@@ -45,6 +50,7 @@ public class CProducts implements IProducts {
     }
     
     @Override
+    /** Between this method we can show the panel that receives products information */
     public void changeProductAdd(CardLayout crdCard, JPanel pnlPanel, JComboBox cbxCategory, JLabel lblTitle, JButton btnRegister) {
         crdCard.show(pnlPanel, "pnlProductAdd");
         
@@ -59,7 +65,8 @@ public class CProducts implements IProducts {
     public void changeProductShow(CardLayout crdCard, JPanel pnlPanel, JTable tblProducts) {
         crdCard.show(pnlPanel, "pnlProductShow");
         
-        ArrayList <Products> aryProducts = (new Products()).getList(1, null, null);        
+        ArrayList <Products> aryProducts = new ArrayList <Products> ();
+        aryProducts = (new Products()).getList(1, null, null);        
         DefaultTableModel cModel = (DefaultTableModel) tblProducts.getModel();
         cModel.getDataVector().removeAllElements();
         
@@ -76,20 +83,22 @@ public class CProducts implements IProducts {
         cProduct.setBrand(txtBrand.getText());
         cProduct.setPresentation(txtPresentation.getText());
         cProduct.setPrice(txtPrice.getText());
+        cProduct.setStock(txtStock.getText());
         cProduct.setCategory(aryCategoriesIndexes.get(cbxCategory.getSelectedIndex()));
         cProduct.setState("1");
         
         String srtError = cProduct.insert();
         
-        if(srtError.equals(""))
+        if("".equals(srtError)) {
             JOptionPane.showMessageDialog(  null, 
                                             "Los datos han sido ingresados correctamente.", 
                                             "Nuevo Producto", 
                                             JOptionPane.INFORMATION_MESSAGE);
-        else
+        } else {
             JOptionPane.showMessageDialog(  null, 
                                             srtError, 
                                             "Nuevo Producto", 
                                             JOptionPane.WARNING_MESSAGE);
+        }
     }
 }

@@ -7,6 +7,13 @@ import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import javax.swing.JOptionPane;
+
+/**
+ * @version 2.3
+ * @author Miguel Fernández
+ */
+
 public class Products
 {
     private String strCode;
@@ -32,7 +39,9 @@ public class Products
         this.strCategory = strCategory;
         this.strState = strState;
     }
-
+    
+    /** Between this method we get the Product's code
+     * @return  */
     public String getCode() {
         return strCode;
     }
@@ -98,14 +107,14 @@ public class Products
     }
     
     public String insert() {
-        Main.cConexion.conect();
+        Principal.cConexion.conect();
         String strError = "";
         
         try {
-            Main.cConexion.send("INSERT INTO Producto VALUES( DEFAULT , '" + strName + "' , '" + strBrand + "' , '" + 
+            Principal.cConexion.send("INSERT INTO Producto VALUES( DEFAULT , '" + strName + "' , '" + strBrand + "' , '" + 
                     strPresentation + "' , " + strPrice + " , " + strStock + " , " + strCategory + " , " + strState + " )");
             
-            Main.cConexion.disconect();
+            Principal.cConexion.disconect();
         } catch (SQLException cException) {
             strError = cException.getMessage();
         }
@@ -114,15 +123,15 @@ public class Products
     }
     
     public String update() {
-        Main.cConexion.conect();
+        Principal.cConexion.conect();
         String strError = "";  
         
         try {            
-            Main.cConexion.send("UPDATE Producto SET ProdNom = '" + strName + 
+            Principal.cConexion.send("UPDATE Producto SET ProdNom = '" + strName + 
                     "' , ProdMar = '" + strBrand + "' , ProdPres = '" + strPresentation  + "' , ProdPrec = " + strPrice + 
                     " , ProdSto = " + strStock + " , CatCod = " + strCategory + " WHERE ProdCod = " + strCode);
             
-            Main.cConexion.disconect();  
+            Principal.cConexion.disconect();  
         } catch (SQLException cException) {
             strError = cException.getMessage();
         }
@@ -131,17 +140,19 @@ public class Products
     }
     
     public String updateStock(ArrayList <String> aryCodes, ArrayList <String> aryStock) {
-        Main.cConexion.conect();
+        Principal.cConexion.conect();
         String strError = "";  
         
         try {   
             
-            ArrayList <String> aryStockOld = this.getStock(aryCodes);
+            ArrayList <String> aryStockOld = new ArrayList <String> ();
+            aryStockOld = this.getStock(aryCodes);
+            int iSize = aryCodes.size();
+            for(int i = 0;i < iSize;i++) {                
+                Principal.cConexion.send("UPDATE Producto SET ProdSto = " + (Integer.parseInt(aryStockOld.get(i))-Integer.parseInt(aryStock.get(i))) + " WHERE ProdCod = " + aryCodes.get(i));
+            }
             
-            for(int i = 0;i < aryCodes.size();i++)                
-                Main.cConexion.send("UPDATE Producto SET ProdSto = " + (Integer.parseInt(aryStockOld.get(i))-Integer.parseInt(aryStock.get(i))) + " WHERE ProdCod = " + aryCodes.get(i));
-            
-            Main.cConexion.disconect();  
+            Principal.cConexion.disconect();  
         } catch (SQLException cException) {
             strError = cException.getMessage();
         }
@@ -149,13 +160,18 @@ public class Products
         return strError;
     }
     
-    public String remove(String strProductCode) {
-        Main.cConexion.conect();
+    /**
+     *
+     * @param strProductCode
+     * @return
+     */
+    public static String remove(String strProductCode) {
+        Principal.cConexion.conect();
         String strError = "";
         
         try {
-            Main.cConexion.send("UPDATE Producto SET EstCod = '2' WHERE ProdCod = " + strProductCode);
-            Main.cConexion.disconect();
+            Principal.cConexion.send("UPDATE Producto SET EstCod = '2' WHERE ProdCod = " + strProductCode);
+            Principal.cConexion.disconect();
         } catch (SQLException cException) {
              strError = cException.getMessage();
         }
@@ -163,48 +179,52 @@ public class Products
         return strError;
     }
     
-    public ArrayList <Products> getList(int iOption, String strCode, String strName) {
-        Main.cConexion.conect();
-        ArrayList <Products> aryProducts = new ArrayList <> ();
+    public ArrayList <Products> getList(int iOption, String strCodeReceived, String strNameReceived) {
+        Principal.cConexion.conect();
+        ArrayList <Products> aryProducts = new ArrayList <Products> ();
         
         try {
             ResultSet cResult = null;
             boolean bAccess = false;
             
             switch(iOption) {              
-                case 0: cResult = Main.cConexion.receive("SELECT * FROM Producto WHERE ProdCod = " + strCode);
+                case 0: cResult = Principal.cConexion.receive("SELECT ProdCod, ProdNom, ProdMar, ProdPres, ProdPrec, ProdSto, CatCod, EstCod FROM Producto WHERE ProdCod = " + strCodeReceived);
                         break;
                         
-                case 1: cResult = Main.cConexion.receive("SELECT * FROM Producto_Categoria ORDER BY ProdNom");
+                case 1: cResult = Principal.cConexion.receive("SELECT ProdCod, ProdNom, ProdMar, ProdPres, ProdPrec, ProdSto, CatNom, EstNom FROM Producto_Categoria ORDER BY ProdNom");
                         bAccess = true;
                         break;
                     
-                case 2: cResult = Main.cConexion.receive("SELECT * FROM Producto_Categoria WHERE EstNom = 'Activo' AND ProdNom LIKE '" + strName + "%'");
+                case 2: cResult = Principal.cConexion.receive("SELECT ProdCod, ProdNom, ProdMar, ProdPres, ProdPrec, ProdSto, CatNom, EstNom FROM Producto_Categoria WHERE EstNom = 'Activo' AND ProdNom LIKE '" + strNameReceived + "%'");
                         bAccess = true;
                         break;
                     
-                case 3: cResult = Main.cConexion.receive("SELECT * FROM Producto WHERE EstCod = 1 ORDER BY ProdNom");
+                case 3: cResult = Principal.cConexion.receive("SELECT ProdCod, ProdNom, ProdMar, ProdPres, ProdPrec, ProdSto, CatCod, EstCod FROM Producto WHERE EstCod = 1 ORDER BY ProdNom");
                         break;
                     
-                case 4: cResult = Main.cConexion.receive("SELECT * FROM Producto_Categoria WHERE EstNom = 'Activo' AND ProdMar LIKE '" + strName + "%'");
+                case 4: cResult = Principal.cConexion.receive("SELECT ProdCod, ProdNom, ProdMar, ProdPres, ProdPrec, ProdSto, CatNom, EstNom FROM Producto_Categoria WHERE EstNom = 'Activo' AND ProdMar LIKE '" + strNameReceived + "%'");
                         bAccess = true;
                         break;
                     
-                case 5: cResult = Main.cConexion.receive("SELECT * FROM Producto_Categoria WHERE EstNom = 'Activo' AND CatNom LIKE '" + strName + "%'");
+                case 5: cResult = Principal.cConexion.receive("SELECT ProdCod, ProdNom, ProdMar, ProdPres, ProdPrec, ProdSto, CatNom, EstNom FROM Producto_Categoria WHERE EstNom = 'Activo' AND CatNom LIKE '" + strNameReceived + "%'");
                         bAccess = true;
                         break;
                     
-                case 6: cResult = Main.cConexion.receive("SELECT * FROM Producto_Categoria ORDER BY ProdMar");
+                case 6: cResult = Principal.cConexion.receive("SELECT ProdCod, ProdNom, ProdMar, ProdPres, ProdPrec, ProdSto, CatNom, EstNom FROM Producto_Categoria ORDER BY ProdMar");
                         bAccess = true;
                         break;
                     
-                case 7: cResult = Main.cConexion.receive("SELECT * FROM Producto_Categoria ORDER BY CatNom");
+                case 7: cResult = Principal.cConexion.receive("SELECT ProdCod, ProdNom, ProdMar, ProdPres, ProdPrec, ProdSto, CatNom, EstNom FROM Producto_Categoria ORDER BY CatNom");
                         bAccess = true;
                         break;
+                
+                default:    JOptionPane.showMessageDialog(null, "Default Option");
+                            break;                 
             }
+            Products cProduct = null;
             
             while(cResult.next()) {                
-                Products cProduct = new Products();
+                cProduct = new Products();
                 
                 cProduct.setCode(cResult.getString("ProdCod"));
                 cProduct.setName(cResult.getString("ProdNom"));
@@ -223,6 +243,8 @@ public class Products
                 
                 aryProducts.add(cProduct);
             }
+            
+            Principal.cConexion.disconect();
         } catch (SQLException eException) {
             Logger.getLogger(Products.class.getName()).log(Level.SEVERE, null, eException);
         }
@@ -230,16 +252,18 @@ public class Products
         return aryProducts;
     }
 
-    public ArrayList <String> getProducts(String strCode) {
-        Main.cConexion.conect();
-        ArrayList <String> aryProducts = new ArrayList <> ();
+    public ArrayList <String> getProducts(String strCodeReceived) {
+        Principal.cConexion.conect();
+        ArrayList <String> aryProducts = new ArrayList <String> ();
         
         try {
-            ResultSet cResult = Main.cConexion.receive("SELECT * FROM PRODUCTO_PROVEEDOR WHERE ProCod = " + strCode);
+            ResultSet cResult = Principal.cConexion.receive("SELECT ProdNom, ProdMar, ProdPres FROM PRODUCTO_PROVEEDOR WHERE ProCod = " + strCodeReceived);
                         
-            while(cResult.next())   
+            while(cResult.next()) {    
                 aryProducts.add(cResult.getString("ProdNom") + " " + cResult.getString("ProdMar") + " " + cResult.getString("ProdPres"));
-  
+            }
+            
+            Principal.cConexion.disconect();
         } catch (SQLException eException) {
             Logger.getLogger(Products.class.getName()).log(Level.SEVERE, null, eException);
         }
@@ -249,14 +273,16 @@ public class Products
     }
     
     public ArrayList <String> getStock(ArrayList <String> aryCodes) {
-        Main.cConexion.conect();
-        ArrayList <String> aryStock = new ArrayList <> ();
+        Principal.cConexion.conect();
+        ArrayList <String> aryStock = new ArrayList <String> ();
         
         try {
+            ResultSet cResult = null;
             for (String aryCode : aryCodes) {
-                ResultSet cResult = Main.cConexion.receive("SELECT ProdSto FROM Producto WHERE ProdCod = " + aryCode);
-                while(cResult.next())   
+                cResult = Principal.cConexion.receive("SELECT ProdSto FROM Producto WHERE ProdCod = " + aryCode);
+                while(cResult.next()) {   
                     aryStock.add(cResult.getString("ProdSto"));
+                }
             }            
   
         } catch (SQLException eException) {

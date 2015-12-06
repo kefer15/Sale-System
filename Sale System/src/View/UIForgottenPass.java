@@ -6,9 +6,17 @@ import java.awt.Toolkit;
 
 import javax.swing.JOptionPane;
 
+/**
+ * @version 2.3
+ * @author Miguel Fernández
+ */
+
 public class UIForgottenPass extends javax.swing.JFrame {
     private final IForgottenPass iForgottenPass;
     
+    /** Between this method  starts the UI
+     * @param iForgottenPass
+     * @param strUser */
     public UIForgottenPass(IForgottenPass iForgottenPass, String strUser) {
         initComponents();
         this.setVisible(true);
@@ -212,7 +220,7 @@ public class UIForgottenPass extends javax.swing.JFrame {
 
     private void btnSendActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSendActionPerformed
         lblSending.setText("Procesando ...");
-        if(this.iForgottenPass.Send(this.txtId, this.txtEmail, this.lblSending)){
+        if(this.iForgottenPass.send(this.txtId, this.txtEmail, this.lblSending)){
             JOptionPane.showMessageDialog(  null,
                                             "El mensaje ha sido enviado. Revise su correo electrónico.",
                                             "Mensaje Enviado",
