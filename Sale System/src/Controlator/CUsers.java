@@ -9,6 +9,7 @@ import Model.Users;
 import java.awt.CardLayout;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import javax.swing.JButton;
 import javax.swing.JComboBox;
@@ -21,15 +22,16 @@ import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
 
 /**
- * @version 2.3
- * @author Miguel Fernández
+  @version 2.3
+  @author Miguel Fernández
  */
 
 public class CUsers implements IUsers {
-    private ArrayList <Gender> aryGenders = new ArrayList <Gender> ();
-    private ArrayList <Position> aryPositions = new ArrayList <Position> ();
-    private ArrayList <String> aryGendersIndexes = new ArrayList <String> ();
-    private ArrayList <String> aryPositionsIndexes = new ArrayList <String> ();
+    private List <Gender> aryGenders = new ArrayList <Gender> ();
+    private List <Position> aryPositions = new ArrayList <Position> ();
+    private List <String> aryGendersIndexes = new ArrayList <String> ();
+    private List <String> aryPositionsIndexes = new ArrayList <String> ();
+    private String strNextLine = System.getProperty("line.separator");
     
     /*
         The constructor fills aryGenders with all Categorigies available, and
@@ -66,7 +68,10 @@ public class CUsers implements IUsers {
     }
     
     @Override
-    /** Between this method we can show the panel for checking a new user in */
+    
+    /** 
+        Between this method we can show the panel for checking a new user in 
+    */
     public void changeUserAdd(CardLayout crdCard, JPanel pnlPanel, JComboBox cbxGender, JComboBox cbxPosition, JLabel lblTitle, JButton btnRegister) {
         crdCard.show(pnlPanel, "pnlUserAdd");        
         lblTitle.setText("REGISTRO DE NUEVO USUARIO");
@@ -87,7 +92,7 @@ public class CUsers implements IUsers {
     public void changeUserShow(CardLayout crdCard, JPanel pnlPanel, JTable tblTable) {
         crdCard.show(pnlPanel, "pnlUserShow");
         
-        ArrayList <Users> aryUsers = new ArrayList <Users> ();
+        List <Users> aryUsers = new ArrayList <Users> ();
         aryUsers = (new Users()).getList(2, null, null, null);
         
         DefaultTableModel cModel = (DefaultTableModel) tblTable.getModel();
@@ -136,10 +141,21 @@ public class CUsers implements IUsers {
                     cUser.setState("1");
                     
                     strError = cUser.insert();
-                    if("".equals(strError)) {
+                    if(strError.equals("")) {
+                        StringBuilder strValue = new StringBuilder();
+                        strValue.append("Se ha generado su Id y su Contraseña para");
+                        strValue.append(strNextLine);
+                        strValue.append("poder ingresar al Sistema de Ventas: ");
+                        strValue.append(strNextLine);
+                        strValue.append(strNextLine);
+                        strValue.append("  Id de Usuario: ");
+                        strValue.append(id);
+                        strValue.append(strNextLine);
+                        strValue.append("  Contraseña: ");
+                        strValue.append(password);
+                        
                         JOptionPane.showMessageDialog(  null, 
-                                                        "Se ha generado su Id y su Contraseña para \npoder ingresar al Sistema de Ventas: "
-                                                                + "\n\n  Id de Usuario: " + id + "\n  Contraseña: " + password, 
+                                                        String.valueOf(strValue), 
                                                         "Nuevo Usuario", 
                                                         JOptionPane.INFORMATION_MESSAGE);
                     } else {
@@ -150,7 +166,7 @@ public class CUsers implements IUsers {
                     }
                     break;
             case 1: strError = cUser.update();
-                    if("".equals(strError)) {
+                    if(strError.equals("")) {
                         JOptionPane.showMessageDialog(  null, 
                                                         "Los datos han sido modificados correctamente.", 
                                                         "Modificar Usuario", 
@@ -163,20 +179,22 @@ public class CUsers implements IUsers {
                     }
                     break;
             
-            default: JOptionPane.showMessageDialog(null, "Default Option");
+            default:    JOptionPane.showMessageDialog(null, "Default Option");
+                        break;
         }             
     }
     
     @Override
-    public ArrayList <String> searchUser(JTextField txtName, JTable tblTable) {
+    public List <String> searchUser(JTextField txtName, JTable tblTable) {
         String strName = txtName.getText();
         
-        if("Ingrese Nombre de Usuario".equals(txtName.getText()))
+        if("Ingrese Nombre de Usuario".equals(txtName.getText())) {
             strName = "";
+        }
         
-        ArrayList <Users> aryUsers = new ArrayList <Users> ();
+        List <Users> aryUsers = new ArrayList <Users> ();
         aryUsers = (new Users()).getList(3, null, null, strName);
-        ArrayList <String> aryUsersIndexes = new ArrayList <String>();
+        List <String> aryUsersIndexes = new ArrayList <String>();
         
         if(!aryUsers.isEmpty()) {            
             DefaultTableModel cModel = (DefaultTableModel) tblTable.getModel();
@@ -206,7 +224,7 @@ public class CUsers implements IUsers {
         lblTitle.setText("MODIFICACIÓN DE USUARIO");
         btnModify.setText("Actualizar");
         
-        ArrayList <Users> aryUser = new ArrayList <Users> ();
+        List <Users> aryUser = new ArrayList <Users> ();
         aryUser = (new Users()).getList(1, null, strCode, null);
         
         txtName.setText(aryUser.get(0).getName());

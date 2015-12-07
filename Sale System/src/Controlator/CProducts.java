@@ -8,6 +8,7 @@ import Model.Products;
 import java.awt.CardLayout;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import javax.swing.JButton;
 import javax.swing.JComboBox;
@@ -19,13 +20,13 @@ import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
 
 /**
- * @version 2.3
- * @author Miguel Fernández
+  @version 2.3
+  @author Miguel Fernández
  */
 
 public class CProducts implements IProducts {
-    private ArrayList <Category> aryCategories = new ArrayList <Category> ();
-    private ArrayList <String> aryCategoriesIndexes = new ArrayList <String> ();
+    private List <Category> aryCategories = new ArrayList <Category> ();
+    private List <String> aryCategoriesIndexes = new ArrayList <String> ();
     
     /*
         The constructor fills aryCategories with all Categorigies available.
@@ -50,7 +51,10 @@ public class CProducts implements IProducts {
     }
     
     @Override
-    /** Between this method we can show the panel that receives products information */
+    
+    /** 
+        Between this method we can show the panel that receives products information 
+    */
     public void changeProductAdd(CardLayout crdCard, JPanel pnlPanel, JComboBox cbxCategory, JLabel lblTitle, JButton btnRegister) {
         crdCard.show(pnlPanel, "pnlProductAdd");
         
@@ -65,7 +69,7 @@ public class CProducts implements IProducts {
     public void changeProductShow(CardLayout crdCard, JPanel pnlPanel, JTable tblProducts) {
         crdCard.show(pnlPanel, "pnlProductShow");
         
-        ArrayList <Products> aryProducts = new ArrayList <Products> ();
+        List <Products> aryProducts = new ArrayList <Products> ();
         aryProducts = (new Products()).getList(1, null, null);        
         DefaultTableModel cModel = (DefaultTableModel) tblProducts.getModel();
         cModel.getDataVector().removeAllElements();
@@ -89,7 +93,7 @@ public class CProducts implements IProducts {
         
         String srtError = cProduct.insert();
         
-        if("".equals(srtError)) {
+        if(srtError.equals("")) {
             JOptionPane.showMessageDialog(  null, 
                                             "Los datos han sido ingresados correctamente.", 
                                             "Nuevo Producto", 

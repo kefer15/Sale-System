@@ -8,6 +8,7 @@ import Model.Suppliers;
 import java.awt.CardLayout;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import javax.swing.DefaultListModel;
 import javax.swing.JButton;
@@ -20,13 +21,16 @@ import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
 
 /**
- * @version 2.3
- * @author Miguel Fernández
+  @version 2.3
+  @author Miguel Fernández
  */
 
 public class CSuppliers implements ISuppliers{
     @Override
-    /** Between this method we can show the panel for checking a new supplier in */
+    
+    /** 
+        Between this method we can show the panel for checking a new supplier in 
+    */
     public void changeSupplierAdd(CardLayout crdCard, JPanel pnlPanel, JLabel lblTitle, JButton btnRegister) {
         crdCard.show(pnlPanel, "pnlSupplierAdd");        
         lblTitle.setText("REGISTRO DE NUEVO PROVEEDOR");
@@ -42,7 +46,7 @@ public class CSuppliers implements ISuppliers{
     public void changeSupplierShow(CardLayout crdCard, JPanel pnlPanel, JTable tblTable) {
         crdCard.show(pnlPanel, "pnlSupplierShow");
         
-        ArrayList <Suppliers> arySuppliers = new ArrayList <Suppliers> ();
+        List <Suppliers> arySuppliers = new ArrayList <Suppliers> ();
         arySuppliers = (new Suppliers()).getList(0, null, null);        
         DefaultTableModel cModel = (DefaultTableModel) tblTable.getModel();
         cModel.getDataVector().removeAllElements();
@@ -53,12 +57,12 @@ public class CSuppliers implements ISuppliers{
     }
     
     @Override
-    public ArrayList <String> changeSupplierLink(CardLayout crdCard, JPanel pnlPanel, JTable tblTable) {
+    public List <String> changeSupplierLink(CardLayout crdCard, JPanel pnlPanel, JTable tblTable) {
         crdCard.show(pnlPanel, "pnlSupplierLink");
                 
-        ArrayList <Products> aryProducts = new ArrayList <Products> ();
+        List <Products> aryProducts = new ArrayList <Products> ();
         aryProducts = (new Products()).getList(3, null, null);
-        ArrayList <String> aryProductsIndexes = new ArrayList <String>();
+        List <String> aryProductsIndexes = new ArrayList <String>();
         
         DefaultTableModel cModel = (DefaultTableModel) tblTable.getModel();
         cModel.getDataVector().removeAllElements();
@@ -75,7 +79,7 @@ public class CSuppliers implements ISuppliers{
     
     @Override
     public void linkedProducts(String strSupplier, JList lstList, JLabel lblLabel) {
-        ArrayList <String> aryProducts = new ArrayList <String> ();
+        List <String> aryProducts = new ArrayList <String> ();
         aryProducts = (new Products()).getProducts(strSupplier);
         DefaultListModel cModel = new DefaultListModel();
         
@@ -106,7 +110,7 @@ public class CSuppliers implements ISuppliers{
         switch(iOption){
             case 0: cSupplier.setState("1");
                     strError = cSupplier.insert();
-                    if("".equals(strError)) {
+                    if(strError.equals("")) {
                         JOptionPane.showMessageDialog(  null, 
                                                         "Los datos han sido ingresados correctamente.", 
                                                         "Nuevo Proveedor",
@@ -120,7 +124,7 @@ public class CSuppliers implements ISuppliers{
                     break;
                 
             case 1: strError = cSupplier.update();
-                    if("".equals(strError)) {
+                    if(strError.equals("")) {
                         JOptionPane.showMessageDialog(  null, 
                                                         "Los datos han sido modificados correctamente.", 
                                                         "Modificar Proveedor", 
@@ -139,15 +143,16 @@ public class CSuppliers implements ISuppliers{
     }   
     
     @Override
-    public ArrayList <String> searchSupplier(JTextField txtName, JTable tblTable) {
+    public List <String> searchSupplier(JTextField txtName, JTable tblTable) {
         String strName = txtName.getText();
         
-        if("Ingrese Nombre de Proveedor".equals(txtName.getText()))
+        if("Ingrese Nombre de Proveedor".equals(txtName.getText())) {
             strName = "";
+        }
         
-        ArrayList <Suppliers> arySuppliers = new ArrayList <Suppliers> ();
+        List <Suppliers> arySuppliers = new ArrayList <Suppliers> ();
         arySuppliers = (new Suppliers()).getList(2, null, strName);
-        ArrayList <String> arySuppliersIndexes = new ArrayList <String>();
+        List <String> arySuppliersIndexes = new ArrayList <String>();
         
         if(!arySuppliers.isEmpty()) {            
             DefaultTableModel cModel = (DefaultTableModel) tblTable.getModel();
@@ -176,7 +181,7 @@ public class CSuppliers implements ISuppliers{
         lblTitle.setText("MODIFICACIÓN DE PROVEEDOR");
         btnModify.setText("Actualizar");
         
-        ArrayList <Suppliers> arySupplier = new ArrayList <Suppliers> ();
+        List <Suppliers> arySupplier = new ArrayList <Suppliers> ();
         arySupplier = (new Suppliers()).getList(1, strCode, null);
         
         txtName.setText(arySupplier.get(0).getName());
@@ -188,15 +193,16 @@ public class CSuppliers implements ISuppliers{
     }
     
     @Override
-    public ArrayList <String> searchSupplierLink(JTextField txtName, JList lstList){
+    public List <String> searchSupplierLink(JTextField txtName, JList lstList){
         String strName = txtName.getText();
         
-        if("Ingrese Nombre de Proveedor".equals(txtName.getText()))
+        if("Ingrese Nombre de Proveedor".equals(txtName.getText())) {
             strName = "";
+        }
         
-        ArrayList <Suppliers> arySuppliers = new ArrayList <Suppliers> ();
+        List <Suppliers> arySuppliers = new ArrayList <Suppliers> ();
         arySuppliers = (new Suppliers()).getList(2, null, strName);
-        ArrayList <String> arySuppliersIndexes = new ArrayList <String>();
+        List <String> arySuppliersIndexes = new ArrayList <String>();
         
         if(!arySuppliers.isEmpty()) {        
             DefaultListModel cModel = new DefaultListModel();
@@ -219,8 +225,8 @@ public class CSuppliers implements ISuppliers{
     }
     
     @Override
-    public void link(boolean []aState, ArrayList <String> aryProducts, String strSupplier){
-        String strError = (new Suppliers()).link(aState, aryProducts, strSupplier);
+    public void link(boolean []aState, List <String> aryProducts, String strSupplier){
+        String strError = (new Suppliers()).link(aState, (ArrayList<String>) aryProducts, strSupplier);
         if(strError.isEmpty()) {
             JOptionPane.showMessageDialog(  null,
                                             "La vinculación ha sido exitosa.", 

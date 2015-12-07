@@ -2,19 +2,17 @@ package Interface;
 
 import java.awt.CardLayout;
 
-import java.util.ArrayList;
-
-import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
 /**
- * @version 2.3
- * @author Miguel Fernández
+  @version 2.3
+  @author Miguel Fernández
  */
 
 public interface IMain {
+    
     /** Changes the panel at 'Home'
      * @param crdCard
      * @param pnlPanel */
@@ -48,7 +46,7 @@ public interface IMain {
     /** Logs the user out */
     void logOut();
     
-    /** Opens the menu for forgotten password
+    /** Opens the menu for forgotten pass
      * @param txtUser */
     void forgottenPass(JTextField txtUser);
     

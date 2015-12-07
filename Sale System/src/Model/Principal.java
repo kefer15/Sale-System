@@ -1,23 +1,22 @@
 package Model;
 
 import Controlator.CMain;
-import javax.swing.JOptionPane;
 
+import javax.swing.JOptionPane;
 import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.UIManager;
 
 /**
- * @version 2.3
- * @author Miguel Fernández
+  @version 2.3
+  @author Miguel Fernández
  */
 
-public class Principal
-{
+public class Principal {
+    
     /**
         Here starts running the application
     */
-    
-    public static final Conexion cConexion = new Conexion("BD_SALE_SYSTEM", "root", "123456");
+    public static final Conexion CONECCTION = new Conexion("BD_SALE_SYSTEM", "root", "123456");
     
     private Principal() {
         new CMain(0);

@@ -1,11 +1,7 @@
 package Controlator;
 
-import Interface.IStore;
-
-import Model.Category;
 import Model.Products;
 import Model.ProofOfPayment;
-import Model.Users;
 
 import com.itextpdf.text.BaseColor;
 import com.itextpdf.text.Document;
@@ -23,8 +19,6 @@ import java.awt.CardLayout;
 import java.awt.Desktop;
 import java.awt.Font;
 
-import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
 
 import java.text.DecimalFormat;
@@ -32,6 +26,7 @@ import java.text.SimpleDateFormat;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.List;
 
 import javax.swing.JComboBox;
 import javax.swing.JFileChooser;
@@ -48,16 +43,17 @@ import javax.swing.table.DefaultTableModel;
  * @author Miguel Fernández
  */
 
-public class CStore implements IStore {
-    private ArrayList <String> aryCategoriesIndexes = new ArrayList <String> ();
+public class CStore implements Interface.IStore {
+    private List <String> aryCategoriesIndexes = new ArrayList <String> ();
+    private String strNextLine = System.getProperty("line.separator");
     
     /*
         Fills all Categories into cbxCategory and links the information of each register with 
         each index of aryCategoriesIndexes.
     */
     private void fill(JComboBox cbxCategory) {
-        ArrayList <Category> aryCategories = new ArrayList <Category> ();
-        aryCategories = (new Category()).getList();
+        List <Model.Category> aryCategories = new ArrayList <Model.Category> ();
+        aryCategories = (new Model.Category()).getList();
         aryCategoriesIndexes = new ArrayList <> ();
         
         aryCategories.stream().map((cCategory) -> {
@@ -69,7 +65,10 @@ public class CStore implements IStore {
     }
     
     @Override
-    /** Between this method we can show the panel for searching products */
+    
+    /** 
+        Between this method we can show the panel for searching products 
+    */
     public void changeProductSearch(CardLayout crdCard, JPanel pnlPanel) {
         crdCard.show(pnlPanel, "pnlStoreSearchPro");
     }
@@ -88,7 +87,7 @@ public class CStore implements IStore {
     public void changeInventStore(CardLayout crdCard, JPanel pnlPanle, JTable tblTable) {
         crdCard.show(pnlPanle, "pnlStoreInvent");
         
-        ArrayList <Products> aryProducts = new ArrayList <Products> ();
+        List <Products> aryProducts = new ArrayList <Products> ();
         aryProducts = (new Products()).getList(1, null, null);
         
         DefaultTableModel cModel = (DefaultTableModel) tblTable.getModel();
@@ -105,15 +104,16 @@ public class CStore implements IStore {
     }
     
     @Override
-    public ArrayList <String> searchProduct(JTextField txtName, JTable tblTable) {
+    public List <String> searchProduct(JTextField txtName, JTable tblTable) {
         String strName = txtName.getText();
         
-        if("Ingrese Nombre de Producto".equals(txtName.getText()))
+        if("Ingrese Nombre de Producto".equals(txtName.getText())) {
             strName = "";     
+        }
         
-        ArrayList <Products> aryProducts = new ArrayList <Products> ();
+        List <Products> aryProducts = new ArrayList <Products> ();
         aryProducts = (new Products()).getList(2, null, strName);
-        ArrayList <String> aryProductsIndexes = new ArrayList <String>();
+        List <String> aryProductsIndexes = new ArrayList <String>();
         
         if(!aryProducts.isEmpty()) {            
             DefaultTableModel cModel = (DefaultTableModel) tblTable.getModel();
@@ -138,7 +138,7 @@ public class CStore implements IStore {
     @Override
     public String send(String strCode, JTextField txtName, JTextField txtBrand, JTextField txtPresentation, JTextField txtStock, 
             JComboBox cbxCategory, JTextField txtPrice) {        
-        ArrayList <Products> aryProduct = new ArrayList <Products> ();
+        List <Products> aryProduct = new ArrayList <Products> ();
         aryProduct = (new Products()).getList(0, strCode, null);
         
         txtName.setText(aryProduct.get(0).getName());
@@ -169,7 +169,7 @@ public class CStore implements IStore {
         product.setPrice(txtPrice.getText());
         
         String strError = product.update();
-        if("".equals(strError)) {
+        if(strError.equals("")) {
             JOptionPane.showMessageDialog(  null, 
                                             "Los datos han sido modificados correctamente.", 
                                             "Modificar Producto", 
@@ -184,7 +184,7 @@ public class CStore implements IStore {
     
     @Override
     public void chargeProduct(JTable tblTable, JComboBox cbxCombo) {
-        ArrayList <Products> aryProducts = new ArrayList <Products> ();
+        List <Products> aryProducts = new ArrayList <Products> ();
         
         switch(cbxCombo.getSelectedIndex()){
             case 0: aryProducts = (new Products()).getList(1, null, null);
@@ -209,14 +209,15 @@ public class CStore implements IStore {
     }
     
     @Override
-    public ArrayList <String> searchTicket(JTextField txtNumber, JTable tblTable) {
+    public List <String> searchTicket(JTextField txtNumber, JTable tblTable) {
         String strName = txtNumber.getText();
         
-        if("Ingrese Número de la Boleta".equals(txtNumber.getText()))
+        if("Ingrese Número de la Boleta".equals(txtNumber.getText())) {
             strName = "";
+        }
         
-        ArrayList <String> aryTicketsIndexes = new ArrayList <String>();
-        ArrayList <ProofOfPayment> aryTickets = new ArrayList <ProofOfPayment> ();
+        List <String> aryTicketsIndexes = new ArrayList <String>();
+        List <ProofOfPayment> aryTickets = new ArrayList <ProofOfPayment> ();
         aryTickets = (new ProofOfPayment()).getListProofs(strName);
         DecimalFormat cFormat = new DecimalFormat("00000000000");
         
@@ -239,7 +240,7 @@ public class CStore implements IStore {
     }
     
     @Override
-    public boolean productReport(Users cUser) {
+    public boolean productReport(Model.Users cUser) {
         boolean bState = false;
         JFileChooser fcsSave = new JFileChooser();
         fcsSave.setDialogTitle("Guardar Reporte PDF");
@@ -253,20 +254,34 @@ public class CStore implements IStore {
         if(iOption == JFileChooser.APPROVE_OPTION) {
             try {
                 Document cDocument = new Document();
-                String strPath = "" + fcsSave.getSelectedFile().getAbsoluteFile()+ "";
+                StringBuilder strPath = new StringBuilder();
+                strPath.append("");
+                strPath.append(fcsSave.getSelectedFile().getAbsoluteFile());
+                strPath.append("");
                 
                 if(!"pdf".equals(strPath.substring(strPath.length() - 3, strPath.length()))) {
-                    strPath = strPath +".pdf";
+                    strPath.append(strPath);
+                    strPath.append(".pdf");
                 }
                 
-                PdfWriter.getInstance(cDocument, new FileOutputStream(strPath));
+                PdfWriter.getInstance(cDocument, new java.io.FileOutputStream(String.valueOf(strPath)));
                 cDocument.open();
-
-                Paragraph cParagraph = new Paragraph("SISTEMA DE VENTAS PARA UNA TIENDA DE ABARROTES\n\n",FontFactory.getFont(FontFactory.COURIER,10,BaseColor.BLACK));
+                
+                StringBuilder strValue = new StringBuilder();
+                strValue.append("SISTEMA DE VENTAS PARA UNA TIENDA DE ABARROTES");
+                strValue.append(strNextLine);
+                strValue.append(strNextLine);
+                
+                Paragraph cParagraph = new Paragraph(String.valueOf(strValue),FontFactory.getFont(FontFactory.COURIER,10,BaseColor.BLACK));
                 cParagraph.setAlignment(Element.ALIGN_CENTER);
                 cDocument.add(cParagraph);
                 
-                cParagraph = new Paragraph("X & G CENTENO\n\n",FontFactory.getFont(FontFactory.COURIER,13,BaseColor.BLACK));
+                strValue = new StringBuilder();
+                strValue.append("X & G CENTENO");
+                strValue.append(strNextLine);
+                strValue.append(strNextLine);
+                
+                cParagraph = new Paragraph(String.valueOf(strValue),FontFactory.getFont(FontFactory.COURIER,13,BaseColor.BLACK));
                 cParagraph.setAlignment(Element.ALIGN_CENTER);
                 cDocument.add(cParagraph);
 
@@ -280,10 +295,10 @@ public class CStore implements IStore {
                 cTable.addCell(cCell);
                 cDocument.add(cTable);
 
-                cParagraph = new Paragraph("\n");
+                cParagraph = new Paragraph(strNextLine);
                 cDocument.add(cParagraph);
                 
-                SimpleDateFormat cFormat[] = {new SimpleDateFormat("dd 'de' MMMM 'del' yyyy"), new SimpleDateFormat("hh:mm aa")};
+                SimpleDateFormat []cFormat = {new SimpleDateFormat("dd 'de' MMMM 'del' yyyy"), new SimpleDateFormat("hh:mm aa")};
                 
                 cParagraph = new Paragraph("Fecha: " + cFormat[0].format(Calendar.getInstance().getTime()),FontFactory.getFont(FontFactory.COURIER,12,BaseColor.BLACK));
                 cParagraph.setAlignment(Element.ALIGN_RIGHT);
@@ -292,12 +307,22 @@ public class CStore implements IStore {
                 cParagraph = new Paragraph("Hora: " + cFormat[1].format(Calendar.getInstance().getTime()),FontFactory.getFont(FontFactory.COURIER,12,BaseColor.BLACK));
                 cParagraph.setAlignment(Element.ALIGN_RIGHT);
                 cDocument.add(cParagraph);
+                
+                strValue = new StringBuilder();
+                strValue.append("Administrador: ");
+                strValue.append(cUser.getName());
+                strValue.append(" ");
+                strValue.append(cUser.getFatherLastName());
+                strValue.append(" ");
+                strValue.append(cUser.getMotherLastName());
+                strValue.append(strNextLine);
+                strValue.append(strNextLine);                
 
-                cParagraph = new Paragraph("Administrador: " + cUser.getName() + " " + cUser.getFatherLastName() + " " + cUser.getMotherLastName() + "\n\n",FontFactory.getFont(FontFactory.COURIER,12,Font.BOLD,BaseColor.BLACK));
+                cParagraph = new Paragraph(String.valueOf(strValue),FontFactory.getFont(FontFactory.COURIER,12,Font.BOLD,BaseColor.BLACK));
                 cParagraph.setAlignment(Element.ALIGN_LEFT);
                 cDocument.add(cParagraph);
                 
-                ArrayList <Products> aryProducts = new ArrayList <Products> ();
+                List <Products> aryProducts = new ArrayList <Products> ();
                 aryProducts = (new Products()).getList(1, null, null);
                 
                 cTable = new PdfPTable(6);
@@ -393,7 +418,7 @@ public class CStore implements IStore {
                         cCell.setFixedHeight(20);
                         cCell.setBackgroundColor(BaseColor.RED);
                         cTable.addCell(cCell);
-                    } else if(Integer.parseInt(cProduct.getStock()) >= 50){
+                    } else if(!(50 > Integer.parseInt(cProduct.getStock()))){
                         cCell = new PdfPCell(new Paragraph(cProduct.getCode(), FontFactory.getFont(FontFactory.COURIER,11,Font.BOLD,BaseColor.WHITE)));
                         cCell.setHorizontalAlignment(Element.ALIGN_CENTER);
                         cCell.setVerticalAlignment(Element.ALIGN_MIDDLE);
@@ -476,7 +501,7 @@ public class CStore implements IStore {
                 cDocument.add(cTable);                
                 cDocument.close();
                 
-                Desktop.getDesktop().open((new File(strPath)));
+                Desktop.getDesktop().open((new java.io.File(String.valueOf(strPath))));
                 bState = true;
             } catch (DocumentException | IOException cException) {
                 JOptionPane.showMessageDialog(null, "Exception");
@@ -487,7 +512,7 @@ public class CStore implements IStore {
     }
     
     @Override
-    public boolean saleReport(Users cUser ,JCalendar cldStart, JCalendar cldEnd) {
+    public boolean saleReport(Model.Users cUser ,JCalendar cldStart, JCalendar cldEnd) {
         boolean bState = false;
         JFileChooser fcsSave = new JFileChooser();
         fcsSave.setDialogTitle("Guardar Reporte PDF");
@@ -501,22 +526,35 @@ public class CStore implements IStore {
         if(iOption == JFileChooser.APPROVE_OPTION)
         {
             try {
-                
                 Document cDocument = new Document();
-                String strPath = "" + fcsSave.getSelectedFile().getAbsoluteFile()+ "";
+                StringBuilder strPath = new StringBuilder();
+                strPath.append("");
+                strPath.append(fcsSave.getSelectedFile().getAbsoluteFile());
+                strPath.append("");
                 
                 if(!"pdf".equals(strPath.substring(strPath.length() - 3, strPath.length()))) {
-                    strPath = strPath +".pdf";
+                    strPath.append(strPath);
+                    strPath.append(".pdf");
                 }
                 
-                PdfWriter.getInstance(cDocument, new FileOutputStream(strPath));
+                PdfWriter.getInstance(cDocument, new java.io.FileOutputStream(String.valueOf(strPath)));
                 cDocument.open();
-
-                Paragraph cParagraph = new Paragraph("SISTEMA DE VENTAS PARA UNA TIENDA DE ABARROTES\n\n",FontFactory.getFont(FontFactory.COURIER,10,BaseColor.BLACK));
+                
+                StringBuilder strValue = new StringBuilder();
+                strValue.append("SISTEMA DE VENTAS PARA UNA TIENDA DE ABARROTES");
+                strValue.append(strNextLine);
+                strValue.append(strNextLine);
+                
+                Paragraph cParagraph = new Paragraph(String.valueOf(strValue),FontFactory.getFont(FontFactory.COURIER,10,BaseColor.BLACK));
                 cParagraph.setAlignment(Element.ALIGN_CENTER);
                 cDocument.add(cParagraph);
                 
-                cParagraph = new Paragraph("X & G CENTENO\n\n",FontFactory.getFont(FontFactory.COURIER,13,BaseColor.BLACK));
+                strValue = new StringBuilder();
+                strValue.append("X & G CENTENO");
+                strValue.append(strNextLine);
+                strValue.append(strNextLine);
+                
+                cParagraph = new Paragraph(String.valueOf(strValue),FontFactory.getFont(FontFactory.COURIER,13,BaseColor.BLACK));
                 cParagraph.setAlignment(Element.ALIGN_CENTER);
                 cDocument.add(cParagraph);
 
@@ -530,36 +568,69 @@ public class CStore implements IStore {
                 cTable.addCell(cCell);
                 cDocument.add(cTable);
 
-                cParagraph = new Paragraph("\n");
+                cParagraph = new Paragraph(strNextLine);
                 cDocument.add(cParagraph);
                 
-                SimpleDateFormat cFormat[] = {new SimpleDateFormat("dd 'de' MMMM 'del' yyyy"), new SimpleDateFormat("hh:mm aa"), new SimpleDateFormat("yyyy/MM/dd")};
+                SimpleDateFormat []cFormat = {new SimpleDateFormat("dd 'de' MMMM 'del' yyyy"), new SimpleDateFormat("hh:mm aa"), new SimpleDateFormat("yyyy/MM/dd")};
                 
-                cParagraph = new Paragraph("Fecha: " + cFormat[0].format(Calendar.getInstance().getTime()),FontFactory.getFont(FontFactory.COURIER,12,BaseColor.BLACK));
+                strValue = new StringBuilder();
+                strValue.append("Fecha: ");
+                strValue.append(cFormat[0].format(Calendar.getInstance().getTime()));
+                                
+                cParagraph = new Paragraph(String.valueOf(strValue) ,FontFactory.getFont(FontFactory.COURIER,12,BaseColor.BLACK));
                 cParagraph.setAlignment(Element.ALIGN_RIGHT);
                 cDocument.add(cParagraph);
-
-                cParagraph = new Paragraph("Hora: " + cFormat[1].format(Calendar.getInstance().getTime()),FontFactory.getFont(FontFactory.COURIER,12,BaseColor.BLACK));
+                
+                strValue = new StringBuilder();
+                strValue.append("Hora: ");
+                strValue.append(cFormat[1].format(Calendar.getInstance().getTime()));
+                
+                cParagraph = new Paragraph(String.valueOf(strValue) ,FontFactory.getFont(FontFactory.COURIER,12,BaseColor.BLACK));
                 cParagraph.setAlignment(Element.ALIGN_RIGHT);
                 cDocument.add(cParagraph);
-
-                cParagraph = new Paragraph("Administrador: " + cUser.getName() + " " + cUser.getFatherLastName() + " " + cUser.getMotherLastName() + "\n\n",FontFactory.getFont(FontFactory.COURIER,12,Font.BOLD,BaseColor.BLACK));
+                
+                strValue = new StringBuilder();
+                strValue.append("Administrador: ");
+                strValue.append(cUser.getName());
+                strValue.append(" ");
+                strValue.append(cUser.getFatherLastName());
+                strValue.append(" ");
+                strValue.append(cUser.getMotherLastName());
+                strValue.append(strNextLine);
+                strValue.append(strNextLine);
+                
+                cParagraph = new Paragraph(String.valueOf(strValue),FontFactory.getFont(FontFactory.COURIER,12,Font.BOLD,BaseColor.BLACK));
                 cParagraph.setAlignment(Element.ALIGN_LEFT);
                 cDocument.add(cParagraph);
                 
-                cParagraph = new Paragraph("Periodo de Inicio: " + cFormat[0].format(cldStart.getCalendar().getTime()),FontFactory.getFont(FontFactory.COURIER,12,Font.BOLD,BaseColor.BLACK));
+                strValue = new StringBuilder();
+                strValue.append("Periodo de Inicio: ");
+                strValue.append(cFormat[0].format(cldStart.getCalendar().getTime()));
+                
+                cParagraph = new Paragraph(String.valueOf(strValue),FontFactory.getFont(FontFactory.COURIER,12,Font.BOLD,BaseColor.BLACK));
                 cParagraph.setAlignment(Element.ALIGN_LEFT);
                 cDocument.add(cParagraph);
                 
-                cParagraph = new Paragraph("Periodo de Fin: " + cFormat[0].format(cldEnd.getCalendar().getTime()) + "\n\n",FontFactory.getFont(FontFactory.COURIER,12,Font.BOLD,BaseColor.BLACK));
+                strValue = new StringBuilder();
+                strValue.append("Periodo de Fin: ");
+                strValue.append(cFormat[0].format(cldEnd.getCalendar().getTime()));
+                strValue.append(strNextLine);
+                strValue.append(strNextLine);
+                
+                cParagraph = new Paragraph(String.valueOf(strValue),FontFactory.getFont(FontFactory.COURIER,12,Font.BOLD,BaseColor.BLACK));
                 cParagraph.setAlignment(Element.ALIGN_LEFT);
                 cDocument.add(cParagraph);
                 
-                cParagraph = new Paragraph("INGRESOS GENERALES\n\n",FontFactory.getFont(FontFactory.COURIER,13,BaseColor.BLACK));
+                strValue = new StringBuilder();
+                strValue.append("INGRESOS GENERALES");
+                strValue.append(strNextLine);
+                strValue.append(strNextLine);
+                
+                cParagraph = new Paragraph(String.valueOf(strValue),FontFactory.getFont(FontFactory.COURIER,13,BaseColor.BLACK));
                 cParagraph.setAlignment(Element.ALIGN_CENTER);
                 cDocument.add(cParagraph);
                 
-                ArrayList <ProofOfPayment> aryTickets = new ArrayList <ProofOfPayment> ();
+                List <ProofOfPayment> aryTickets = new ArrayList <ProofOfPayment> ();
                 aryTickets = (new ProofOfPayment()).getList(cFormat[2].format(cldStart.getCalendar().getTime()), cFormat[2].format(cldEnd.getCalendar().getTime()));                
                 cTable = new PdfPTable(4);
 
@@ -654,7 +725,13 @@ public class CStore implements IStore {
                 }
                 cDocument.add(cTable);
                 
-                cParagraph = new Paragraph("\nGANACIAS OBTENIDAS POR USUARIOS\n\n",FontFactory.getFont(FontFactory.COURIER,13,BaseColor.BLACK));
+                strValue = new StringBuilder();
+                strValue.append(strNextLine);
+                strValue.append("GANACIAS OBTENIDAS POR USUARIOS");
+                strValue.append(strNextLine);
+                strValue.append(strNextLine);
+                                
+                cParagraph = new Paragraph(String.valueOf(strValue),FontFactory.getFont(FontFactory.COURIER,13,BaseColor.BLACK));
                 cParagraph.setAlignment(Element.ALIGN_CENTER);
                 cDocument.add(cParagraph);
                 
@@ -707,7 +784,7 @@ public class CStore implements IStore {
                 cDocument.add(cTable);                
                 cDocument.close();
                 
-                Desktop.getDesktop().open((new File(strPath)));
+                Desktop.getDesktop().open((new java.io.File(String.valueOf(strPath))));
                 bState = true;              
             } catch (DocumentException | IOException cException) {
                 JOptionPane.showMessageDialog(null, "Exception");

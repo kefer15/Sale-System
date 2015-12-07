@@ -6,7 +6,7 @@ import com.toedter.calendar.JCalendar;
 
 import java.awt.CardLayout;
 
-import java.util.ArrayList;
+import java.util.List;
 
 import javax.swing.JComboBox;
 import javax.swing.JPanel;
@@ -14,11 +14,12 @@ import javax.swing.JTable;
 import javax.swing.JTextField;
 
 /**
- * @version 2.3
- * @author Miguel Fernández
+  @version 2.3
+  @author Miguel Fernández
  */
 
 public interface IStore {
+    
     /** Changes to submenu 'Buscar Producto'
      * @param crdCard
      * @param pnlPanel */
@@ -49,7 +50,7 @@ public interface IStore {
      * @param txtName
      * @param tblTable
      * @return  */
-    ArrayList <String> searchProduct(JTextField txtName, JTable tblTable);
+    List <String> searchProduct(JTextField txtName, JTable tblTable);
     
     /** Fills all courts the window needs from a specif product
      * @param strCode
@@ -83,7 +84,7 @@ public interface IStore {
      * @param txtNumber
      * @param tblTable
      * @return  */
-    ArrayList <String> searchTicket(JTextField txtNumber, JTable tblTable);
+    List <String> searchTicket(JTextField txtNumber, JTable tblTable);
     
     /** Makes a product report
      * @param cUser

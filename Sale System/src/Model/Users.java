@@ -4,14 +4,15 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javax.swing.JOptionPane;
 
 /**
- * @version 2.3
- * @author Miguel Fernández
+  @version 2.3
+  @author Miguel Fernández
  */
 
 public class Users {
@@ -58,7 +59,11 @@ public class Users {
     public String getCode() {
         return strCode;
     }
-
+    
+    /**
+     * 
+     * @param strCode 
+     */
     public void setCode(String strCode) {
         this.strCode = strCode;
     }
@@ -176,16 +181,43 @@ public class Users {
     }
     
     public String insert() {
-        Principal.cConexion.conect();
+        Principal.CONECCTION.conect();
         String strError = "";
         
         try {
-            Principal.cConexion.send("INSERT INTO Usuario VALUES( DEFAULT , '" + strId + "' , '" + strPassword + "' , '" +
-                    strName + "' , '" + strFatherLastName + "' , '" + strMotherLastName + "' , '" + strNi + "' , " + 
-                    strGenderCode + " , '" + strAddress + "' , " + strPositionCode + " , '" + strCellphone + "' , '" +
-                    strEmail + "' , '" + strEmergencyCell + "' , '" + strOther + "' , " + strState + " )");
+            StringBuilder strValue = new StringBuilder();
+            strValue.append("INSERT INTO Usuario VALUES( DEFAULT , '");
+            strValue.append(strId);
+            strValue.append("' , '");
+            strValue.append(strPassword);
+            strValue.append("' , '");
+            strValue.append(strName);
+            strValue.append("' , '");
+            strValue.append(strFatherLastName);
+            strValue.append("' , '");
+            strValue.append(strMotherLastName);
+            strValue.append("' , '");
+            strValue.append(strNi);
+            strValue.append("' , ");
+            strValue.append(strGenderCode);
+            strValue.append(" , '");
+            strValue.append(strAddress);
+            strValue.append("' , ");
+            strValue.append(strPositionCode);
+            strValue.append(" , '");
+            strValue.append(strCellphone);
+            strValue.append("' , '");
+            strValue.append(strEmail);
+            strValue.append("' , '");
+            strValue.append(strEmergencyCell);
+            strValue.append("' , '");
+            strValue.append(strOther);
+            strValue.append("' , ");
+            strValue.append(strState);
+            strValue.append(" )");
             
-            Principal.cConexion.disconect();
+            Principal.CONECCTION.send(String.valueOf(strValue));
+            Principal.CONECCTION.disconect();
         } catch (SQLException cException) {
             strError = cException.getMessage();
         }
@@ -194,19 +226,38 @@ public class Users {
     }
     
     public String update() {
-        Principal.cConexion.conect();
+        Principal.CONECCTION.conect();
         String strError = "";  
         
-        try {            
-            Principal.cConexion.send("UPDATE Usuario SET UsuNom = '" + strName + 
-                    "' , UsuApePat = '" + strFatherLastName + "' , UsuApeMat = '" + strMotherLastName +  
-                    "' , UsuDni = '" + strNi + "' , GenCod = " + strGenderCode  + 
-                    " , UsuDir = '" + strAddress + "' , CarCod = " + strPositionCode + 
-                    " , UsuCel = '" +  strCellphone + "' , UsuCorEle = '" + strEmail + 
-                    "' , UsuNumEme = '" + strEmergencyCell + "' , UsuOtr = '" + strOther + 
-                    "' WHERE UsuCod = " + strCode);
+        try {          
+            StringBuilder strValue = new StringBuilder();
+            strValue.append("UPDATE Usuario SET UsuNom = '");
+            strValue.append(strName);
+            strValue.append("' , UsuApePat = '");
+            strValue.append(strFatherLastName);
+            strValue.append("' , UsuApeMat = '");
+            strValue.append(strMotherLastName);
+            strValue.append("' , UsuDni = '");
+            strValue.append(strNi);
+            strValue.append("' , GenCod = ");
+            strValue.append(strGenderCode);
+            strValue.append(" , UsuDir = '");
+            strValue.append(strAddress);
+            strValue.append("' , CarCod = ");
+            strValue.append(strPositionCode);
+            strValue.append(" , UsuCel = '");
+            strValue.append(strCellphone);
+            strValue.append("' , UsuCorEle = '");
+            strValue.append(strEmail);
+            strValue.append("' , UsuNumEme = '");
+            strValue.append(strEmergencyCell);
+            strValue.append("' , UsuOtr = '");
+            strValue.append(strOther);
+            strValue.append("' WHERE UsuCod = ");
+            strValue.append(strCode);
             
-            Principal.cConexion.disconect();  
+            Principal.CONECCTION.send(String.valueOf(strValue));
+            Principal.CONECCTION.disconect();  
         } catch (SQLException cException) {
             strError = cException.getMessage();
         }
@@ -220,12 +271,16 @@ public class Users {
      * @return
      */
     public static String remove(String strUserCode) {
-        Principal.cConexion.conect();
+        Principal.CONECCTION.conect();
         String strError = "";
         
         try {
-            Principal.cConexion.send("UPDATE Usuario SET EstCod = '2' WHERE UsuCod = " + strUserCode);
-            Principal.cConexion.disconect();
+            StringBuilder strValue = new StringBuilder();
+            strValue.append("UPDATE Usuario SET EstCod = '2' WHERE UsuCod = ");
+            strValue.append(strUserCode);
+            
+            Principal.CONECCTION.send(String.valueOf(strValue));
+            Principal.CONECCTION.disconect();
         } catch (SQLException cException) {
              strError = cException.getMessage();
         }
@@ -233,32 +288,39 @@ public class Users {
         return strError;
     }
     
-    public ArrayList <Users> getList(int iOption, String strIdentification, String strCodeReceived, String strNameReceived) {
-        Principal.cConexion.conect();
-        ArrayList <Users> aryUsers = new ArrayList <Users> ();
+    public List <Users> getList(int iOption, String strIdentification, String strCodeReceived, String strNameReceived) {
+        Principal.CONECCTION.conect();
+        List <Users> aryUsers = new ArrayList <Users> ();
         
         try {
-            ResultSet cResult = null;
             boolean bAccess = false;
+            StringBuilder strValue = new StringBuilder();
             
             switch(iOption){              
-                case 0: cResult = Principal.cConexion.receive("SELECT UsuCod, UsuIde, UsuCon, UsuNom, UsuApePat, UsuApeMat, UsuDni, UsuDir, UsuCel, UsuCorEle, UsuNumEme, UsuOtr, GenCod, CarCod, EstCod FROM Usuario WHERE EstCod = 1 AND UsuIde = '" + strIdentification + "' COLLATE utf8_bin");
+                case 0: strValue.append("SELECT UsuCod, UsuIde, UsuCon, UsuNom, UsuApePat, UsuApeMat, UsuDni, UsuDir, UsuCel, UsuCorEle, UsuNumEme, UsuOtr, GenCod, CarCod, EstCod FROM Usuario WHERE EstCod = 1 AND UsuIde = '");
+                        strValue.append(strIdentification);
+                        strValue.append("' COLLATE utf8_bin");
                         break;
                     
-                case 1: cResult = Principal.cConexion.receive("SELECT UsuCod, UsuIde, UsuCon, UsuNom, UsuApePat, UsuApeMat, UsuDni, UsuDir, UsuCel, UsuCorEle, UsuNumEme, UsuOtr, GenCod, CarCod, EstCod FROM Usuario WHERE UsuCod = " + strCodeReceived);
+                case 1: strValue.append("SELECT UsuCod, UsuIde, UsuCon, UsuNom, UsuApePat, UsuApeMat, UsuDni, UsuDir, UsuCel, UsuCorEle, UsuNumEme, UsuOtr, GenCod, CarCod, EstCod FROM Usuario WHERE UsuCod = ");
+                        strValue.append(strCodeReceived);
                         break;
                         
-                case 2: cResult = Principal.cConexion.receive("SELECT UsuCod, UsuIde, UsuCon, UsuNom, UsuApePat, UsuApeMat, UsuDni, UsuDir, UsuCel, UsuCorEle, UsuNumEme, UsuOtr, GenNom, CarNom, EstNom FROM Usuario_Cargo");
+                case 2: strValue.append("SELECT UsuCod, UsuIde, UsuCon, UsuNom, UsuApePat, UsuApeMat, UsuDni, UsuDir, UsuCel, UsuCorEle, UsuNumEme, UsuOtr, GenNom, CarNom, EstNom FROM Usuario_Cargo");
                         bAccess = true;
                         break;
                     
-                case 3: cResult = Principal.cConexion.receive("SELECT UsuCod, UsuIde, UsuCon, UsuNom, UsuApePat, UsuApeMat, UsuDni, UsuDir, UsuCel, UsuCorEle, UsuNumEme, UsuOtr, GenNom, CarNom, EstNom FROM Usuario_Cargo WHERE EstNom = 'Activo' AND UsuNom LIKE '" + strNameReceived + "%'");
+                case 3: strValue.append("SELECT UsuCod, UsuIde, UsuCon, UsuNom, UsuApePat, UsuApeMat, UsuDni, UsuDir, UsuCel, UsuCorEle, UsuNumEme, UsuOtr, GenNom, CarNom, EstNom FROM Usuario_Cargo WHERE EstNom = 'Activo' AND UsuNom LIKE '");
+                        strValue.append(strNameReceived);
+                        strValue.append("%'");
                         bAccess = true;
                         break;
                     
                 default:    JOptionPane.showMessageDialog(null, "Default Option");
                             break;
             }
+            
+            ResultSet cResult = Principal.CONECCTION.receive(String.valueOf(strValue));
             Users cUser = null;
             
             while(cResult.next()) {                
@@ -291,7 +353,8 @@ public class Users {
                 aryUsers.add(cUser);
             }
             
-            Principal.cConexion.disconect();
+            cResult.close();
+            Principal.CONECCTION.disconect();
         } catch (SQLException cException) {
             Logger.getLogger(Users.class.getName()).log(Level.SEVERE, null, cException);
         }

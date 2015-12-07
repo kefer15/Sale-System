@@ -3,13 +3,14 @@ package View;
 import Interface.ITicket;
 
 import java.awt.Toolkit;
+import java.io.File;
 
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 
 /**
- * @version 2.3
- * @author Miguel Fernández
+  @version 2.3
+  @author Miguel Fernández
  */
 
 public class UITicket extends javax.swing.JFrame {
@@ -36,12 +37,18 @@ public class UITicket extends javax.swing.JFrame {
             default:    JOptionPane.showMessageDialog(null, "Default Option");
                         break;
         }
+        StringBuilder strValue = new StringBuilder();
+        strValue.append("Boletas");
+        strValue.append(File.separator);
+        strValue.append(strCode);
+        strValue.append(".png");
         
-        ImageIcon cIcono = new ImageIcon("Boletas/" + strCode + ".png");  
+        ImageIcon cIcono = new ImageIcon(String.valueOf(strValue));  
         this.lblTicket.setIcon(cIcono);
     }
 
     @SuppressWarnings("unchecked")
+    
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 

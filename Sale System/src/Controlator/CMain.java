@@ -9,31 +9,31 @@ import View.UIMain;
 import java.awt.CardLayout;
 import java.text.DecimalFormat;
 
-import java.util.ArrayList;
-
-import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
 /**
- * @version 2.3
- * @author Miguel Fernández
+  @version 2.3
+  @author Miguel Fernández
  */
 
 public class CMain implements IMain {
-    private final UIMain wdWindow;
+    private final UIMain WDWINDOW;
     
     /*
         Constructor that recieves the number of the widow to active in UIMain
         @param  iWindowNumber    Indicates the number of the window
     */
     public CMain(int iWindowNumber) {
-        wdWindow = new UIMain(this, iWindowNumber);
+        WDWINDOW = new UIMain(this, iWindowNumber);
     }
     
     @Override
-    /** Between this method we can move for all windows, basically Home Window */
+    
+    /** 
+        Between this method we can move for all windows, basically Home Window 
+    */
     public void changeHome(CardLayout crdCard, JPanel pnlPanel) {
         crdCard.show(pnlPanel, "pnlHome");
     }
@@ -65,13 +65,13 @@ public class CMain implements IMain {
    
     @Override
     public void logOut() {
-        wdWindow.dispose();
+        WDWINDOW.dispose();
         new CMain(0);
     }
     
     @Override
     public void forgottenPass(JTextField txtUser) {
-        wdWindow.dispose();
+        WDWINDOW.dispose();
         new CForgottenPass(txtUser.getText());    
     }    
     
@@ -79,6 +79,10 @@ public class CMain implements IMain {
     public void setOrderNumber(JLabel lblNumber) {
         String strCode = (new ProofOfPayment()).getNextCode();
         DecimalFormat cFormat = new DecimalFormat("00000000000");            
-        lblNumber.setText("N° " + String.valueOf(cFormat.format(Integer.parseInt(strCode)+1)));
+        StringBuilder strValue = new StringBuilder();
+        strValue.append("N° ");
+        strValue.append(String.valueOf(cFormat.format(Integer.parseInt(strCode)+1)));
+        
+        lblNumber.setText(String.valueOf(strValue));
     }
 }

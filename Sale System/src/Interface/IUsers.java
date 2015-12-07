@@ -2,7 +2,7 @@ package Interface;
 
 import java.awt.CardLayout;
 
-import java.util.ArrayList;
+import java.util.List;
 
 import javax.swing.JButton;
 import javax.swing.JComboBox;
@@ -13,11 +13,12 @@ import javax.swing.JTextArea;
 import javax.swing.JTextField;
 
 /**
- * @version 2.3
- * @author Miguel Fernández
+  @version 2.3
+  @author Miguel Fernández
  */
 
 public interface IUsers {
+    
     /** Changes to submenu 'Nuevo Usuario'
      * @param crdCard
      * @param pnlPanel
@@ -60,7 +61,7 @@ public interface IUsers {
      * @param txtName
      * @param tblTable
      * @return  */
-    ArrayList <String> searchUser(JTextField txtName, JTable tblTable);
+    List <String> searchUser(JTextField txtName, JTable tblTable);
     
     /** Fills all courts the window needs from a specif user
      * @param crdCard

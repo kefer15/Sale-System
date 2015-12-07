@@ -4,15 +4,17 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
- * @version 2.3
- * @author Miguel Fernández
+  @version 2.3
+  @author Miguel Fernández
  */
 
 public class ProofOfPayment {
+    
     /** This is the code of a proof of payment */
     private String strCode;
     private String strClientName;
@@ -37,7 +39,11 @@ public class ProofOfPayment {
     public String getCode() {
         return strCode;
     }
-
+    
+    /**
+     * 
+     * @param strCode 
+     */
     public void setCode(String strCode) {
         this.strCode = strCode;
     }
@@ -75,14 +81,23 @@ public class ProofOfPayment {
     }
     
     public String insertCab() {
-        Principal.cConexion.conect();
+        Principal.CONECCTION.conect();
         String strError = "";
         
         try {
-            Principal.cConexion.send("INSERT INTO Comprobante_Cab VALUES( DEFAULT , '" + strClientName + "' , " + strAmount + " , '" + 
-                    strDate + "' , " + strUser + " )");
+            StringBuilder strValue = new StringBuilder();
+            strValue.append("INSERT INTO Comprobante_Cab VALUES( DEFAULT , '");
+            strValue.append(strClientName);
+            strValue.append("' , ");
+            strValue.append(strAmount);
+            strValue.append(" , '");
+            strValue.append(strDate);
+            strValue.append("' , ");
+            strValue.append(strUser);
+            strValue.append(" )");
             
-            Principal.cConexion.disconect();
+            Principal.CONECCTION.send(String.valueOf(strValue));
+            Principal.CONECCTION.disconect();
         } catch (SQLException cException) {
             strError = cException.getMessage();
         }
@@ -98,16 +113,26 @@ public class ProofOfPayment {
      * @return
      */
     public static String insertDet(ArrayList <String> aryProducts, ArrayList <Integer> aryQuantities, String strNumber) {
-        Principal.cConexion.conect();
+        Principal.CONECCTION.conect();
         String strError = "";
         
         try {
             int iSize = aryProducts.size();
+            StringBuilder strValue = null;
             for(int i = 0;i < iSize;i++) {
-                Principal.cConexion.send("INSERT INTO Comprobante_Det VALUES( " + strNumber + " , " + aryProducts.get(i) + " , " + aryQuantities.get(i) + " )");
+                strValue = new StringBuilder();
+                strValue.append("INSERT INTO Comprobante_Det VALUES( ");
+                strValue.append(strNumber);
+                strValue.append(" , ");
+                strValue.append(aryProducts.get(i));
+                strValue.append(" , ");
+                strValue.append(aryQuantities.get(i));
+                strValue.append(" )");
+                
+                Principal.CONECCTION.send(String.valueOf(strValue));
             }
             
-            Principal.cConexion.disconect();
+            Principal.CONECCTION.disconect();
         } catch (SQLException cException) {
             strError = cException.getMessage();
         }
@@ -115,12 +140,17 @@ public class ProofOfPayment {
         return strError;
     }
     
-    public ArrayList <ProofOfPayment> getListProofs(String strCodeReceived) {
-        Principal.cConexion.conect();
-        ArrayList <ProofOfPayment> aryPayments = new ArrayList <ProofOfPayment> ();
+    public List <ProofOfPayment> getListProofs(String strCodeReceived) {
+        Principal.CONECCTION.conect();
+        List <ProofOfPayment> aryPayments = new ArrayList <ProofOfPayment> ();
         
         try {
-            ResultSet cResult = Principal.cConexion.receive("SELECT ComCod, CabNomCli, ComMon, ComFec, UsuCod FROM Comprobante_Cab WHERE ComCod LIKE '" + strCodeReceived + "%'");
+            StringBuilder strValue = new StringBuilder();
+            strValue.append("SELECT ComCod, CabNomCli, ComMon, ComFec, UsuCod FROM Comprobante_Cab WHERE ComCod LIKE '");
+            strValue.append(strCodeReceived);
+            strValue.append("%'");            
+            
+            ResultSet cResult = Principal.CONECCTION.receive(String.valueOf(strValue));
             ProofOfPayment cPayment = null;
             while(cResult.next()) {                
                 cPayment = new ProofOfPayment();
@@ -132,8 +162,8 @@ public class ProofOfPayment {
                 
                 aryPayments.add(cPayment);
             }
-            
-            Principal.cConexion.disconect();
+            cResult.close();
+            Principal.CONECCTION.disconect();
         } catch (SQLException cException) {
             Logger.getLogger(ProofOfPayment.class.getName()).log(Level.SEVERE, null, cException);
         }
@@ -146,29 +176,37 @@ public class ProofOfPayment {
      * @return
      */
     public static String getNextCode() {
-        Principal.cConexion.conect();
+        Principal.CONECCTION.conect();
         
         try {
-            ResultSet cResult = Principal.cConexion.receive("SELECT MAX(ComCod) FROM Comprobante_Cab");
+            ResultSet cResult = Principal.CONECCTION.receive("SELECT MAX(ComCod) FROM Comprobante_Cab");
                         
             while(cResult.next()) {
                 return cResult.getString("MAX(ComCod)");
             }
             
-            Principal.cConexion.disconect();
+            cResult.close();
+            Principal.CONECCTION.disconect();
         } catch (SQLException cException) {
             Logger.getLogger(ProofOfPayment.class.getName()).log(Level.SEVERE, null, cException);
         }
         
-        return null;
+        return "Not Found";
     }    
     
-    public ArrayList <ProofOfPayment> getList(String strDateStart, String strDateEnd) {
-        Principal.cConexion.conect();
-        ArrayList <ProofOfPayment> aryPayments = new ArrayList <ProofOfPayment> ();
+    public List <ProofOfPayment> getList(String strDateStart, String strDateEnd) {
+        Principal.CONECCTION.conect();
+        List <ProofOfPayment> aryPayments = new ArrayList <ProofOfPayment> ();
         
         try {
-            ResultSet cResult = Principal.cConexion.receive("SELECT ComCod, ComMon, ComFec, UsuNom FROM Comprobante WHERE ComFec >= '" + strDateStart + "' AND ComFec <= '" + strDateEnd + "'");
+            StringBuilder strValue = new StringBuilder();
+            strValue.append("SELECT ComCod, ComMon, ComFec, UsuNom FROM Comprobante WHERE ComFec >= '");
+            strValue.append(strDateStart);
+            strValue.append("' AND ComFec <= '");
+            strValue.append(strDateEnd);
+            strValue.append("'");
+            
+            ResultSet cResult = Principal.CONECCTION.receive(String.valueOf(strValue));
             ProofOfPayment cPayment = null;
             
             while(cResult.next()) {                
@@ -182,7 +220,8 @@ public class ProofOfPayment {
                 aryPayments.add(cPayment);
             }
             
-            Principal.cConexion.disconect();
+            cResult.close();
+            Principal.CONECCTION.disconect();
         } catch (SQLException cException) {
             Logger.getLogger(ProofOfPayment.class.getName()).log(Level.SEVERE, null, cException);
         }
@@ -190,12 +229,19 @@ public class ProofOfPayment {
         return aryPayments;
     }
     
-    public ArrayList <ProofOfPayment> getUsersMount(String strDateStart, String strDateEnd) {
-        Principal.cConexion.conect();
-        ArrayList <ProofOfPayment> aryPayments = new ArrayList <ProofOfPayment> ();
+    public List <ProofOfPayment> getUsersMount(String strDateStart, String strDateEnd) {
+        Principal.CONECCTION.conect();
+        List <ProofOfPayment> aryPayments = new ArrayList <ProofOfPayment> ();
         
         try {
-            ResultSet cResult = Principal.cConexion.receive("SELECT UsuNom, SUM(ComMon) FROM Comprobante WHERE ComFec >= '" + strDateStart + "' AND ComFec <= '" + strDateEnd + "' GROUP By UsuNom");
+            StringBuilder strValue = new StringBuilder();
+            strValue.append("SELECT UsuNom, SUM(ComMon) FROM Comprobante WHERE ComFec >= '");
+            strValue.append(strDateStart);
+            strValue.append("' AND ComFec <= '");
+            strValue.append(strDateEnd);
+            strValue.append("' GROUP By UsuNom");
+            
+            ResultSet cResult = Principal.CONECCTION.receive(String.valueOf(strValue));
             ProofOfPayment cPayment = null;
             
             while(cResult.next()) {                
@@ -209,7 +255,8 @@ public class ProofOfPayment {
                 aryPayments.add(cPayment);
             }
             
-            Principal.cConexion.disconect();
+            cResult.close();
+            Principal.CONECCTION.disconect();
         } catch (SQLException cException) {
             Logger.getLogger(ProofOfPayment.class.getName()).log(Level.SEVERE, null, cException);
         }

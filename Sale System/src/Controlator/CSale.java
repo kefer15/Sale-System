@@ -7,6 +7,7 @@ import Model.ProofOfPayment;
 import Model.Users;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
@@ -16,15 +17,18 @@ import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
 
 /**
- * @version 2.3
- * @author Miguel Fernández
+  @version 2.3
+  @author Miguel Fernández
  */
 
 public class CSale implements ISale {
     @Override  
-    /** Between this method we get an array of Products  */
-    public ArrayList <Products> search(JComboBox cbxCombo, JTextField txtText, JTable tblTable) {
-        ArrayList <Products> aryProducts = new ArrayList <Products> ();
+    
+    /** 
+        Between this method we get an array of Products  
+    */
+    public List <Products> search(JComboBox cbxCombo, JTextField txtText, JTable tblTable) {
+        List <Products> aryProducts = new ArrayList <Products> ();
         
         DefaultTableModel cModel = (DefaultTableModel) tblTable.getModel();
         cModel.getDataVector().removeAllElements();
@@ -65,7 +69,7 @@ public class CSale implements ISale {
     }
     
     @Override
-    public double addProduct(JTable tblTable, int iIndex, ArrayList <Products> aryProducts, double dTotal) {
+    public double addProduct(JTable tblTable, int iIndex, List <Products> aryProducts, double dTotal) {
         int iRowCount = tblTable.getRowCount();
         for(int i = 0;i < iRowCount;i++) { 
            if(tblTable.getValueAt(i,0).equals(aryProducts.get(iIndex).getCode())) {
@@ -97,7 +101,7 @@ public class CSale implements ISale {
     
     @Override
     public String verifyQuantity(String srtCode, String strQuantity) {
-        ArrayList <Products> aryProduct = new ArrayList <Products> ();
+        List <Products> aryProduct = new ArrayList <Products> ();
         aryProduct = (new Products()).getList(0, srtCode, null);      
         String strResult = "";
         
@@ -121,14 +125,14 @@ public class CSale implements ISale {
         payment.setDate(lblDate.getText().replace('/', '-'));
         payment.setUser(cUser.getCode());
         
-        String error = payment.insertCab();
+        String strError = payment.insertCab();
                 
-        if("".equals(error)) {            
+        if(strError.equals("")) {            
             
             /* Discounting stock of the products*/
             DefaultTableModel cModel = (DefaultTableModel) tblProducts.getModel();
-            ArrayList <String> aryCodes = new ArrayList <String>();
-            ArrayList <String> aryStock = new ArrayList <String>();
+            List <String> aryCodes = new ArrayList <String>();
+            List <String> aryStock = new ArrayList <String>();
             
             int iRowCount = cModel.getRowCount();
             for(int i = 0; i < iRowCount;i++) {
@@ -147,7 +151,7 @@ public class CSale implements ISale {
             
         } else {
             JOptionPane.showMessageDialog(  null, 
-                                            error, 
+                                            strError, 
                                             "Error en la Venta", 
                                             JOptionPane.WARNING_MESSAGE);
         }

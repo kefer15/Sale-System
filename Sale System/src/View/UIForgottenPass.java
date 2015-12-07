@@ -7,12 +7,12 @@ import java.awt.Toolkit;
 import javax.swing.JOptionPane;
 
 /**
- * @version 2.3
- * @author Miguel Fernández
+  @version 2.3
+  @author Miguel Fernández
  */
 
 public class UIForgottenPass extends javax.swing.JFrame {
-    private final IForgottenPass iForgottenPass;
+    private final IForgottenPass IFORGOTTENPASS;
     
     /** Between this method  starts the UI
      * @param iForgottenPass
@@ -22,11 +22,12 @@ public class UIForgottenPass extends javax.swing.JFrame {
         this.setVisible(true);
         this.setTitle("Sale System");
         setLocationRelativeTo(null);
-        this.iForgottenPass = iForgottenPass;
+        this.IFORGOTTENPASS = iForgottenPass;
         this.txtId.setText(strUser);
     }
 
     @SuppressWarnings("unchecked")
+    
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
@@ -215,17 +216,17 @@ public class UIForgottenPass extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnReturnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnReturnActionPerformed
-        this.iForgottenPass.comeBack();
+        this.IFORGOTTENPASS.comeBack();
     }//GEN-LAST:event_btnReturnActionPerformed
 
     private void btnSendActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSendActionPerformed
         lblSending.setText("Procesando ...");
-        if(this.iForgottenPass.send(this.txtId, this.txtEmail, this.lblSending)){
+        if(this.IFORGOTTENPASS.send(this.txtId, this.txtEmail, this.lblSending)){
             JOptionPane.showMessageDialog(  null,
                                             "El mensaje ha sido enviado. Revise su correo electrónico.",
                                             "Mensaje Enviado",
                                             JOptionPane.INFORMATION_MESSAGE);
-            this.iForgottenPass.comeBack();
+            this.IFORGOTTENPASS.comeBack();
         }
     }//GEN-LAST:event_btnSendActionPerformed
 

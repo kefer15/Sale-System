@@ -10,11 +10,12 @@ import javax.swing.JTable;
 import javax.swing.JTextField;
 
 /**
- * @version 2.3
- * @author Miguel Fernández
+  @version 2.3
+  @author Miguel Fernández
  */
 
 public interface IProducts {
+    
     /** Changes to submenu 'Agregar Producto'
      * @param crdCard
      * @param pnlPanel

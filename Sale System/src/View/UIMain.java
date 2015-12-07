@@ -1,6 +1,5 @@
 package View;
 
-import Controlator.CHome;
 import Controlator.CProducts;
 import Controlator.CSale;
 import Controlator.CStore;
@@ -29,7 +28,7 @@ import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 
 import java.util.ArrayList;
-import java.util.Date;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -41,33 +40,34 @@ import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
 /**
- * @version 2.3
- * @author Miguel Fernández
+  @version 2.3
+  @author Miguel Fernández
  */
 
 public class UIMain extends javax.swing.JFrame {
     private IMain iInterface;
-    private CHome cHome;
+    private Controlator.CHome cHome;
     private CUsers cUsers;
     private CSuppliers cSuppliers;
     private CProducts cProducts;
     private CStore cStore;
     private CSale cSale;    
-    private ArrayList <JButton> aMenuButtons = new ArrayList <JButton> ();
+    private List <JButton> aMenuButtons = new ArrayList <JButton> ();
     private Users cUser;
     private int iState;
-    private ArrayList <String> aUsersSearch = new ArrayList <String> ();
-    private ArrayList <String> aProductsSearch = new ArrayList <String> ();
+    private List <String> aUsersSearch = new ArrayList <String> ();
+    private List <String> aProductsSearch = new ArrayList <String> ();
     private String strUserCode;
-    private ArrayList <String> aSuppliersSearch = new ArrayList <String> ();
-    private ArrayList <String> aTicketsSearch = new ArrayList <String> ();
+    private List <String> aSuppliersSearch = new ArrayList <String> ();
+    private List <String> aTicketsSearch = new ArrayList <String> ();
     private String strSupplierCode;
     private String strProductCode;
-    private ArrayList <String> aProductsIndexes = new ArrayList <String> ();
-    private ArrayList <String> aSuppliersIndexes = new ArrayList <String> ();
-    private ArrayList <Products> aProductsList = new ArrayList <Products> ();
+    private List <String> aProductsIndexes = new ArrayList <String> ();
+    private List <String> aSuppliersIndexes = new ArrayList <String> ();
+    private List <Products> aProductsList = new ArrayList <Products> ();
     private double dTtotal;
     private float []fColor;
+    private String strNextLine = System.getProperty("line.separator");
     
     /** Between this method start the UI
      * @param iMain
@@ -103,7 +103,7 @@ public class UIMain extends javax.swing.JFrame {
         this.aMenuButtons.add(btnHelp);
         
         this.iInterface = iMain;
-        this.cHome = new CHome();
+        this.cHome = new Controlator.CHome();
         this.cUsers = new CUsers();
         this.cSuppliers = new CSuppliers();
         this.cProducts = new CProducts();
@@ -138,7 +138,7 @@ public class UIMain extends javax.swing.JFrame {
             case 5:
                 this.iInterface.changeSale((CardLayout)this.pnlContent.getLayout(), this.pnlContent);
                 
-                Date cDate = new Date();
+                java.util.Date cDate = new java.util.Date();
                 DateFormat cFormat = new SimpleDateFormat("yyyy/MM/dd");
                 this.lblSaleOrderDateOn.setText(cFormat.format(cDate));
                 this.iInterface.setOrderNumber(this.lblSaleOrderNumber);
@@ -3650,7 +3650,7 @@ public class UIMain extends javax.swing.JFrame {
     {//GEN-HEADEREND:event_btnSaleActionPerformed
         this.iInterface.changeSale((CardLayout)this.pnlContent.getLayout(), this.pnlContent);
         
-        Date cDate = new Date();
+        java.util.Date cDate = new java.util.Date();
         DateFormat cFormat = new SimpleDateFormat("yyyy/MM/dd");
         this.lblSaleOrderDateOn.setText(cFormat.format(cDate));
         this.iInterface.setOrderNumber(this.lblSaleOrderNumber);
@@ -3671,7 +3671,7 @@ public class UIMain extends javax.swing.JFrame {
 
     private void btnSaleOrderDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSaleOrderDeleteActionPerformed
         int iRow = this.tblSaleOrderTable.getSelectedRow();
-        if(iRow != -1){
+        if(-1 != iRow){
             this.dTtotal -= Double.parseDouble(String.valueOf(this.tblSaleOrderTable.getValueAt(iRow, 4)));
             
             DefaultTableModel cModel = (DefaultTableModel)this.tblSaleOrderTable.getModel();
@@ -3817,6 +3817,7 @@ public class UIMain extends javax.swing.JFrame {
         boolean []bProductsSelected = new boolean[this.tblLinkProducts.getRowCount()];
 
         if(iSupplierSelected != -1) {
+            
             for(int i = 0;i < this.tblLinkProducts.getRowCount();i++) {
                 bProductsSelected[i] = (Boolean) this.tblLinkProducts.getValueAt(i, 0);
             }
@@ -3869,30 +3870,40 @@ public class UIMain extends javax.swing.JFrame {
     }//GEN-LAST:event_btnSearchSupplierActionPerformed
 
     private void btnSupplierRegisterActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSupplierRegisterActionPerformed
-        String strMessage = "";
+        StringBuilder strMessage = new StringBuilder();
         
         if("*".equals(this.txtSupplierName.getText())) {
-            strMessage += "\n  * Campo Nombre";
+            strMessage.append(strNextLine);
+            strMessage.append("  * Campo Nombre");
         }
     
         if("*".equals(this.txtSupplierTr.getText())) {
-            strMessage += "\n  * Campo RUC";
+            strMessage.append(strNextLine);
+            strMessage.append("  * Campo RUC");
         }
         
         if("*".equals(this.txtSupplierPhone.getText())) {
-            strMessage += "\n  * Campo Teléfono";
+            strMessage.append(strNextLine);
+            strMessage.append("  * Campo Teléfono");
         }
         
         if("*".equals(this.txtSupplierAddress.getText())) {
-            strMessage += "\n  * Campo Dirección";        
+            strMessage.append(strNextLine);
+            strMessage.append("  * Campo Dirección");
         }
         
-        if(strMessage.isEmpty()) {
+        if(String.valueOf(strMessage).isEmpty()) {
             this.cSuppliers.actSupplier(this.iState, this.strSupplierCode, this.txtSupplierName, this.txtSupplierTr, this.txtSupplierPhone, this.txtSupplierAddress);
             this.cSuppliers.changeSupplierShow((CardLayout)this.pnlSupplierSlave.getLayout(), this.pnlSupplierSlave, this.tblSupplierShow);
         } else {
+            StringBuilder strValue = new StringBuilder();
+            strValue.append("Todos los campos obligatorios deber ser llenados");
+            strValue.append(strNextLine);
+            strValue.append(" Completar:");
+            strValue.append(strMessage);
+            
             JOptionPane.showMessageDialog(  null,
-                                            "Todos los campos obligatorios deber ser llenados.\n Completar:" + strMessage,
+                                             String.valueOf(strValue),
                                             "Datos Incompletos",
                                             JOptionPane.ERROR_MESSAGE);
         }
@@ -3987,46 +3998,60 @@ public class UIMain extends javax.swing.JFrame {
     }//GEN-LAST:event_btnSearchUserActionPerformed
 
     private void btnUserRegisterActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUserRegisterActionPerformed
-        String strMessage = "";
+        StringBuilder strMessage = new StringBuilder();
         
         if("*".equals(this.txtUserName.getText())) {
-            strMessage += "\n  * Campo Nombre";
+            strMessage.append(strNextLine);
+            strMessage.append("  * Campo Nombre");
         }
     
         if("*".equals(this.txtUserFatherLastName.getText())) {
-            strMessage += "\n  * Campo Apellido Paterno";
+            strMessage.append(strNextLine);
+            strMessage.append("  * Campo Apellido Paterno");
         }
         
         if("*".equals(this.txtUserMotherLastName.getText())) {
-            strMessage += "\n  * Campo Apellido Materno";
+            strMessage.append(strNextLine);
+            strMessage.append("  * Campo Apellido Materno");
         }
         
         if("*".equals(this.txtUserNi.getText())) {
-            strMessage += "\n  * Campo DNI";
+            strMessage.append(strNextLine);
+            strMessage.append("  * Campo DNI");
         }
         
         if("*".equals(this.txtUserAddress.getText())) {
-            strMessage += "\n  * Campo Dirección";
+            strMessage.append(strNextLine);
+            strMessage.append("  * Campo Dirección");
         }
         
         if("*".equals(this.txtUserCellphone.getText())) {
-            strMessage += "\n  * Campo Celular";
+            strMessage.append(strNextLine);
+            strMessage.append("  * Campo Celular");
         }
         
         if("*".equals(this.txtUserEmail.getText())) {
-            strMessage += "\n  * Campo Correo Electrónico";
+            strMessage.append(strNextLine);
+            strMessage.append("  * Campo Correo Electrónico");
         }
         
         if("*".equals(this.txtUserEmergencyNumber.getText())) {
-            strMessage += "\n  * Campo Numero de Emergencia";
+            strMessage.append(strNextLine);
+            strMessage.append("  * Campo Numero de Emergencia");
         }
         
-        if(strMessage.isEmpty()) {
+        if(String.valueOf(strMessage).isEmpty()) {
             this.cUsers.actUser(this.iState, this.strUserCode, this.txtUserName, this.txtUserFatherLastName, this.txtUserMotherLastName, this.txtUserNi, this.cbxUserGender, this.txtUserAddress, this.cbxUserPosition, this.txtUserCellphone, this.txtUserEmail, this.txtUserEmergencyNumber, this.txaUserOthers);
             this.cUsers.changeUserShow((CardLayout)this.pnlUserSlave.getLayout(), this.pnlUserSlave, this.tblUserShow);
         } else {
+            StringBuilder strValue = new StringBuilder();
+            strValue.append("Todos los campos obligatorios deber ser llenados");
+            strValue.append(strNextLine);
+            strValue.append(" Completar:");
+            strValue.append(strMessage);
+            
             JOptionPane.showMessageDialog(  null,
-                                            "Todos los campos obligatorios deber ser llenados.\n Completar:" + strMessage,
+                                            String.valueOf(strValue),
                                             "Datos Incompletos",
                                             JOptionPane.ERROR_MESSAGE);
         }
@@ -4095,7 +4120,7 @@ public class UIMain extends javax.swing.JFrame {
                         break;
                     
                 case 2: this.iInterface.changeSale((CardLayout)this.pnlContent.getLayout(), this.pnlContent);
-                        Date cDate = new Date();
+                        java.util.Date cDate = new java.util.Date();
                         DateFormat cFormat = new SimpleDateFormat("yyyy/MM/dd");
                         this.lblSaleOrderDateOn.setText(cFormat.format(cDate));
                         this.iInterface.setOrderNumber(this.lblSaleOrderNumber);
@@ -4178,34 +4203,45 @@ public class UIMain extends javax.swing.JFrame {
     }//GEN-LAST:event_btnSaleOrderPrintActionPerformed
 
     private void btnProductUpdateStoreActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnProductUpdateStoreActionPerformed
-        String strMessage = "";
+        StringBuilder strMessage = new StringBuilder();
         
         if("*".equals(this.txtProductNameStore.getText())) {
-            strMessage += "\n  * Campo Nombre";
+            strMessage.append(strNextLine);
+            strMessage.append("  * Campo Nombre");
         }
     
         if("*".equals(this.txtProductBrandStore.getText())) {
-            strMessage += "\n  * Campo Marca";
+            strMessage.append(strNextLine);
+            strMessage.append("  * Campo Marca");
         }
         
         if("*".equals(this.txtProductPresentationStore.getText())) {
-            strMessage += "\n  * Campo Presentación";
+            strMessage.append(strNextLine);
+            strMessage.append("  * Campo Presentación");
         }
         
         if("*".equals(this.txtProductStockStore.getText())) {
-            strMessage += "\n  * Campo Stock";
+            strMessage.append(strNextLine);
+            strMessage.append("  * Campo Stock");
         }
         
         if("*".equals(this.txtProductPriceStore.getText())) {
-            strMessage += "\n  * Campo Precio";
+            strMessage.append(strNextLine);
+            strMessage.append("  * Campo Precio");
         }
         
-        if(strMessage.isEmpty()) {
+        if(String.valueOf(strMessage).isEmpty()) {
             this.cStore.actProduct(this.strProductCode, this.txtProductNameStore, this.txtProductBrandStore, this.txtProductPresentationStore, this.txtProductStockStore, this.cbxProductCategoryStore, this.txtProductPriceStore);
             this.cStore.changeInventStore((CardLayout)this.pnlStoreSlave.getLayout(), this.pnlStoreSlave, this.tblProductShowStore);
         } else {
+            StringBuilder strValue = new StringBuilder();
+            strValue.append("Todos los campos obligatorios deber ser llenados.");
+            strValue.append(strNextLine);
+            strValue.append(" Completar:");
+            strValue.append(strMessage);
+            
             JOptionPane.showMessageDialog(  null,
-                                            "Todos los campos obligatorios deber ser llenados.\n Completar:" + strMessage,
+                                            String.valueOf(strValue),
                                             "Datos Incompletos",
                                             JOptionPane.ERROR_MESSAGE);
         }
@@ -4773,6 +4809,7 @@ public class UIMain extends javax.swing.JFrame {
             boolean bValue4 = false;
             boolean bValue5 = false;
             boolean bValue6 = false;
+            boolean bValue7 = false;
             
             for(int i = 0;i < iLength;i++){
                 bValue1 = strName.charAt(i) >= 'a';
@@ -4781,8 +4818,8 @@ public class UIMain extends javax.swing.JFrame {
                 bValue4 = strName.charAt(i) == '.';
                 bValue5 = strName.charAt(i) >= '0';
                 bValue6 = strName.charAt(i) <= '9';
-                
-                if(!((bValue1 && bValue2) || bValue3 || bValue4 || (bValue5 && bValue6))){
+                bValue7 = (bValue1 && bValue2) || bValue3 || bValue4 || (bValue5 && bValue6);
+                if(!bValue7){
                     bState = false;
                     break;
                 }
@@ -5046,6 +5083,7 @@ public class UIMain extends javax.swing.JFrame {
             boolean bValue4 = false;
             boolean bValue5 = false;
             boolean bValue6 = false;
+            boolean bValue7 = false;
             
             for(int i = 0;i < iLength;i++){
                 bValue1 = strName.charAt(i) >= 'a';
@@ -5054,8 +5092,9 @@ public class UIMain extends javax.swing.JFrame {
                 bValue4 = strName.charAt(i) == '.';
                 bValue5 = strName.charAt(i) >= '0';
                 bValue6 = strName.charAt(i) <= '9';
+                bValue7 = (bValue1 && bValue2) || bValue3 || bValue4 || (bValue5 && bValue6);
                 
-                if(!((bValue1 && bValue2) || bValue3 || bValue4 || (bValue5 && bValue6))){
+                if(!bValue7){
                     bState = false;
                     break;
                 }

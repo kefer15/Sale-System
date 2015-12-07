@@ -11,12 +11,11 @@ import java.sql.SQLException;
 import javax.swing.JOptionPane;
 
 /**
- * @version 2.3
- * @author Miguel Fernández
+  @version 2.3
+  @author Miguel Fernández
  */
 
-public class Conexion
-{
+public class Conexion {
     private Connection cCon;
     private String strDatabase;
     private String cUser;
@@ -33,7 +32,11 @@ public class Conexion
     public String getDatabase() {
         return strDatabase;
     }
-
+    
+    /**
+     * 
+     * @param strDatabase 
+     */
     public void setDatabase(String strDatabase) {
         this.strDatabase = strDatabase;
     }
@@ -56,10 +59,21 @@ public class Conexion
 
     public void conect() {
         try {
+            StringBuilder strValue = new StringBuilder();
+            strValue.append("jdbc:mysql://localhost:3306/");
+            strValue.append(strDatabase);
+            
             Class.forName("com.mysql.jdbc.Driver");
-            cCon = (Connection) DriverManager.getConnection("jdbc:mysql://localhost:3306/" + strDatabase, cUser, strPassword);
+            cCon = (Connection) DriverManager.getConnection(String.valueOf(strValue), cUser, strPassword);
         } catch (ClassNotFoundException | SQLException cException) {
-            JOptionPane.showMessageDialog(null, "Access denied for User: " + cUser + ", Password: " + strPassword + ". Configure DB connection.", "Connection Error", JOptionPane.ERROR_MESSAGE);
+            StringBuilder strValue = new StringBuilder();
+            strValue.append("Access denied for User: ");
+            strValue.append(cUser);
+            strValue.append(", Password: ");
+            strValue.append(strPassword);
+            strValue.append(". Configure DB connection.");
+            
+            JOptionPane.showMessageDialog(null, String.valueOf(strValue), "Connection Error", JOptionPane.ERROR_MESSAGE);
         }
     }
     
@@ -78,7 +92,14 @@ public class Conexion
             cCon.close();
         }
         catch (SQLException | NullPointerException cException) {
-            JOptionPane.showMessageDialog(null, "Access denied for User: " + cUser + ", Password: " + strPassword + ". Configure DB connection.", "Connection Error", JOptionPane.ERROR_MESSAGE);
+            StringBuilder strValue = new StringBuilder();
+            strValue.append("Access denied for User: ");
+            strValue.append(cUser);
+            strValue.append(", Password: ");
+            strValue.append(strPassword);
+            strValue.append(". Configure DB connection.");
+            
+            JOptionPane.showMessageDialog(null, String.valueOf(strValue), "Connection Error", JOptionPane.ERROR_MESSAGE);
         }
     }
 }

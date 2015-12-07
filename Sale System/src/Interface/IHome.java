@@ -7,12 +7,13 @@ import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 
 /**
- * @version 2.3
- * @author Miguel Fernández
+  @version 2.3
+  @author Miguel Fernández
  */
 
 public interface IHome {
-    /** Compares the id and password with id and password that are saved in data base
+    
+    /** Compares the id and pass with id and password that are saved in data base
      * @param txtId
      * @param txtPass
      * @return  */

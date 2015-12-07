@@ -2,7 +2,7 @@ package Interface;
 
 import java.awt.CardLayout;
 
-import java.util.ArrayList;
+import java.util.List;
 
 import javax.swing.JButton;
 import javax.swing.JLabel;
@@ -12,11 +12,12 @@ import javax.swing.JTable;
 import javax.swing.JTextField;
 
 /**
- * @version 2.3
- * @author Miguel Fernández
+  @version 2.3
+  @author Miguel Fernández
  */
 
 public interface ISuppliers {
+    
     /** Changes to submenu 'Agregar Proveedor'
      * @param crdCard
      * @param pnlPanel
@@ -40,7 +41,7 @@ public interface ISuppliers {
      * @param pnlPanel
      * @param tblTable
      * @return  */
-    ArrayList <String> changeSupplierLink(CardLayout crdCard, JPanel pnlPanel, JTable tblTable);
+    List <String> changeSupplierLink(CardLayout crdCard, JPanel pnlPanel, JTable tblTable);
     
     /** Adds or modifies a new supplier to the data base
      * @param iOption
@@ -55,7 +56,7 @@ public interface ISuppliers {
      * @param txtName
      * @param tblTable
      * @return  */
-    ArrayList <String> searchSupplier(JTextField txtName, JTable tblTable);
+    List <String> searchSupplier(JTextField txtName, JTable tblTable);
     
     /** Fills all courts the window needs from a specif supplier
      * @param crdCard
@@ -75,13 +76,13 @@ public interface ISuppliers {
      * @param txtName
      * @param lstList
      * @return  */
-    ArrayList <String> searchSupplierLink(JTextField txtName, JList lstList);
+    List <String> searchSupplierLink(JTextField txtName, JList lstList);
     
     /** Links supplier with his products
      * @param aState
      * @param aryProducts
      * @param strSupplier */
-    void link(boolean []aState, ArrayList <String> aryProducts, String strSupplier);
+    void link(boolean []aState, List <String> aryProducts, String strSupplier);
     
     /** Show all products linked yet
      * @param strSupplier

@@ -4,12 +4,13 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
- * @version 2.3
- * @author Miguel Fernández
+  @version 2.3
+  @author Miguel Fernández
  */
 
 public class Gender {
@@ -30,7 +31,11 @@ public class Gender {
     public String getCode() {
         return strCode;
     }
-
+    
+    /**
+     * 
+     * @param strCode 
+     */
     public void setCode(String strCode) {
         this.strCode = strCode;
     }
@@ -47,12 +52,12 @@ public class Gender {
      *
      * @return
      */
-    public static ArrayList <Gender> getList() {
-        Principal.cConexion.conect();
-        ArrayList <Gender> aryGenders = new ArrayList <Gender> ();
+    public static List <Gender> getList() {
+        Principal.CONECCTION.conect();
+        List <Gender> aryGenders = new ArrayList <Gender> ();
         
         try {
-            ResultSet cResult = Principal.cConexion.receive("SELECT GenCod, GenNom FROM Genero");
+            ResultSet cResult = Principal.CONECCTION.receive("SELECT GenCod, GenNom FROM Genero");
             Gender cGender = null;
             
             while(cResult.next()) {    
@@ -62,7 +67,8 @@ public class Gender {
                 aryGenders.add(cGender);
             }
             
-            Principal.cConexion.disconect();
+            cResult.close();
+            Principal.CONECCTION.disconect();
         } catch (SQLException cException) {
             Logger.getLogger(Gender.class.getName()).log(Level.SEVERE, null, cException);
         }

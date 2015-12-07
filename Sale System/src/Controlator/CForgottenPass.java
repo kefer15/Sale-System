@@ -7,6 +7,7 @@ import Model.Users;
 import View.UIForgottenPass;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Properties;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -24,8 +25,8 @@ import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 
 /**
- * @version 2.3
- * @author Miguel Fernández
+  @version 2.3
+  @author Miguel Fernández
  */
 
 public class CForgottenPass implements IForgottenPass{
@@ -37,9 +38,12 @@ public class CForgottenPass implements IForgottenPass{
     }
     
     @Override
-    /** Between this method we can sent an e-mail to the user who forgets his password */
+    
+    /**
+        Between this method we can sent an email to the user who forgets his pass 
+    */
     public boolean send(JTextField txtIdentifier, JTextField txtEmail, JLabel lblSending) {
-        ArrayList <Users> aryUser = new ArrayList <Users> ();
+        List <Users> aryUser = new ArrayList <Users> ();
         aryUser = (new Users()).getList(0, txtIdentifier.getText(), null, null);
         
         if(aryUser.isEmpty()){
