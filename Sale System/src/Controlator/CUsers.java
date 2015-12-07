@@ -23,7 +23,7 @@ import javax.swing.table.DefaultTableModel;
 
 /**
   @version 2.3
-  @author Miguel Fernández
+  @author Miguel Fernandez
  */
 
 public class CUsers implements IUsers {
@@ -31,7 +31,7 @@ public class CUsers implements IUsers {
     private List <Position> aryPositions = new ArrayList <Position> ();
     private List <String> aryGendersIndexes = new ArrayList <String> ();
     private List <String> aryPositionsIndexes = new ArrayList <String> ();
-    private String strNextLine = System.getProperty("line.separator");
+    private final String NEXTLINE = System.getProperty("line.separator");
     
     /*
         The constructor fills aryGenders with all Categorigies available, and
@@ -69,7 +69,7 @@ public class CUsers implements IUsers {
     
     @Override
     
-    /** 
+    /* 
         Between this method we can show the panel for checking a new user in 
     */
     public void changeUserAdd(CardLayout crdCard, JPanel pnlPanel, JComboBox cbxGender, JComboBox cbxPosition, JLabel lblTitle, JButton btnRegister) {
@@ -141,16 +141,16 @@ public class CUsers implements IUsers {
                     cUser.setState("1");
                     
                     strError = cUser.insert();
-                    if(strError.equals("")) {
-                        StringBuilder strValue = new StringBuilder();
+                    if(strError.length() == 0) {
+                        StringBuilder strValue = new StringBuilder(500);
                         strValue.append("Se ha generado su Id y su Contraseña para");
-                        strValue.append(strNextLine);
+                        strValue.append(NEXTLINE);
                         strValue.append("poder ingresar al Sistema de Ventas: ");
-                        strValue.append(strNextLine);
-                        strValue.append(strNextLine);
+                        strValue.append(NEXTLINE);
+                        strValue.append(NEXTLINE);
                         strValue.append("  Id de Usuario: ");
                         strValue.append(id);
-                        strValue.append(strNextLine);
+                        strValue.append(NEXTLINE);
                         strValue.append("  Contraseña: ");
                         strValue.append(password);
                         
@@ -166,7 +166,7 @@ public class CUsers implements IUsers {
                     }
                     break;
             case 1: strError = cUser.update();
-                    if(strError.equals("")) {
+                    if(strError.length() == 0) {
                         JOptionPane.showMessageDialog(  null, 
                                                         "Los datos han sido modificados correctamente.", 
                                                         "Modificar Usuario", 

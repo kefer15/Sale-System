@@ -6,22 +6,22 @@ import View.UITicket;
 
 /**
   @version 2.3
-  @author Miguel Fernández
+  @author Miguel Fernandez
  */
 
 public class CTicket implements ITicket{
-     private final UITicket WDWINDOW;
+     private final UITicket window;
     
     public CTicket(String strCode, int iOption) {        
-        WDWINDOW = new UITicket(this, strCode, iOption);
+        window = new UITicket(this, strCode, iOption);
     }
     
     @Override
     
-    /** 
+    /* 
         Between this method we close the UITicket  
     */
     public void close() {
-        WDWINDOW.dispose();
+        window.dispose();
     }
 }

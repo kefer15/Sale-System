@@ -12,10 +12,11 @@ import javax.swing.JOptionPane;
 
 /**
   @version 2.3
-  @author Miguel Fernández
+  @author Miguel Fernandez
  */
 
 public class Suppliers {
+    private final int MAX = 500;
     private String strCode;
     private String strName;
     private String strTr;
@@ -27,6 +28,15 @@ public class Suppliers {
         this("-1","NULL","NULL","NULL","NULL","-1");
     }   
     
+    /**
+     * 
+     * @param strCode
+     * @param strName
+     * @param strTr
+     * @param strPhone
+     * @param strAddress
+     * @param strState 
+     */
     public Suppliers(String strCode, String strName, String strTr, String strPhone, String strAddress, String strState) {
         this.strCode = strCode;
         this.strName = strName;
@@ -95,7 +105,7 @@ public class Suppliers {
         String strError = "";
         
         try {
-            StringBuilder strValue = new StringBuilder();
+            StringBuilder strValue = new StringBuilder(MAX);
             strValue.append("INSERT INTO Proveedor VALUES( DEFAULT , '");
             strValue.append(strName);
             strValue.append("' , '");
@@ -122,7 +132,7 @@ public class Suppliers {
         String strError = "";  
         
         try {
-            StringBuilder strValue = new StringBuilder();
+            StringBuilder strValue = new StringBuilder(MAX);
             strValue.append("UPDATE Proveedor SET ProNom = '");
             strValue.append(strName);
             strValue.append("' , ProRuc = '");
@@ -153,7 +163,7 @@ public class Suppliers {
         String strError = "";
         
         try {
-            StringBuilder strValue = new StringBuilder();
+            StringBuilder strValue = new StringBuilder(500);
             strValue.append("UPDATE Proveedor SET EstCod = '2' WHERE ProCod = ");
             strValue.append(strSupplierCodeReceived);
             
@@ -172,7 +182,7 @@ public class Suppliers {
         
         try {
             
-            StringBuilder strValue = new StringBuilder();
+            StringBuilder strValue = new StringBuilder(MAX);
             switch(iOption){                    
                 case 0: strValue.append("SELECT ProCod, ProNom, ProRuc, ProTel, ProDir, EstCod FROM Proveedor");
                         break;
@@ -231,7 +241,7 @@ public class Suppliers {
             StringBuilder strValue = null;
             for(int i = 0;i < iSize;i++){
                 if(bState[i]) {
-                    strValue = new StringBuilder();
+                    strValue = new StringBuilder(500);
                     strValue.append("INSERT INTO ProProd VALUES( ");
                     strValue.append(aryProducts.get(i));
                     strValue.append(" , ");

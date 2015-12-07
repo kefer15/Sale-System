@@ -8,7 +8,7 @@ import javax.swing.JOptionPane;
 
 /**
   @version 2.3
-  @author Miguel Fernández
+  @author Miguel Fernandez
  */
 
 public class UIForgottenPass extends javax.swing.JFrame {

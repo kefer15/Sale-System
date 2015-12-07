@@ -10,7 +10,7 @@ import javax.swing.JOptionPane;
 
 /**
   @version 2.3
-  @author Miguel Fernández
+  @author Miguel Fernandez
  */
 
 public class UITicket extends javax.swing.JFrame {
@@ -37,7 +37,7 @@ public class UITicket extends javax.swing.JFrame {
             default:    JOptionPane.showMessageDialog(null, "Default Option");
                         break;
         }
-        StringBuilder strValue = new StringBuilder();
+        StringBuilder strValue = new StringBuilder(500);
         strValue.append("Boletas");
         strValue.append(File.separator);
         strValue.append(strCode);

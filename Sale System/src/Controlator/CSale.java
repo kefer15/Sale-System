@@ -18,13 +18,13 @@ import javax.swing.table.DefaultTableModel;
 
 /**
   @version 2.3
-  @author Miguel Fernández
+  @author Miguel Fernandez
  */
 
 public class CSale implements ISale {
     @Override  
     
-    /** 
+    /* 
         Between this method we get an array of Products  
     */
     public List <Products> search(JComboBox cbxCombo, JTextField txtText, JTable tblTable) {
@@ -127,7 +127,7 @@ public class CSale implements ISale {
         
         String strError = payment.insertCab();
                 
-        if(strError.equals("")) {            
+        if(strError.length() == 0) {            
             
             /* Discounting stock of the products*/
             DefaultTableModel cModel = (DefaultTableModel) tblProducts.getModel();

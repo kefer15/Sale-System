@@ -21,7 +21,7 @@ import javax.swing.table.DefaultTableModel;
 
 /**
   @version 2.3
-  @author Miguel Fernández
+  @author Miguel Fernandez
  */
 
 public class CProducts implements IProducts {
@@ -52,7 +52,7 @@ public class CProducts implements IProducts {
     
     @Override
     
-    /** 
+    /* 
         Between this method we can show the panel that receives products information 
     */
     public void changeProductAdd(CardLayout crdCard, JPanel pnlPanel, JComboBox cbxCategory, JLabel lblTitle, JButton btnRegister) {
@@ -93,7 +93,7 @@ public class CProducts implements IProducts {
         
         String srtError = cProduct.insert();
         
-        if(srtError.equals("")) {
+        if(srtError.length() == 0) {
             JOptionPane.showMessageDialog(  null, 
                                             "Los datos han sido ingresados correctamente.", 
                                             "Nuevo Producto", 

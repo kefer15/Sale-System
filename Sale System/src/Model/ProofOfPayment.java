@@ -10,10 +10,11 @@ import java.util.logging.Logger;
 
 /**
   @version 2.3
-  @author Miguel Fernández
+  @author Miguel Fernandez
  */
 
 public class ProofOfPayment {
+    private final int MAX = 500;
     
     /** This is the code of a proof of payment */
     private String strCode;
@@ -26,6 +27,14 @@ public class ProofOfPayment {
         this("-1","NULL","0000-00-00","0.0","-1");
     }
     
+    /**
+     * 
+     * @param strCode
+     * @param strClientName
+     * @param strDate
+     * @param strAmount
+     * @param strUser 
+     */
     public ProofOfPayment(String strCode, String strClientName, String strDate, String strAmount, String strUser) {
         this.strCode = strCode;
         this.strClientName = strClientName;
@@ -47,45 +56,81 @@ public class ProofOfPayment {
     public void setCode(String strCode) {
         this.strCode = strCode;
     }
-
+    
+    /**
+     * 
+     * @return 
+     */
     public String getClientName() {
         return strClientName;
     }
-
+    
+    /**
+     * 
+     * @param strClientName 
+     */
     public void setClientName(String strClientName) {
         this.strClientName = strClientName;
     }
-
+    
+    /**
+     * 
+     * @return 
+     */
     public String getDate() {
         return strDate;
-    }
-
+    }   
+    
+    /**
+     * 
+     * @param strDate 
+     */
     public void setDate(String strDate) {
         this.strDate = strDate;
     }
-
+    
+    /**
+     * 
+     * @return 
+     */
     public String getAmount() {
         return strAmount;
     }
-
+    
+    /**
+     * 
+     * @param strAmount 
+     */
     public void setAmount(String strAmount) {
         this.strAmount = strAmount;
     }
-
+    
+    /**
+     * 
+     * @return 
+     */
     public String getUser() {
         return strUser;
     }
-
+    
+    /**
+     * 
+     * @param strUser 
+     */
     public void setUser(String strUser) {
         this.strUser = strUser;
     }
     
+    /**
+     * 
+     * @return 
+     */
     public String insertCab() {
         Principal.CONECCTION.conect();
         String strError = "";
         
         try {
-            StringBuilder strValue = new StringBuilder();
+            StringBuilder strValue = new StringBuilder(MAX);
             strValue.append("INSERT INTO Comprobante_Cab VALUES( DEFAULT , '");
             strValue.append(strClientName);
             strValue.append("' , ");
@@ -120,7 +165,7 @@ public class ProofOfPayment {
             int iSize = aryProducts.size();
             StringBuilder strValue = null;
             for(int i = 0;i < iSize;i++) {
-                strValue = new StringBuilder();
+                strValue = new StringBuilder(500);
                 strValue.append("INSERT INTO Comprobante_Det VALUES( ");
                 strValue.append(strNumber);
                 strValue.append(" , ");
@@ -140,12 +185,17 @@ public class ProofOfPayment {
         return strError;
     }
     
+    /**
+     * 
+     * @param strCodeReceived
+     * @return 
+     */
     public List <ProofOfPayment> getListProofs(String strCodeReceived) {
         Principal.CONECCTION.conect();
         List <ProofOfPayment> aryPayments = new ArrayList <ProofOfPayment> ();
         
         try {
-            StringBuilder strValue = new StringBuilder();
+            StringBuilder strValue = new StringBuilder(MAX);
             strValue.append("SELECT ComCod, CabNomCli, ComMon, ComFec, UsuCod FROM Comprobante_Cab WHERE ComCod LIKE '");
             strValue.append(strCodeReceived);
             strValue.append("%'");            
@@ -194,12 +244,18 @@ public class ProofOfPayment {
         return "Not Found";
     }    
     
+    /**
+     * 
+     * @param strDateStart
+     * @param strDateEnd
+     * @return 
+     */
     public List <ProofOfPayment> getList(String strDateStart, String strDateEnd) {
         Principal.CONECCTION.conect();
         List <ProofOfPayment> aryPayments = new ArrayList <ProofOfPayment> ();
         
         try {
-            StringBuilder strValue = new StringBuilder();
+            StringBuilder strValue = new StringBuilder(MAX);
             strValue.append("SELECT ComCod, ComMon, ComFec, UsuNom FROM Comprobante WHERE ComFec >= '");
             strValue.append(strDateStart);
             strValue.append("' AND ComFec <= '");
@@ -229,12 +285,18 @@ public class ProofOfPayment {
         return aryPayments;
     }
     
+    /**
+     * 
+     * @param strDateStart
+     * @param strDateEnd
+     * @return 
+     */
     public List <ProofOfPayment> getUsersMount(String strDateStart, String strDateEnd) {
         Principal.CONECCTION.conect();
         List <ProofOfPayment> aryPayments = new ArrayList <ProofOfPayment> ();
         
         try {
-            StringBuilder strValue = new StringBuilder();
+            StringBuilder strValue = new StringBuilder(MAX);
             strValue.append("SELECT UsuNom, SUM(ComMon) FROM Comprobante WHERE ComFec >= '");
             strValue.append(strDateStart);
             strValue.append("' AND ComFec <= '");

@@ -12,11 +12,12 @@ import javax.swing.JOptionPane;
 
 /**
   @version 2.3
-  @author Miguel Fernández
+  @author Miguel Fernandez
  */
 
 public class Products
 {
+    private final int MAX = 500;
     private String strCode;
     private String strName;
     private String strBrand;
@@ -30,6 +31,17 @@ public class Products
         this("-1","NULL","NULL","NULL","0.0","-1","-1","-1");
     }
     
+    /**
+     * 
+     * @param strCode
+     * @param strName
+     * @param strBrand
+     * @param strPresentation
+     * @param strPrice
+     * @param strStock
+     * @param strCategory
+     * @param strState 
+     */
     public Products(String strCode, String strName, String strBrand, String strPresentation, String strPrice, String strStock, String strCategory, String strState) {
         this.strCode = strCode;
         this.strName = strName;
@@ -54,69 +66,125 @@ public class Products
     public void setCode(String strCode) {
         this.strCode = strCode;
     }
-
+    
+    /**
+     * 
+     * @return 
+     */
     public String getName() {
         return strName;
     }
-
+    
+    /**
+     * 
+     * @param strName 
+     */
     public void setName(String strName) {
         this.strName = strName;
-    }
-
+    }   
+    
+    /**
+     * 
+     * @return 
+     */
     public String getBrand() {
         return strBrand;
     }
-
+    
+    /**
+     * 
+     * @param strBrand 
+     */
     public void setBrand(String strBrand) {
         this.strBrand = strBrand;
     }
     
+    /**
+     * 
+     * @return 
+     */
     public String getPresentation() {
         return strPresentation;
     }
-
+    
+    /**
+     * 
+     * @param strPresentation 
+     */
     public void setPresentation(String strPresentation) {
         this.strPresentation = strPresentation;
     }
-
+    
+    /**
+     * 
+     * @return 
+     */
     public String getPrice() {
         return strPrice;
     }
-
+    
+    /**
+     * 
+     * @param strPrice 
+     */
     public void setPrice(String strPrice) {
         this.strPrice = strPrice;
     }
-
+    
+    /**
+     * 
+     * @return 
+     */
     public String getStock() {
         return strStock;
     }
-
+    
+    /**
+     * 
+     * @param strStock 
+     */
     public void setStock(String strStock) {
         this.strStock = strStock;
     }
-
+    
+    /**
+     * 
+     * @return 
+     */
     public String getCategory() {
         return strCategory;
     }
-
+    
+    /**
+     * 
+     * @param strCategory 
+     */
     public void setCategory(String strCategory) {
         this.strCategory = strCategory;
     }
-
+    
+    /**
+     * 
+     * @return 
+     */
     public String getState() {
         return strState;
     }
-
+    
+    /**
+     * 
+     * @param strState 
+     */
     public void setState(String strState) {
         this.strState = strState;
     }
-    
+        
     public String insert() {
         Principal.CONECCTION.conect();
         String strError = "";
         
         try {
-            StringBuilder strValue = new StringBuilder();
+            StringBuilder strValue = new StringBuilder(MAX);
             strValue.append("INSERT INTO Producto VALUES( DEFAULT , '");
             strValue.append(strName);
             strValue.append("' , '");
@@ -148,7 +216,7 @@ public class Products
         String strError = "";  
         
         try {
-            StringBuilder strValue = new StringBuilder();
+            StringBuilder strValue = new StringBuilder(MAX);
             strValue.append("UPDATE Producto SET ProdNom = '");
             strValue.append(strName);
             strValue.append("' , ProdMar = '");
@@ -173,6 +241,12 @@ public class Products
         return strError;
     }
     
+    /**
+     * 
+     * @param aryCodes
+     * @param aryStock
+     * @return 
+     */
     public String updateStock(List <String> aryCodes, List <String> aryStock) {
         Principal.CONECCTION.conect();
         String strError = "";  
@@ -183,7 +257,7 @@ public class Products
             int iSize = aryCodes.size();
             StringBuilder strValue = null;
             for(int i = 0;i < iSize;i++) {  
-                strValue = new StringBuilder();
+                strValue = new StringBuilder(MAX);
                 strValue.append("UPDATE Producto SET ProdSto = ");
                 strValue.append((Integer.parseInt(aryStockOld.get(i))-Integer.parseInt(aryStock.get(i))));
                 strValue.append(" WHERE ProdCod = ");
@@ -210,7 +284,7 @@ public class Products
         String strError = "";
         
         try {
-            StringBuilder strValue = new StringBuilder();
+            StringBuilder strValue = new StringBuilder(500);
             strValue.append("UPDATE Producto SET EstCod = '2' WHERE ProdCod = ");
             strValue.append(strProductCode);
             
@@ -223,13 +297,20 @@ public class Products
         return strError;
     }
     
+    /**
+     * 
+     * @param iOption
+     * @param strCodeReceived
+     * @param strNameReceived
+     * @return 
+     */
     public List <Products> getList(int iOption, String strCodeReceived, String strNameReceived) {
         Principal.CONECCTION.conect();
         List <Products> aryProducts = new ArrayList <Products> ();
         
         try {
             boolean bAccess = false;
-            StringBuilder strValue = new StringBuilder();
+            StringBuilder strValue = new StringBuilder(MAX);
             
             switch(iOption) {              
                 case 0: strValue.append("SELECT ProdCod, ProdNom, ProdMar, ProdPres, ProdPrec, ProdSto, CatCod, EstCod FROM Producto WHERE ProdCod = ");
@@ -305,19 +386,24 @@ public class Products
         
         return aryProducts;
     }
-
+    
+    /**
+     * 
+     * @param strCodeReceived
+     * @return 
+     */
     public List <String> getProducts(String strCodeReceived) {
         Principal.CONECCTION.conect();
         List <String> aryProducts = new ArrayList <String> ();
         
         try {
-            StringBuilder strValue = new StringBuilder();
+            StringBuilder strValue = new StringBuilder(MAX);
             strValue.append("SELECT ProdNom, ProdMar, ProdPres FROM PRODUCTO_PROVEEDOR WHERE ProCod = ");
             strValue.append(strCodeReceived);
             
             ResultSet cResult = Principal.CONECCTION.receive(String.valueOf(strValue));
             while(cResult.next()) {    
-                strValue = new StringBuilder();
+                strValue = new StringBuilder(MAX);
                 strValue.append(cResult.getString("ProdNom")).append(" ").append(cResult.getString("ProdMar")).append(" ").append(cResult.getString("ProdPres"));
                 aryProducts.add(String.valueOf(strValue));
             }
@@ -332,6 +418,11 @@ public class Products
         
     }
     
+    /**
+     * 
+     * @param aryCodes
+     * @return 
+     */
     public List <String> getStock(ArrayList <String> aryCodes) {
         Principal.CONECCTION.conect();
         List <String> aryStock = new ArrayList <String> ();
@@ -341,7 +432,7 @@ public class Products
             StringBuilder strValue = null;
             
             for (String aryCode : aryCodes) {
-                strValue = new StringBuilder();
+                strValue = new StringBuilder(MAX);
                 strValue.append("SELECT ProdSto FROM Producto WHERE ProdCod = ");
                 strValue.append(aryCode);
                 cResult = Principal.CONECCTION.receive(String.valueOf(strValue));

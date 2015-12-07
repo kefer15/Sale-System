@@ -10,7 +10,7 @@ import java.util.logging.Logger;
 
 /**
   @version 2.3
-  @author Miguel Fernández
+  @author Miguel Fernandez
  */
 
 public class Position {
@@ -21,6 +21,11 @@ public class Position {
         this("-1","NULL");
     }
     
+    /**
+     * 
+     * @param strCode
+     * @param strDescription 
+     */
     public Position(String strCode, String strDescription) {
         this.strCode = strCode;
         this.strDescription = strDescription;
@@ -40,10 +45,18 @@ public class Position {
         this.strCode = strCode;
     }
     
+    /**
+     * 
+     * @return 
+     */
     public String getDescription() {
         return strDescription;
     }
-
+    
+    /**
+     * 
+     * @param strDescription 
+     */
     public void setDescription(String strDescription) {
         this.strDescription = strDescription;
     }

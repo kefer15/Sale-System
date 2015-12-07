@@ -10,7 +10,7 @@ import java.util.logging.Logger;
 
 /**
   @version 2.3
-  @author Miguel Fernández
+  @author Miguel Fernandez
  */
 
 public class Gender {
@@ -21,6 +21,11 @@ public class Gender {
         this("-1","NULL");
     }
     
+    /**
+     * 
+     * @param strCode
+     * @param strDescription 
+     */
     public Gender(String strCode, String strDescription) {
         this.strCode = strCode;
         this.strDescription = strDescription;
@@ -39,11 +44,19 @@ public class Gender {
     public void setCode(String strCode) {
         this.strCode = strCode;
     }
-
+    
+    /**
+     * 
+     * @return 
+     */
     public String getDescription() {
         return strDescription;
     }
-
+    
+    /**
+     * 
+     * @param strDescription 
+     */
     public void setDescription(String strDescription) {
         this.strDescription = strDescription;
     }

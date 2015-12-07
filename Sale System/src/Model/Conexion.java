@@ -12,15 +12,22 @@ import javax.swing.JOptionPane;
 
 /**
   @version 2.3
-  @author Miguel Fernández
+  @author Miguel Fernandez
  */
 
 public class Conexion {
+    private final int MAX = 500;
     private Connection cCon;
     private String strDatabase;
     private String cUser;
     private String strPassword;
-
+    
+    /**
+     * 
+     * @param strDatabase
+     * @param strUser
+     * @param strPassword 
+     */
     public Conexion(String strDatabase, String strUser, String strPassword)     {
         this.strDatabase = strDatabase;
         this.cUser = strUser;
@@ -40,33 +47,49 @@ public class Conexion {
     public void setDatabase(String strDatabase) {
         this.strDatabase = strDatabase;
     }
-
+    
+    /**
+     * 
+     * @return 
+     */
     public String getUser() {
         return cUser;
     }
-
+    
+    /**
+     * 
+     * @param strUser 
+     */
     public void setUser(String strUser) {
         this.cUser = strUser;
     }
-
+    
+    /**
+     * 
+     * @return 
+     */
     public String getPassword() {
         return strPassword;
     }
-
+    
+    /**
+     * 
+     * @param strPassword 
+     */
     public void setPassword(String strPassword) {
         this.strPassword = strPassword;
     }
 
     public void conect() {
         try {
-            StringBuilder strValue = new StringBuilder();
+            StringBuilder strValue = new StringBuilder(MAX);
             strValue.append("jdbc:mysql://localhost:3306/");
             strValue.append(strDatabase);
             
             Class.forName("com.mysql.jdbc.Driver");
             cCon = (Connection) DriverManager.getConnection(String.valueOf(strValue), cUser, strPassword);
         } catch (ClassNotFoundException | SQLException cException) {
-            StringBuilder strValue = new StringBuilder();
+            StringBuilder strValue = new StringBuilder(MAX);
             strValue.append("Access denied for User: ");
             strValue.append(cUser);
             strValue.append(", Password: ");
@@ -77,11 +100,22 @@ public class Conexion {
         }
     }
     
+    /**
+     * 
+     * @param strConsult
+     * @return
+     * @throws SQLException 
+     */
     public ResultSet receive(String strConsult) throws SQLException {
         Statement cStat = (Statement) cCon.createStatement();
         return cStat.executeQuery(strConsult);
     }
     
+    /**
+     * 
+     * @param strConsult
+     * @throws SQLException 
+     */
     public void send(String strConsult) throws SQLException {
         PreparedStatement cPreparedStmt = cCon.prepareStatement(strConsult);
         cPreparedStmt.execute();
@@ -92,7 +126,7 @@ public class Conexion {
             cCon.close();
         }
         catch (SQLException | NullPointerException cException) {
-            StringBuilder strValue = new StringBuilder();
+            StringBuilder strValue = new StringBuilder(MAX);
             strValue.append("Access denied for User: ");
             strValue.append(cUser);
             strValue.append(", Password: ");

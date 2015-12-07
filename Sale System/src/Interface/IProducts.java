@@ -11,7 +11,7 @@ import javax.swing.JTextField;
 
 /**
   @version 2.3
-  @author Miguel Fernández
+  @author Miguel Fernandez
  */
 
 public interface IProducts {

@@ -41,7 +41,7 @@ import javax.swing.table.DefaultTableModel;
 
 /**
   @version 2.3
-  @author Miguel Fernández
+  @author Miguel Fernandez
  */
 
 public class UIMain extends javax.swing.JFrame {
@@ -67,7 +67,8 @@ public class UIMain extends javax.swing.JFrame {
     private List <Products> aProductsList = new ArrayList <Products> ();
     private double dTtotal;
     private float []fColor;
-    private String strNextLine = System.getProperty("line.separator");
+    private final String NEXTLINE = System.getProperty("line.separator");
+    private final int MAX = 500;
     
     /** Between this method start the UI
      * @param iMain
@@ -3816,7 +3817,7 @@ public class UIMain extends javax.swing.JFrame {
         int iSupplierSelected = this.lstLinkSupplier.getSelectedIndex();
         boolean []bProductsSelected = new boolean[this.tblLinkProducts.getRowCount()];
 
-        if(iSupplierSelected != -1) {
+        if(-1 != iSupplierSelected) {
             
             for(int i = 0;i < this.tblLinkProducts.getRowCount();i++) {
                 bProductsSelected[i] = (Boolean) this.tblLinkProducts.getValueAt(i, 0);
@@ -3850,7 +3851,7 @@ public class UIMain extends javax.swing.JFrame {
 
     private void btnModifySupplierActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnModifySupplierActionPerformed
         int iValue = this.tblResultSupplier.getSelectedRow();
-        if(iValue != -1){
+        if(-1 != iValue){
             cleanSupplierSearch();
             this.strSupplierCode = this.cSuppliers.send((CardLayout)this.pnlSupplierSlave.getLayout(), this.pnlSupplierSlave, this.aSuppliersSearch.get(iValue), this.lblNewSupplier, this.txtSupplierName, this.txtSupplierTr, this.txtSupplierPhone, this.txtSupplierAddress, this.btnSupplierRegister);
         } else {
@@ -3870,25 +3871,25 @@ public class UIMain extends javax.swing.JFrame {
     }//GEN-LAST:event_btnSearchSupplierActionPerformed
 
     private void btnSupplierRegisterActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSupplierRegisterActionPerformed
-        StringBuilder strMessage = new StringBuilder();
+        StringBuilder strMessage = new StringBuilder(MAX);
         
         if("*".equals(this.txtSupplierName.getText())) {
-            strMessage.append(strNextLine);
+            strMessage.append(NEXTLINE);
             strMessage.append("  * Campo Nombre");
         }
     
         if("*".equals(this.txtSupplierTr.getText())) {
-            strMessage.append(strNextLine);
+            strMessage.append(NEXTLINE);
             strMessage.append("  * Campo RUC");
         }
         
         if("*".equals(this.txtSupplierPhone.getText())) {
-            strMessage.append(strNextLine);
+            strMessage.append(NEXTLINE);
             strMessage.append("  * Campo Teléfono");
         }
         
         if("*".equals(this.txtSupplierAddress.getText())) {
-            strMessage.append(strNextLine);
+            strMessage.append(NEXTLINE);
             strMessage.append("  * Campo Dirección");
         }
         
@@ -3896,9 +3897,9 @@ public class UIMain extends javax.swing.JFrame {
             this.cSuppliers.actSupplier(this.iState, this.strSupplierCode, this.txtSupplierName, this.txtSupplierTr, this.txtSupplierPhone, this.txtSupplierAddress);
             this.cSuppliers.changeSupplierShow((CardLayout)this.pnlSupplierSlave.getLayout(), this.pnlSupplierSlave, this.tblSupplierShow);
         } else {
-            StringBuilder strValue = new StringBuilder();
+            StringBuilder strValue = new StringBuilder(MAX);
             strValue.append("Todos los campos obligatorios deber ser llenados");
-            strValue.append(strNextLine);
+            strValue.append(NEXTLINE);
             strValue.append(" Completar:");
             strValue.append(strMessage);
             
@@ -3972,7 +3973,7 @@ public class UIMain extends javax.swing.JFrame {
 
     private void btnModifyUserActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnModifyUserActionPerformed
         int iValue = this.tblResultUser.getSelectedRow();
-        if(iValue != -1){
+        if(-1 != iValue){
             if(!"001".equals(this.aUsersSearch.get(iValue))) {
                 cleanUserAdd();
                 this.strUserCode = this.cUsers.send((CardLayout)this.pnlUserSlave.getLayout(), this.pnlUserSlave, this.aUsersSearch.get(iValue), this.lblNewSupplier, this.txtUserName, this.txtUserFatherLastName, this.txtUserMotherLastName, this.txtUserNi, this.cbxUserGender, this.txtUserAddress, this.cbxUserPosition, this.txtUserCellphone, this.txtUserEmail, this.txtUserEmergencyNumber, this.txaUserOthers, this.btnUserRegister);
@@ -3998,45 +3999,45 @@ public class UIMain extends javax.swing.JFrame {
     }//GEN-LAST:event_btnSearchUserActionPerformed
 
     private void btnUserRegisterActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUserRegisterActionPerformed
-        StringBuilder strMessage = new StringBuilder();
+        StringBuilder strMessage = new StringBuilder(MAX);
         
         if("*".equals(this.txtUserName.getText())) {
-            strMessage.append(strNextLine);
+            strMessage.append(NEXTLINE);
             strMessage.append("  * Campo Nombre");
         }
     
         if("*".equals(this.txtUserFatherLastName.getText())) {
-            strMessage.append(strNextLine);
+            strMessage.append(NEXTLINE);
             strMessage.append("  * Campo Apellido Paterno");
         }
         
         if("*".equals(this.txtUserMotherLastName.getText())) {
-            strMessage.append(strNextLine);
+            strMessage.append(NEXTLINE);
             strMessage.append("  * Campo Apellido Materno");
         }
         
         if("*".equals(this.txtUserNi.getText())) {
-            strMessage.append(strNextLine);
+            strMessage.append(NEXTLINE);
             strMessage.append("  * Campo DNI");
         }
         
         if("*".equals(this.txtUserAddress.getText())) {
-            strMessage.append(strNextLine);
+            strMessage.append(NEXTLINE);
             strMessage.append("  * Campo Dirección");
         }
         
         if("*".equals(this.txtUserCellphone.getText())) {
-            strMessage.append(strNextLine);
+            strMessage.append(NEXTLINE);
             strMessage.append("  * Campo Celular");
         }
         
         if("*".equals(this.txtUserEmail.getText())) {
-            strMessage.append(strNextLine);
+            strMessage.append(NEXTLINE);
             strMessage.append("  * Campo Correo Electrónico");
         }
         
         if("*".equals(this.txtUserEmergencyNumber.getText())) {
-            strMessage.append(strNextLine);
+            strMessage.append(NEXTLINE);
             strMessage.append("  * Campo Numero de Emergencia");
         }
         
@@ -4044,9 +4045,9 @@ public class UIMain extends javax.swing.JFrame {
             this.cUsers.actUser(this.iState, this.strUserCode, this.txtUserName, this.txtUserFatherLastName, this.txtUserMotherLastName, this.txtUserNi, this.cbxUserGender, this.txtUserAddress, this.cbxUserPosition, this.txtUserCellphone, this.txtUserEmail, this.txtUserEmergencyNumber, this.txaUserOthers);
             this.cUsers.changeUserShow((CardLayout)this.pnlUserSlave.getLayout(), this.pnlUserSlave, this.tblUserShow);
         } else {
-            StringBuilder strValue = new StringBuilder();
+            StringBuilder strValue = new StringBuilder(MAX);
             strValue.append("Todos los campos obligatorios deber ser llenados");
-            strValue.append(strNextLine);
+            strValue.append(NEXTLINE);
             strValue.append(" Completar:");
             strValue.append(strMessage);
             
@@ -4155,7 +4156,7 @@ public class UIMain extends javax.swing.JFrame {
 
     private void tblSaleOrderTablePropertyChange(java.beans.PropertyChangeEvent evt) {//GEN-FIRST:event_tblSaleOrderTablePropertyChange
         int iRow = this.tblSaleOrderTable.getSelectedRow();
-        if(iRow != -1){
+        if(-1 != iRow){
             this.dTtotal -= Double.parseDouble(String.valueOf(this.tblSaleOrderTable.getValueAt(iRow, 4)));
             
             String strResult = this.cSale.verifyQuantity(String.valueOf(this.tblSaleOrderTable.getValueAt(iRow, 0)), String.valueOf(this.tblSaleOrderTable.getValueAt(iRow, 1))); 
@@ -4203,30 +4204,30 @@ public class UIMain extends javax.swing.JFrame {
     }//GEN-LAST:event_btnSaleOrderPrintActionPerformed
 
     private void btnProductUpdateStoreActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnProductUpdateStoreActionPerformed
-        StringBuilder strMessage = new StringBuilder();
+        StringBuilder strMessage = new StringBuilder(MAX);
         
         if("*".equals(this.txtProductNameStore.getText())) {
-            strMessage.append(strNextLine);
+            strMessage.append(NEXTLINE);
             strMessage.append("  * Campo Nombre");
         }
     
         if("*".equals(this.txtProductBrandStore.getText())) {
-            strMessage.append(strNextLine);
+            strMessage.append(NEXTLINE);
             strMessage.append("  * Campo Marca");
         }
         
         if("*".equals(this.txtProductPresentationStore.getText())) {
-            strMessage.append(strNextLine);
+            strMessage.append(NEXTLINE);
             strMessage.append("  * Campo Presentación");
         }
         
         if("*".equals(this.txtProductStockStore.getText())) {
-            strMessage.append(strNextLine);
+            strMessage.append(NEXTLINE);
             strMessage.append("  * Campo Stock");
         }
         
         if("*".equals(this.txtProductPriceStore.getText())) {
-            strMessage.append(strNextLine);
+            strMessage.append(NEXTLINE);
             strMessage.append("  * Campo Precio");
         }
         
@@ -4234,9 +4235,9 @@ public class UIMain extends javax.swing.JFrame {
             this.cStore.actProduct(this.strProductCode, this.txtProductNameStore, this.txtProductBrandStore, this.txtProductPresentationStore, this.txtProductStockStore, this.cbxProductCategoryStore, this.txtProductPriceStore);
             this.cStore.changeInventStore((CardLayout)this.pnlStoreSlave.getLayout(), this.pnlStoreSlave, this.tblProductShowStore);
         } else {
-            StringBuilder strValue = new StringBuilder();
+            StringBuilder strValue = new StringBuilder(MAX);
             strValue.append("Todos los campos obligatorios deber ser llenados.");
-            strValue.append(strNextLine);
+            strValue.append(NEXTLINE);
             strValue.append(" Completar:");
             strValue.append(strMessage);
             
@@ -4257,7 +4258,7 @@ public class UIMain extends javax.swing.JFrame {
 
     private void btnModifyProductActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnModifyProductActionPerformed
         int iValue = this.tblResultProduct.getSelectedRow();
-        if(iValue != -1) {
+        if(-1 != iValue) {
             this.cStore.changeModify((CardLayout)this.pnlStoreSlave.getLayout(), this.pnlStoreSlave);
             this.strProductCode = this.cStore.send(this.aProductsSearch.get(iValue), this.txtProductNameStore, this.txtProductBrandStore, this.txtProductPresentationStore, this.txtProductStockStore, this.cbxProductCategoryStore, this.txtProductPriceStore);
         } else {
@@ -4278,7 +4279,7 @@ public class UIMain extends javax.swing.JFrame {
 
     private void btnSeeTicketActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSeeTicketActionPerformed
         int iRow = this.tblResultTicket.getSelectedRow();
-        if(iRow != -1){
+        if(-1 != iRow){
             new CTicket(this.aTicketsSearch.get(iRow), 0);
         } else {
             JOptionPane.showMessageDialog(  null,
@@ -4709,7 +4710,7 @@ public class UIMain extends javax.swing.JFrame {
         this.lblLinkedProducts.setEnabled(false);
         this.lstLinkedProducts.setEnabled(false);
         int iSupplierSelected = this.lstLinkSupplier.getSelectedIndex();
-        if(iSupplierSelected != -1) {
+        if(-1 != iSupplierSelected) {
             this.cSuppliers.linkedProducts(this.aSuppliersIndexes.get(iSupplierSelected), this.lstLinkedProducts, this.lblLinkedProducts);
         }
     }//GEN-LAST:event_lstLinkSupplierMouseClicked

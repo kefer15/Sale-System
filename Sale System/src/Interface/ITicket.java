@@ -2,7 +2,7 @@ package Interface;
 
 /**
   @version 2.3
-  @author Miguel Fernández
+  @author Miguel Fernandez
  */
 
 public interface ITicket {

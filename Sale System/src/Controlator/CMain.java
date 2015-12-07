@@ -15,23 +15,23 @@ import javax.swing.JTextField;
 
 /**
   @version 2.3
-  @author Miguel Fernández
+  @author Miguel Fernandez
  */
 
 public class CMain implements IMain {
-    private final UIMain WDWINDOW;
+    private final UIMain window;
     
     /*
         Constructor that recieves the number of the widow to active in UIMain
         @param  iWindowNumber    Indicates the number of the window
     */
     public CMain(int iWindowNumber) {
-        WDWINDOW = new UIMain(this, iWindowNumber);
+        window = new UIMain(this, iWindowNumber);
     }
     
     @Override
     
-    /** 
+    /* 
         Between this method we can move for all windows, basically Home Window 
     */
     public void changeHome(CardLayout crdCard, JPanel pnlPanel) {
@@ -65,13 +65,13 @@ public class CMain implements IMain {
    
     @Override
     public void logOut() {
-        WDWINDOW.dispose();
+        window.dispose();
         new CMain(0);
     }
     
     @Override
     public void forgottenPass(JTextField txtUser) {
-        WDWINDOW.dispose();
+        window.dispose();
         new CForgottenPass(txtUser.getText());    
     }    
     
@@ -79,9 +79,10 @@ public class CMain implements IMain {
     public void setOrderNumber(JLabel lblNumber) {
         String strCode = (new ProofOfPayment()).getNextCode();
         DecimalFormat cFormat = new DecimalFormat("00000000000");            
-        StringBuilder strValue = new StringBuilder();
+        StringBuilder strValue = new StringBuilder(500);
         strValue.append("N° ");
-        strValue.append(String.valueOf(cFormat.format(Integer.parseInt(strCode)+1)));
+        int iValue = Integer.parseInt(strCode) + 1;
+        strValue.append(String.valueOf(cFormat.format(iValue)));
         
         lblNumber.setText(String.valueOf(strValue));
     }

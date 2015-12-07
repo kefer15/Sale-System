@@ -26,20 +26,20 @@ import javax.swing.JTextField;
 
 /**
   @version 2.3
-  @author Miguel Fernández
+  @author Miguel Fernandez
  */
 
 public class CForgottenPass implements IForgottenPass{
 
-    private final UIForgottenPass wdForgottenPass;
+    private final UIForgottenPass window;
     
     CForgottenPass(String User) {
-        wdForgottenPass = new UIForgottenPass(this, User);
+        window = new UIForgottenPass(this, User);
     }
     
     @Override
     
-    /**
+    /*
         Between this method we can sent an email to the user who forgets his pass 
     */
     public boolean send(JTextField txtIdentifier, JTextField txtEmail, JLabel lblSending) {
@@ -112,7 +112,7 @@ public class CForgottenPass implements IForgottenPass{
     
     @Override
     public void comeBack() {
-        wdForgottenPass.dispose();
+        window.dispose();
         new CMain(0);
     }
 }

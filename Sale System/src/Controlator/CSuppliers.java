@@ -22,13 +22,13 @@ import javax.swing.table.DefaultTableModel;
 
 /**
   @version 2.3
-  @author Miguel Fernández
+  @author Miguel Fernandez
  */
 
 public class CSuppliers implements ISuppliers{
     @Override
     
-    /** 
+    /* 
         Between this method we can show the panel for checking a new supplier in 
     */
     public void changeSupplierAdd(CardLayout crdCard, JPanel pnlPanel, JLabel lblTitle, JButton btnRegister) {
@@ -110,7 +110,7 @@ public class CSuppliers implements ISuppliers{
         switch(iOption){
             case 0: cSupplier.setState("1");
                     strError = cSupplier.insert();
-                    if(strError.equals("")) {
+                    if(strError.length() == 0) {
                         JOptionPane.showMessageDialog(  null, 
                                                         "Los datos han sido ingresados correctamente.", 
                                                         "Nuevo Proveedor",
@@ -124,7 +124,7 @@ public class CSuppliers implements ISuppliers{
                     break;
                 
             case 1: strError = cSupplier.update();
-                    if(strError.equals("")) {
+                    if(strError.length() == 0) {
                         JOptionPane.showMessageDialog(  null, 
                                                         "Los datos han sido modificados correctamente.", 
                                                         "Modificar Proveedor", 

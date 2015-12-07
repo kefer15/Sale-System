@@ -14,20 +14,19 @@ import javax.swing.JTextField;
 
 /**
   @version 2.3
-  @author Miguel Fernández
+  @author Miguel Fernandez
  */
 
 public class CHome implements IHome
 {
     @Override
     
-    /** 
+    /* 
         Between this method we can validate and give access to users 
-    */ 
-    
+    */
     public Users logIn(JTextField txtId, JPasswordField txtPass) {              
         Users cUser = null;
-        if(txtId.getText().equals("") || 0 == txtPass.getPassword().length)
+        if(txtId.getText().length() == 0 || 0 == txtPass.getPassword().length)
         {
             JOptionPane.showMessageDialog(  null,
                                             "Ingrese su 'Id de Usuario' y su 'Contraseña'",

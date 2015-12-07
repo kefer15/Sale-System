@@ -12,10 +12,11 @@ import javax.swing.JOptionPane;
 
 /**
   @version 2.3
-  @author Miguel Fernández
+  @author Miguel Fernandez
  */
 
 public class Users {
+    private final int MAX = 500;
     private String strCode;
     private String strId;
     private String strPassword;
@@ -36,6 +37,24 @@ public class Users {
         this("-1","NULL","NULL","NULL","NULL","NULL","NULL","-1","NULL","-1","NULL","NULL","NULL","NULL","-1");
     }
     
+    /**
+     * 
+     * @param strCode
+     * @param strId
+     * @param strPassword
+     * @param strName
+     * @param strFatherLastName
+     * @param strMotherLastName
+     * @param strNi
+     * @param strGenderCode
+     * @param strAddress
+     * @param strPositionCode
+     * @param strCellphone
+     * @param strEmail
+     * @param strEmergencyCell
+     * @param strOther
+     * @param strState 
+     */
     public Users(String strCode, String strId, String strPassword, String strName, String strFatherLastName, String strMotherLastName, String strNi, String strGenderCode, String strAddress, String strPositionCode, String strCellphone, String strEmail, String strEmergencyCell, String strOther, String strState) {
         this.strCode = strCode;
         this.strId = strId;
@@ -67,115 +86,227 @@ public class Users {
     public void setCode(String strCode) {
         this.strCode = strCode;
     }
-
+    
+    /**
+     * 
+     * @return 
+     */
     public String getId() {
         return strId;
     }
-
+    
+    /**
+     * 
+     * @param strId 
+     */
     public void setId(String strId) {
         this.strId = strId;
     }
-
+    
+    /**
+     * 
+     * @return 
+     */
     public String getPassword() {
         return strPassword;
     }
-
+    
+    /**
+     * 
+     * @param strPassword 
+     */
     public void setPassword(String strPassword) {
         this.strPassword = strPassword;
-    }
-
+    }   
+    
+    /**
+     * 
+     * @return 
+     */
     public String getName() {
         return strName;
     }
-
+    
+    /**
+     * 
+     * @param strName 
+     */
     public void setName(String strName) {
         this.strName = strName;
     }
-
+    
+    /**
+     * 
+     * @return 
+     */
     public String getFatherLastName() {
         return strFatherLastName;
     }
-
+    
+    /**
+     * 
+     * @param strFatherLastName 
+     */
     public void setFatherLastName(String strFatherLastName) {
         this.strFatherLastName = strFatherLastName;
     }
-
+    
+    /**
+     * 
+     * @return 
+     */
     public String getMotherLastName() {
         return strMotherLastName;
     }
-
+    
+    /**
+     * 
+     * @param strMotherLastName 
+     */
     public void setMotherLastName(String strMotherLastName) {
         this.strMotherLastName = strMotherLastName;
     }
-
+    
+    /**
+     * 
+     * @return 
+     */
     public String getNi() {
         return strNi;
     }
-
+    
+    /**
+     * 
+     * @param strNi 
+     */
     public void setNi(String strNi) {
         this.strNi = strNi;
     }
-
+    
+    /**
+     * 
+     * @return 
+     */
     public String getGenderCode() {
         return strGenderCode;
     }
-
+    
+    /**
+     * 
+     * @param strGenderCode 
+     */
     public void setGenderCode(String strGenderCode) {
         this.strGenderCode = strGenderCode;
     }
-
+    
+    /**
+     * 
+     * @return 
+     */
     public String getAddress() {
         return strAddress;
     }
-
+    
+    /**
+     * 
+     * @param strAddress 
+     */
     public void setAddress(String strAddress) {
         this.strAddress = strAddress;
     }
-
+    
+    /**
+     * 
+     * @return 
+     */
     public String getPositionCode() {
         return strPositionCode;
     }
-
+    
+    /**
+     * 
+     * @param strPositionCode 
+     */
     public void setPositionCode(String strPositionCode) {
         this.strPositionCode = strPositionCode;
     }
-
+    
+    /**
+     * 
+     * @return 
+     */
     public String getCellphone() {
         return strCellphone;
     }
-
+    
+    /**
+     * 
+     * @param strCellphone 
+     */
     public void setCellphone(String strCellphone) {
         this.strCellphone = strCellphone;
     }
-
+    
+    /**
+     * 
+     * @return 
+     */
     public String geteMail() {
         return strEmail;
     }
-
+    
+    /**
+     * 
+     * @param strEmail 
+     */
     public void seteMail(String strEmail) {
         this.strEmail = strEmail;
     }
-
+    
+    /**
+     * 
+     * @return 
+     */
     public String getEmergencyCell() {
         return strEmergencyCell;
     }
-
+    
+    /**
+     * 
+     * @param strEmergencyCell 
+     */
     public void setEmergencyCell(String strEmergencyCell) {
         this.strEmergencyCell = strEmergencyCell;
-    }
-
+    }   
+    
+    /**
+     * 
+     * @return 
+     */
     public String getOther() {
         return strOther;
     }
-
+    
+    /**
+     * 
+     * @param strOther 
+     */
     public void setOther(String strOther) {
         this.strOther = strOther;
     }
-
+    
+    /**
+     * 
+     * @return 
+     */
     public String getState() {
         return strState;
     }
-
+    
+    /**
+     * 
+     * @param strState 
+     */
     public void setState(String strState) {
         this.strState = strState;
     }
@@ -185,7 +316,7 @@ public class Users {
         String strError = "";
         
         try {
-            StringBuilder strValue = new StringBuilder();
+            StringBuilder strValue = new StringBuilder(MAX);
             strValue.append("INSERT INTO Usuario VALUES( DEFAULT , '");
             strValue.append(strId);
             strValue.append("' , '");
@@ -230,7 +361,7 @@ public class Users {
         String strError = "";  
         
         try {          
-            StringBuilder strValue = new StringBuilder();
+            StringBuilder strValue = new StringBuilder(MAX);
             strValue.append("UPDATE Usuario SET UsuNom = '");
             strValue.append(strName);
             strValue.append("' , UsuApePat = '");
@@ -275,7 +406,7 @@ public class Users {
         String strError = "";
         
         try {
-            StringBuilder strValue = new StringBuilder();
+            StringBuilder strValue = new StringBuilder(500);
             strValue.append("UPDATE Usuario SET EstCod = '2' WHERE UsuCod = ");
             strValue.append(strUserCode);
             
@@ -288,13 +419,21 @@ public class Users {
         return strError;
     }
     
+    /**
+     * 
+     * @param iOption
+     * @param strIdentification
+     * @param strCodeReceived
+     * @param strNameReceived
+     * @return 
+     */
     public List <Users> getList(int iOption, String strIdentification, String strCodeReceived, String strNameReceived) {
         Principal.CONECCTION.conect();
         List <Users> aryUsers = new ArrayList <Users> ();
         
         try {
             boolean bAccess = false;
-            StringBuilder strValue = new StringBuilder();
+            StringBuilder strValue = new StringBuilder(MAX);
             
             switch(iOption){              
                 case 0: strValue.append("SELECT UsuCod, UsuIde, UsuCon, UsuNom, UsuApePat, UsuApeMat, UsuDni, UsuDir, UsuCel, UsuCorEle, UsuNumEme, UsuOtr, GenCod, CarCod, EstCod FROM Usuario WHERE EstCod = 1 AND UsuIde = '");

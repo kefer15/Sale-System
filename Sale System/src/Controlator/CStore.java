@@ -39,13 +39,14 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.table.DefaultTableModel;
 
 /**
- * @version 2.3
- * @author Miguel Fernández
+  @version 2.3
+  @author Miguel Fernandez
  */
 
 public class CStore implements Interface.IStore {
     private List <String> aryCategoriesIndexes = new ArrayList <String> ();
-    private String strNextLine = System.getProperty("line.separator");
+    private final String NEXTLINE = System.getProperty("line.separator");
+    private final int MAX = 500;
     
     /*
         Fills all Categories into cbxCategory and links the information of each register with 
@@ -66,7 +67,7 @@ public class CStore implements Interface.IStore {
     
     @Override
     
-    /** 
+    /* 
         Between this method we can show the panel for searching products 
     */
     public void changeProductSearch(CardLayout crdCard, JPanel pnlPanel) {
@@ -169,7 +170,7 @@ public class CStore implements Interface.IStore {
         product.setPrice(txtPrice.getText());
         
         String strError = product.update();
-        if(strError.equals("")) {
+        if(strError.length() == 0) {
             JOptionPane.showMessageDialog(  null, 
                                             "Los datos han sido modificados correctamente.", 
                                             "Modificar Producto", 
@@ -254,7 +255,7 @@ public class CStore implements Interface.IStore {
         if(iOption == JFileChooser.APPROVE_OPTION) {
             try {
                 Document cDocument = new Document();
-                StringBuilder strPath = new StringBuilder();
+                StringBuilder strPath = new StringBuilder(MAX);
                 strPath.append("");
                 strPath.append(fcsSave.getSelectedFile().getAbsoluteFile());
                 strPath.append("");
@@ -267,19 +268,19 @@ public class CStore implements Interface.IStore {
                 PdfWriter.getInstance(cDocument, new java.io.FileOutputStream(String.valueOf(strPath)));
                 cDocument.open();
                 
-                StringBuilder strValue = new StringBuilder();
+                StringBuilder strValue = new StringBuilder(MAX);
                 strValue.append("SISTEMA DE VENTAS PARA UNA TIENDA DE ABARROTES");
-                strValue.append(strNextLine);
-                strValue.append(strNextLine);
+                strValue.append(NEXTLINE);
+                strValue.append(NEXTLINE);
                 
                 Paragraph cParagraph = new Paragraph(String.valueOf(strValue),FontFactory.getFont(FontFactory.COURIER,10,BaseColor.BLACK));
                 cParagraph.setAlignment(Element.ALIGN_CENTER);
                 cDocument.add(cParagraph);
                 
-                strValue = new StringBuilder();
+                strValue = new StringBuilder(MAX);
                 strValue.append("X & G CENTENO");
-                strValue.append(strNextLine);
-                strValue.append(strNextLine);
+                strValue.append(NEXTLINE);
+                strValue.append(NEXTLINE);
                 
                 cParagraph = new Paragraph(String.valueOf(strValue),FontFactory.getFont(FontFactory.COURIER,13,BaseColor.BLACK));
                 cParagraph.setAlignment(Element.ALIGN_CENTER);
@@ -295,7 +296,7 @@ public class CStore implements Interface.IStore {
                 cTable.addCell(cCell);
                 cDocument.add(cTable);
 
-                cParagraph = new Paragraph(strNextLine);
+                cParagraph = new Paragraph(NEXTLINE);
                 cDocument.add(cParagraph);
                 
                 SimpleDateFormat []cFormat = {new SimpleDateFormat("dd 'de' MMMM 'del' yyyy"), new SimpleDateFormat("hh:mm aa")};
@@ -308,15 +309,15 @@ public class CStore implements Interface.IStore {
                 cParagraph.setAlignment(Element.ALIGN_RIGHT);
                 cDocument.add(cParagraph);
                 
-                strValue = new StringBuilder();
+                strValue = new StringBuilder(MAX);
                 strValue.append("Administrador: ");
                 strValue.append(cUser.getName());
                 strValue.append(" ");
                 strValue.append(cUser.getFatherLastName());
                 strValue.append(" ");
                 strValue.append(cUser.getMotherLastName());
-                strValue.append(strNextLine);
-                strValue.append(strNextLine);                
+                strValue.append(NEXTLINE);
+                strValue.append(NEXTLINE);                
 
                 cParagraph = new Paragraph(String.valueOf(strValue),FontFactory.getFont(FontFactory.COURIER,12,Font.BOLD,BaseColor.BLACK));
                 cParagraph.setAlignment(Element.ALIGN_LEFT);
@@ -527,7 +528,7 @@ public class CStore implements Interface.IStore {
         {
             try {
                 Document cDocument = new Document();
-                StringBuilder strPath = new StringBuilder();
+                StringBuilder strPath = new StringBuilder(MAX);
                 strPath.append("");
                 strPath.append(fcsSave.getSelectedFile().getAbsoluteFile());
                 strPath.append("");
@@ -540,19 +541,19 @@ public class CStore implements Interface.IStore {
                 PdfWriter.getInstance(cDocument, new java.io.FileOutputStream(String.valueOf(strPath)));
                 cDocument.open();
                 
-                StringBuilder strValue = new StringBuilder();
+                StringBuilder strValue = new StringBuilder(MAX);
                 strValue.append("SISTEMA DE VENTAS PARA UNA TIENDA DE ABARROTES");
-                strValue.append(strNextLine);
-                strValue.append(strNextLine);
+                strValue.append(NEXTLINE);
+                strValue.append(NEXTLINE);
                 
                 Paragraph cParagraph = new Paragraph(String.valueOf(strValue),FontFactory.getFont(FontFactory.COURIER,10,BaseColor.BLACK));
                 cParagraph.setAlignment(Element.ALIGN_CENTER);
                 cDocument.add(cParagraph);
                 
-                strValue = new StringBuilder();
+                strValue = new StringBuilder(MAX);
                 strValue.append("X & G CENTENO");
-                strValue.append(strNextLine);
-                strValue.append(strNextLine);
+                strValue.append(NEXTLINE);
+                strValue.append(NEXTLINE);
                 
                 cParagraph = new Paragraph(String.valueOf(strValue),FontFactory.getFont(FontFactory.COURIER,13,BaseColor.BLACK));
                 cParagraph.setAlignment(Element.ALIGN_CENTER);
@@ -568,12 +569,12 @@ public class CStore implements Interface.IStore {
                 cTable.addCell(cCell);
                 cDocument.add(cTable);
 
-                cParagraph = new Paragraph(strNextLine);
+                cParagraph = new Paragraph(NEXTLINE);
                 cDocument.add(cParagraph);
                 
                 SimpleDateFormat []cFormat = {new SimpleDateFormat("dd 'de' MMMM 'del' yyyy"), new SimpleDateFormat("hh:mm aa"), new SimpleDateFormat("yyyy/MM/dd")};
                 
-                strValue = new StringBuilder();
+                strValue = new StringBuilder(MAX);
                 strValue.append("Fecha: ");
                 strValue.append(cFormat[0].format(Calendar.getInstance().getTime()));
                                 
@@ -581,7 +582,7 @@ public class CStore implements Interface.IStore {
                 cParagraph.setAlignment(Element.ALIGN_RIGHT);
                 cDocument.add(cParagraph);
                 
-                strValue = new StringBuilder();
+                strValue = new StringBuilder(MAX);
                 strValue.append("Hora: ");
                 strValue.append(cFormat[1].format(Calendar.getInstance().getTime()));
                 
@@ -589,21 +590,21 @@ public class CStore implements Interface.IStore {
                 cParagraph.setAlignment(Element.ALIGN_RIGHT);
                 cDocument.add(cParagraph);
                 
-                strValue = new StringBuilder();
+                strValue = new StringBuilder(MAX);
                 strValue.append("Administrador: ");
                 strValue.append(cUser.getName());
                 strValue.append(" ");
                 strValue.append(cUser.getFatherLastName());
                 strValue.append(" ");
                 strValue.append(cUser.getMotherLastName());
-                strValue.append(strNextLine);
-                strValue.append(strNextLine);
+                strValue.append(NEXTLINE);
+                strValue.append(NEXTLINE);
                 
                 cParagraph = new Paragraph(String.valueOf(strValue),FontFactory.getFont(FontFactory.COURIER,12,Font.BOLD,BaseColor.BLACK));
                 cParagraph.setAlignment(Element.ALIGN_LEFT);
                 cDocument.add(cParagraph);
                 
-                strValue = new StringBuilder();
+                strValue = new StringBuilder(MAX);
                 strValue.append("Periodo de Inicio: ");
                 strValue.append(cFormat[0].format(cldStart.getCalendar().getTime()));
                 
@@ -611,20 +612,20 @@ public class CStore implements Interface.IStore {
                 cParagraph.setAlignment(Element.ALIGN_LEFT);
                 cDocument.add(cParagraph);
                 
-                strValue = new StringBuilder();
+                strValue = new StringBuilder(MAX);
                 strValue.append("Periodo de Fin: ");
                 strValue.append(cFormat[0].format(cldEnd.getCalendar().getTime()));
-                strValue.append(strNextLine);
-                strValue.append(strNextLine);
+                strValue.append(NEXTLINE);
+                strValue.append(NEXTLINE);
                 
                 cParagraph = new Paragraph(String.valueOf(strValue),FontFactory.getFont(FontFactory.COURIER,12,Font.BOLD,BaseColor.BLACK));
                 cParagraph.setAlignment(Element.ALIGN_LEFT);
                 cDocument.add(cParagraph);
                 
-                strValue = new StringBuilder();
+                strValue = new StringBuilder(MAX);
                 strValue.append("INGRESOS GENERALES");
-                strValue.append(strNextLine);
-                strValue.append(strNextLine);
+                strValue.append(NEXTLINE);
+                strValue.append(NEXTLINE);
                 
                 cParagraph = new Paragraph(String.valueOf(strValue),FontFactory.getFont(FontFactory.COURIER,13,BaseColor.BLACK));
                 cParagraph.setAlignment(Element.ALIGN_CENTER);
@@ -669,7 +670,7 @@ public class CStore implements Interface.IStore {
                 DecimalFormat cFormatMoney = new DecimalFormat("#.##");
                 
                 for (ProofOfPayment cTicket : aryTickets) {
-                    if (Double.parseDouble(cTicket.getAmount()) >= 50) {
+                    if (!(50 > Double.parseDouble(cTicket.getAmount()))) {
                         cCell = new PdfPCell(new Paragraph(cTicket.getCode(), FontFactory.getFont(FontFactory.COURIER,11,Font.BOLD,BaseColor.WHITE)));
                         cCell.setHorizontalAlignment(Element.ALIGN_CENTER);
                         cCell.setVerticalAlignment(Element.ALIGN_MIDDLE);
@@ -725,11 +726,11 @@ public class CStore implements Interface.IStore {
                 }
                 cDocument.add(cTable);
                 
-                strValue = new StringBuilder();
-                strValue.append(strNextLine);
+                strValue = new StringBuilder(MAX);
+                strValue.append(NEXTLINE);
                 strValue.append("GANACIAS OBTENIDAS POR USUARIOS");
-                strValue.append(strNextLine);
-                strValue.append(strNextLine);
+                strValue.append(NEXTLINE);
+                strValue.append(NEXTLINE);
                                 
                 cParagraph = new Paragraph(String.valueOf(strValue),FontFactory.getFont(FontFactory.COURIER,13,BaseColor.BLACK));
                 cParagraph.setAlignment(Element.ALIGN_CENTER);
