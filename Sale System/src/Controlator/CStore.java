@@ -261,7 +261,6 @@ public class CStore implements Interface.IStore {
                 strPath.append("");
                 
                 if(!"pdf".equals(strPath.substring(strPath.length() - 3, strPath.length()))) {
-                    strPath.append(strPath);
                     strPath.append(".pdf");
                 }
                 
@@ -287,7 +286,7 @@ public class CStore implements Interface.IStore {
                 cDocument.add(cParagraph);
 
                 PdfPTable cTable = new PdfPTable(1);
-
+                
                 PdfPCell cCell = new PdfPCell(new Paragraph("REPORTE DE INVENTARIO", FontFactory.getFont(FontFactory.COURIER,18,Font.BOLD,BaseColor.WHITE)));
                 cCell.setFixedHeight(50);
                 cCell.setHorizontalAlignment(Element.ALIGN_CENTER);
@@ -318,7 +317,7 @@ public class CStore implements Interface.IStore {
                 strValue.append(cUser.getMotherLastName());
                 strValue.append(NEXTLINE);
                 strValue.append(NEXTLINE);                
-
+                
                 cParagraph = new Paragraph(String.valueOf(strValue),FontFactory.getFont(FontFactory.COURIER,12,Font.BOLD,BaseColor.BLACK));
                 cParagraph.setAlignment(Element.ALIGN_LEFT);
                 cDocument.add(cParagraph);
@@ -375,7 +374,7 @@ public class CStore implements Interface.IStore {
                 cCell.setBorderColor(BaseColor.WHITE);
                 cCell.setFixedHeight(30);
                 cTable.addCell(cCell);
-
+                
                 for (Products cProduct : aryProducts) {
                     if (!(10 < Integer.parseInt(cProduct.getStock()))) {
                         cCell = new PdfPCell(new Paragraph(cProduct.getCode(), FontFactory.getFont(FontFactory.COURIER,11,Font.BOLD,BaseColor.WHITE)));
@@ -501,7 +500,6 @@ public class CStore implements Interface.IStore {
                 }
                 cDocument.add(cTable);                
                 cDocument.close();
-                
                 Desktop.getDesktop().open((new java.io.File(String.valueOf(strPath))));
                 bState = true;
             } catch (DocumentException | IOException cException) {
@@ -534,7 +532,6 @@ public class CStore implements Interface.IStore {
                 strPath.append("");
                 
                 if(!"pdf".equals(strPath.substring(strPath.length() - 3, strPath.length()))) {
-                    strPath.append(strPath);
                     strPath.append(".pdf");
                 }
                 
